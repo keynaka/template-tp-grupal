@@ -12,13 +12,13 @@ public class Shore {
     //private boolean hasBoat;
     private String description;
 
-    public Shore (String description, List<Transportable> transportables/*, boolean hasBoat*/) {
+    public Shore(String description, List<Transportable> transportables/*, boolean hasBoat*/) {
         this.description = description;
         this.transportables = transportables;
         //this.hasBoat = hasBoat;
     }
 
-    public String getDescripcion(){
+    public String getDescripcion() {
         return this.description;
     }
 
@@ -30,16 +30,16 @@ public class Shore {
         return hasBoat;
     }*/
 
-    private String getTransportablesDescription () {
+    private String getTransportablesDescription() {
         StringBuffer result = new StringBuffer("");
         for (Transportable transportable : this.transportables) {
-            result.append(transportable.getDescription() + " ") ;
+            result.append(transportable.getDescription() + " ");
         }
 
         return result.toString();
     }
 
-    public String lookAround (){
+    public String lookAround() {
         return "You are at: " + getDescripcion() + " and have " + getTransportablesDescription();
     }
 

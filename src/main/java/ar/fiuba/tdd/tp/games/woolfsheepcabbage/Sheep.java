@@ -12,7 +12,7 @@ public class Sheep implements Transportable {
         return false;
     }
 
-    public String getDescription (){
+    public String getDescription() {
         return "Sheep";
     }
 }

@@ -8,14 +8,14 @@ import ar.fiuba.tdd.tp.games.Item;
 
 public class Wolf implements Transportable {
 
-    public boolean eats (Transportable transportable) {
+    public boolean eats(Transportable transportable) {
         if (transportable instanceof Sheep) {
             return true;
         }
         return false;
     }
 
-    public String getDescription (){
+    public String getDescription() {
         return "Wolf";
     }
 }

@@ -3,6 +3,7 @@ package ar.fiuba.tdd.tp.games.woolfsheepcabbage;
 import ar.fiuba.tdd.tp.games.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,13 +17,10 @@ public class WolfSheepCabbage implements Game {
 
     @Override
     public String start() {
-        List southTransportables= new ArrayList<Transportable>();
-        List northTransportables= new ArrayList<Transportable>();
-        southTransportables.add(new Wolf());
-        southTransportables.add(new Sheep());
-        southTransportables.add(new Cabbage());
-        this.southShore = new Shore("SouthShore", southTransportables );
-        this.northShore = new Shore("NorthShore", northTransportables );
+        List<Transportable> southTransportables = Arrays.asList(new Wolf(), new Sheep(), new Cabbage());
+        List<Transportable> northTransportables = new ArrayList<>();
+        this.southShore = new Shore("SouthShore", southTransportables);
+        this.northShore = new Shore("NorthShore", northTransportables);
         this.boatAtSouth = true;
 
         return "Welcome to " + getDescription();
@@ -33,16 +31,16 @@ public class WolfSheepCabbage implements Game {
         String result = null;
         switch (command.getAction()) {
             case LOOK_AROUND:
-                result = this.lookAround ();
+                result = this.lookAround();
                 break;
             case CROSS:
-                result = this.cross (command.getItemName());
+                result = this.cross(command.getItemName());
                 break;
             case TAKE:
-                result = this.take (command.getItemName());
+                result = this.take(command.getItemName());
                 break;
             case LEAVE:
-                result = this.leave (command.getItemName());
+                result = this.leave(command.getItemName());
                 break;
             default:
                 result = "Unknown command.";
@@ -65,25 +63,25 @@ public class WolfSheepCabbage implements Game {
         return "Wolf, Sheep and Cabbage";
     }
 
-    private String lookAround () {
-        if (this.boatAtSouth){
+    private String lookAround() {
+        if (this.boatAtSouth) {
             return southShore.lookAround();
-        }else{
+        } else {
             return northShore.lookAround();
         }
     }
 
-    private String cross (String item) {
+    private String cross(String item) {
         //TODO
         return "";
     }
 
-    private String take (String item) {
+    private String take(String item) {
         //TODO
         return "";
     }
 
-    private String leave (String item) {
+    private String leave(String item) {
         //TODO
         return "";
     }
