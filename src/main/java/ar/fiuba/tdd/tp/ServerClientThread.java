@@ -37,6 +37,8 @@ public class ServerClientThread extends Thread {
             clientSocket.close();
         } catch (ClassNotFoundException e) {
             System.err.println("Unkown object recived from socket.");
+        } catch (SocketException e) {
+            System.out.println("Client has gone away.");
         } catch (Exception e) {
             e.printStackTrace();
         }

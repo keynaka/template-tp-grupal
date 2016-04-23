@@ -8,10 +8,23 @@ public class Client {
 
     public static void main(String[] args) {
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
-        System.out.print("Port Number: ");
         try {
-            int portNumber = Integer.parseInt(stdIn.readLine());
-            new Client().run(portNumber);
+            System.out.print("Host [127.0.0.1]: ");
+            String hostName = stdIn.readLine();
+            if (hostName == null) {
+                hostName = "localhost";
+            }
+
+            System.out.print("Port Number [8080]: ");
+            String bufferAux = stdIn.readLine();
+            int portNumber;
+            if (bufferAux == null || bufferAux.isEmpty()) {
+                portNumber = 8080;
+            } else {
+                portNumber = Integer.parseInt(bufferAux);
+            }
+
+            new Client().run(hostName, portNumber);
         } catch (IOException e) {
             System.err.println("IOException!");
         } catch (NumberFormatException e) {
@@ -19,8 +32,7 @@ public class Client {
         }
     }
 
-    public void run(int portNumber) {
-        String hostName = "127.0.0.1";
+    public void run(String hostName, int portNumber) {
         try (
                 Socket serverSocket = new Socket(hostName, portNumber);
                 ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
