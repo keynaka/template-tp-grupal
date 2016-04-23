@@ -17,7 +17,7 @@ public class FetchQuestTest {
     @Test
     public void testHappyPath() {
 
-        this.target.start();
+        assertEquals("Welcome to Fetch Quest!", this.target.start());
 
         String response = this.target.play(new Command(Action.LOOK_AROUND, ""));
         assertEquals("Items in the room: stick.", response);

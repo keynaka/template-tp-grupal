@@ -6,19 +6,22 @@ import ar.fiuba.tdd.tp.games.Character;
 /**
  * Created by swandelow on 4/21/16.
  */
-public class FetchQuest2 implements Game {
+public class FetchQuest2 extends AbstractGame {
 
     private Stage room;
     private Character character;
     private Item stick;
 
+    public FetchQuest2() {
+        super("Fetch Quest");
+    }
+
     @Override
-    public String start() {
+    protected void doStart() {
         this.character = new Character();
         this.stick = new Item("stick", "It's just a simple stick.");
         this.room = new Stage();
         this.room.addItem(this.stick);
-        return "Welcome to FetchQuest";
     }
 
     @Override
