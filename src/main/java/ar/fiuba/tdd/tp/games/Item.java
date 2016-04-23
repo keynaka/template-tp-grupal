@@ -26,8 +26,8 @@ public class Item {
         if (!(obj instanceof Item)) {
             return false;
         }
-        Item o = (Item) obj;
-        return this.getName().equalsIgnoreCase(o.getName());
+        Item other = (Item) obj;
+        return this.getName().equalsIgnoreCase(other.getName());
     }
 
     @Override

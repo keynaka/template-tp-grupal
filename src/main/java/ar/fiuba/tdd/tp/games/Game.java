@@ -15,7 +15,7 @@ public interface Game {
 
     /**
      * Verifies if the conditions to end the game are met.
-     * @return
+     * @return True if all conditions are met.
      */
     boolean isFinished();
 
