@@ -45,4 +45,8 @@ public class Stage {
         return sb.toString();
     }
 
+    public Item getItem(String itemName) {
+        return this.items.get(itemName);
+    }
+
 }

@@ -25,6 +25,15 @@ public class Door extends Item {
         }
     }
 
+    public String close() {
+        if (this.isClosed()) {
+            return "Door it's already closed.";
+        } else {
+            this.state = State.CLOSED;
+            return "Closed door.";
+        }
+    }
+
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);

@@ -16,6 +16,10 @@ public class Character {
     }
 
     public void addToInventory(Item item) {
+        this.inventory.addItem(item);
+    }
 
+    public boolean hasItem(Item item) {
+        return this.inventory.contains(item);
     }
 }

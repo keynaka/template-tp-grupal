@@ -5,5 +5,7 @@ package ar.fiuba.tdd.tp.games;
  */
 public enum State {
     OPEN,
-    CLOSED;
+    CLOSED,
+    LOCKED,
+    UNLOCKED;
 }

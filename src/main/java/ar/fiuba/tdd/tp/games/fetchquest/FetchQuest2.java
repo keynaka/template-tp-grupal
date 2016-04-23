@@ -3,6 +3,8 @@ package ar.fiuba.tdd.tp.games.fetchquest;
 import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.Character;
 
+import java.util.Optional;
+
 /**
  * Created by swandelow on 4/21/16.
  */
@@ -25,25 +27,15 @@ public class FetchQuest2 extends AbstractGame {
     }
 
     @Override
-    public String play(Command command) {
-        String result = null;
-        switch (command.getAction()) {
-            case LOOK_AROUND:
-                result = this.room.lookAround();
-                break;
-            case PICK:
-                Item stick = this.room.pickItem("stick");
-                this.character.getInventory().addItem(stick);
-                break;
-            default:
-                result = "Unknown command.";
-        }
-        if (this.isFinished()) {
-            result = "You won the game!";
-        }
+    protected void buildKnownActions() {
+        this.knownActions.put(Action.LOOK_AROUND, () -> this.room.lookAround());
+        this.knownActions.put(Action.PICK, () -> this.pickAction());
+    }
 
-
-        return result;
+    private String pickAction() {
+        Item stick = this.room.pickItem("stick");
+        this.character.getInventory().addItem(stick);
+        return "There you go.";
     }
 
     @Override
