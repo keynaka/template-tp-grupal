@@ -2,11 +2,12 @@ package ar.fiuba.tdd.tp;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.Charset;
 
 public class Client {
 
     public static void main(String[] args) {
-        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
         System.out.print("Port Number: ");
         try {
             int portNumber = Integer.parseInt(stdIn.readLine());
@@ -26,7 +27,7 @@ public class Client {
                 ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
         ) {
             // stdIn is the client keyboard buffer
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
             String fromUser;
 
             DTO dto;
