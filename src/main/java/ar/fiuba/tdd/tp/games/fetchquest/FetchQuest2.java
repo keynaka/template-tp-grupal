@@ -1,9 +1,7 @@
 package ar.fiuba.tdd.tp.games.fetchquest;
 
+import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.Character;
-import ar.fiuba.tdd.tp.games.Game;
-import ar.fiuba.tdd.tp.games.Item;
-import ar.fiuba.tdd.tp.games.Stage;
 
 /**
  * Created by swandelow on 4/21/16.
@@ -24,18 +22,24 @@ public class FetchQuest2 implements Game {
     }
 
     @Override
-    public String play(String command) {
+    public String play(Command command) {
         String result = null;
-        if("look around".equalsIgnoreCase(command)) {
-            result =  this.room.lookArond();
-        } else if ("pick stick".equalsIgnoreCase(command)) {
+        switch (command.getAction()) {
+            case LOOK_AROUND:
+                result = this.room.lookArond();
+                break;
+            case PICK:
             Item stick = this.room.pickItem("stick");
             this.character.getInventory().addItem(stick);
+                break;
+            default:
+                result = "Unknown command.";
         }
-
-        if(this.isFinished()) {
+        if (this.isFinished()) {
             result = "You won the game!";
         }
+
+
         return result;
     }
 

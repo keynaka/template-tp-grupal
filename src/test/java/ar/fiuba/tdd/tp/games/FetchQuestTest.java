@@ -19,12 +19,23 @@ public class FetchQuestTest {
 
         this.target.start();
 
-        String response = this.target.play("look around");
+        String response = this.target.play(new Command(Action.LOOK_AROUND, ""));
         assertEquals("There's a stick in the room.", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play("pick stick");
+        response = this.target.play(new Command(Action.PICK, "stick"));
         assertEquals("You won the game!", response);
         assertTrue(this.target.isFinished());
+    }
+
+    @Test
+    public void testInvalidCommand() {
+
+        this.target.start();
+
+        String response = this.target.play(new Command(Action.UNKNOWNACTION, ""));
+        assertEquals("Unknown command.", response);
+        assertFalse(this.target.isFinished());
+
     }
 }

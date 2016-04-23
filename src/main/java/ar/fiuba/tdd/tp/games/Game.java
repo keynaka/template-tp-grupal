@@ -11,7 +11,7 @@ public interface Game {
      */
     String start();
 
-    String play(String command);
+    String play(Command command);
 
     /**
      * Verifies if the conditions to end the game are met.
