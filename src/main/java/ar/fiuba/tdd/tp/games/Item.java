@@ -29,4 +29,12 @@ public class Item {
         Item o = (Item) obj;
         return this.getName().equalsIgnoreCase(o.getName());
     }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+
+        return result;
+    }
 }
