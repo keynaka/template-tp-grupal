@@ -26,11 +26,11 @@ public class FetchQuest2 implements Game {
         String result = null;
         switch (command.getAction()) {
             case LOOK_AROUND:
-                result = this.room.lookArond();
+                result = this.room.lookAround();
                 break;
             case PICK:
-            Item stick = this.room.pickItem("stick");
-            this.character.getInventory().addItem(stick);
+                Item stick = this.room.pickItem("stick");
+                this.character.getInventory().addItem(stick);
                 break;
             default:
                 result = "Unknown command.";

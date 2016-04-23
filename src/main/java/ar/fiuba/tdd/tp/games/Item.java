@@ -23,7 +23,7 @@ public class Item {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof Item)) {
+        if (!(obj instanceof Item)) {
             return false;
         }
         Item o = (Item) obj;
