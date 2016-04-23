@@ -23,7 +23,7 @@ public class Item {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Item)) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
         Item other = (Item) obj;

@@ -24,4 +24,14 @@ public class Door extends Item {
             return "Door it's already open.";
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
