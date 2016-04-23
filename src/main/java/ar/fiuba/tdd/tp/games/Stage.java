@@ -1,47 +1,48 @@
 package ar.fiuba.tdd.tp.games;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by swandelow on 4/21/16.
  */
 public class Stage {
 
-    List<Item> items;
+    private Map<String, Item> items;
 
     public Stage() {
-        this.items = new ArrayList<Item>();
+        this.items = new HashMap<String, Item>();
     }
 
     public void addItem(Item item) {
-        this.items.add(item);
+        this.items.put(item.getName(), item);
     }
 
     public Item pickItem(String itemName) {
         Item result = null;
-        for (Iterator<Item> it = this.items.iterator(); it.hasNext(); ) {
-            Item item = it.next();
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                result = item;
+        Iterator<Map.Entry<String, Item>> it = this.items.entrySet().iterator();
+        while(it.hasNext()) {
+            Map.Entry<String, Item> entry = it.next();
+            if(entry.getValue().getName().equalsIgnoreCase(itemName)) {
+                result = entry.getValue();
                 it.remove();
             }
         }
-        return  result;
+        return result;
     }
 
-    public String lookArond() {
+    public String lookAround() {
         StringBuilder sb = new StringBuilder();
-        sb.append("There's ");
-        Iterator<Item> it = items.iterator();
+        sb.append("Items in the room: ");
+        Iterator<Item> it = items.values().iterator();
         while (it.hasNext()) {
-            sb.append("a ".concat(it.next().getName()));
+            sb.append(it.next().getName());
             if (it.hasNext()) {
-                sb.append(" and ");
+                sb.append(", ");
+            } else {
+                sb.append(".");
             }
         }
-        sb.append(" in the room.");
         return sb.toString();
     }
+
 }
