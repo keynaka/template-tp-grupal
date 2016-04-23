@@ -14,7 +14,7 @@ public class OpenDoor extends AbstractGame {
     private Item key;
 
     public OpenDoor() {
-        super("OpenDoor");
+        super("OpenDoor", "You enter room 2. You won the game!");
     }
 
     @Override
@@ -25,31 +25,7 @@ public class OpenDoor extends AbstractGame {
 
     @Override
     protected void buildKnownActions() {
-        this.knownActions.put(Action.LOOK_AROUND, () -> this.room.lookAround());
-    }
-
-
-    @Override
-    public String play(Command command) {
-        String result = null;
-        Item item;
-        switch (command.getAction()) {
-            case LOOK_AROUND:
-                result = this.room.lookAround();
-                break;
-            case OPEN:
-                result = this.openAction(command);
-                break;
-            case PICK:
-                result = this.pickAction(command);
-                break;
-            default:
-                result = "Unknown command.";
-        }
-        if (this.isFinished()) {
-            result = "You enter room 2. You won the game!";
-        }
-        return result;
+        this.registerKnownActions();
     }
 
     @Override
@@ -62,16 +38,16 @@ public class OpenDoor extends AbstractGame {
         return null;
     }
 
-    private String pickAction(Command command) {
-        Item item = this.room.getItem(command.getItemName());
+    private String pickAction(String itemName) {
+        Item item = this.room.getItem(itemName);
         if (this.key.equals(item)) {
-            return this.pickKey(command.getItemName());
+            return this.pickKey(itemName);
         }
         return "Invalid item.";
     }
 
-    private String openAction(Command command) {
-        Item item = this.room.getItem(command.getItemName());
+    private String openAction(String itemName) {
+        Item item = this.room.getItem(itemName);
         if (this.door.equals(item)) {
             return this.openDoor();
         }
@@ -102,6 +78,12 @@ public class OpenDoor extends AbstractGame {
         Item key = this.room.pickItem(keyName);
         this.character.getInventory().addItem(key);
         return "There you go!";
+    }
+
+    private void registerKnownActions() {
+        this.knownActions.put(Action.LOOK_AROUND, (itemName) -> this.room.lookAround());
+        this.knownActions.put(Action.PICK, (itemName) -> this.pickAction(itemName));
+        this.knownActions.put(Action.OPEN, (itemName) -> this.openAction(itemName));
     }
 }
 

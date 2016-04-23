@@ -15,7 +15,7 @@ public class FetchQuest2 extends AbstractGame {
     private Item stick;
 
     public FetchQuest2() {
-        super("Fetch Quest");
+        super("Fetch Quest", "You won the game!");
     }
 
     @Override
@@ -28,8 +28,8 @@ public class FetchQuest2 extends AbstractGame {
 
     @Override
     protected void buildKnownActions() {
-        this.knownActions.put(Action.LOOK_AROUND, () -> this.room.lookAround());
-        this.knownActions.put(Action.PICK, () -> this.pickAction());
+        this.knownActions.put(Action.LOOK_AROUND, (itemName) -> this.room.lookAround());
+        this.knownActions.put(Action.PICK, (itemName) -> this.pickAction());
     }
 
     private String pickAction() {
