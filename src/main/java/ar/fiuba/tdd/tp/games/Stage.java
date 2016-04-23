@@ -20,9 +20,9 @@ public class Stage {
     public Item pickItem(String itemName) {
         Item result = null;
         Iterator<Map.Entry<String, Item>> it = this.items.entrySet().iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Map.Entry<String, Item> entry = it.next();
-            if(entry.getValue().getName().equalsIgnoreCase(itemName)) {
+            if (entry.getValue().getName().equalsIgnoreCase(itemName)) {
                 result = entry.getValue();
                 it.remove();
             }
