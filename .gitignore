@@ -16,3 +16,9 @@ hs_err_pid*
 .idea
 build
 template.iml
+
+# Hidden folders
+.classpath
+.project
+.settings/
+*.iml
