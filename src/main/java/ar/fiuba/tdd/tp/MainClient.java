@@ -1,11 +1,8 @@
 package ar.fiuba.tdd.tp;
 
-import java.io.IOException;
-import java.util.Scanner;
-
 public class MainClient {
     public static void main(String[] args) {
-
+        /*
         Client oneClient = new Client();
         oneClient.createSocket();
         oneClient.createInputOutputThreads();
@@ -33,5 +30,6 @@ public class MainClient {
 
         oneClient.close();
         scanner.close();
+        */
     }
 }

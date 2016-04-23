@@ -1,9 +1,8 @@
 package ar.fiuba.tdd.tp;
 
-import java.io.IOException;
-
 public class MainServer {
     public static void main(String[] args) {
+        /*
         Server oneServer = new Server();
         oneServer.createSocket();
         oneServer.waitClient();
@@ -28,6 +27,7 @@ public class MainServer {
             }
         }
         oneServer.close();
+        */
     }
 }
 

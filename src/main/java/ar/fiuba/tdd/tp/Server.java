@@ -1,39 +1,27 @@
 package ar.fiuba.tdd.tp;
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
 
-public class Server extends Network{
+public class Server {
 
-    private  ServerSocket gameOneListener;
+    public int clientAmount = 0; // Counts total connections
+    public int activePortThreads = 0; // Amount of active threads listening to a specific port
 
-    public Server() {
-        System.out.println("Server initialazing..");
+    public static void main(String[] args) throws IOException {
+        new Server().run();
     }
 
-    public void createSocket() {
-        try {
-            gameOneListener = new ServerSocket(gamePort);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void run() {
+        for (int i = 0;i < 4;i++) {
+            int portNumber = i + 8080;
+            new ServerPortListenerThread(portNumber, this).start();
         }
-    }
 
-    public void waitClient() {
-        System.out.println("Waiting for client..");
         try {
-            socket = gameOneListener.accept();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void close() {
-        System.out.println("Server clossed..");
-        super.close();
-        try {
-            gameOneListener.close();
-        } catch (IOException e) {
+            while (this.activePortThreads > 0) {
+                Thread.sleep(4000);
+            }
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
