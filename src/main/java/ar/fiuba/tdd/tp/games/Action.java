@@ -8,6 +8,7 @@ public enum Action {
     LOOK_AROUND("look around"),
     PICK("pick"),
     OPEN("open"),
+    CLOSE("close"),
     TAKE("take"),
     LEAVE("leave"),
     CROSS("cross"),
