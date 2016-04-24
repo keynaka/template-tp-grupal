@@ -1,5 +1,7 @@
 package ar.fiuba.tdd.tp.games;
 
+import ar.fiuba.tdd.tp.games.items.Item;
+
 import java.util.*;
 
 /**

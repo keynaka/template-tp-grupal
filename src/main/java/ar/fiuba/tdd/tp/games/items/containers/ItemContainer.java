@@ -1,6 +1,6 @@
-package ar.fiuba.tdd.tp.games;
+package ar.fiuba.tdd.tp.games.items.containers;
 
-import ar.fiuba.tdd.tp.games.exceptions.GameException;
+import ar.fiuba.tdd.tp.games.items.Item;
 
 import java.util.*;
 

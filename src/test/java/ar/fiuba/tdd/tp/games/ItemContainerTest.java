@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.games;
 
-import org.junit.Assert;
+import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 import org.junit.Before;
 import org.junit.Test;
 

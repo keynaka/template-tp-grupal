@@ -2,8 +2,7 @@ package ar.fiuba.tdd.tp.games.fetchquest;
 
 import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.Character;
-
-import java.util.Optional;
+import ar.fiuba.tdd.tp.games.items.Item;
 
 /**
  * Created by swandelow on 4/21/16.

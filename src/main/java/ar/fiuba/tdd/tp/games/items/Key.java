@@ -1,7 +1,4 @@
-package ar.fiuba.tdd.tp.games;
-
-import ar.fiuba.tdd.tp.games.Door;
-import ar.fiuba.tdd.tp.games.Item;
+package ar.fiuba.tdd.tp.games.items;
 
 /**
  * Created by swandelow on 4/22/16.

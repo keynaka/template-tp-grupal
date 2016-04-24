@@ -1,7 +1,5 @@
 package ar.fiuba.tdd.tp.games.woolfsheepcabbage;
 
-import ar.fiuba.tdd.tp.games.Item;
-
 /**
  * Created by Fede on 23/04/2016.
  */

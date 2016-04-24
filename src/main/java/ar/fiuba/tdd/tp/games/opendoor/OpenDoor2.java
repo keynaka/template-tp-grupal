@@ -1,7 +1,8 @@
 package ar.fiuba.tdd.tp.games.opendoor;
 
 import ar.fiuba.tdd.tp.games.*;
-import ar.fiuba.tdd.tp.games.Character;
+import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.items.containers.Box;
 
 import java.util.Collection;
 import java.util.Optional;

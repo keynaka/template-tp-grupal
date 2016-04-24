@@ -1,4 +1,4 @@
-package ar.fiuba.tdd.tp.games;
+package ar.fiuba.tdd.tp.games.items;
 
 /**
  * Created by swandelow on 4/21/16.

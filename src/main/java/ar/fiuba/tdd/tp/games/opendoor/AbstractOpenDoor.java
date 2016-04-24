@@ -2,6 +2,9 @@ package ar.fiuba.tdd.tp.games.opendoor;
 
 import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.Character;
+import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.items.Key;
+import ar.fiuba.tdd.tp.games.items.LockedDoor;
 
 /**
  * Created by swandelow on 4/23/16.
