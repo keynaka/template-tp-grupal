@@ -9,6 +9,8 @@ public enum Action {
     PICK("pick"),
     OPEN("open"),
     CLOSE("close"),
+    LOCK("lock"),
+    UNLOCK("unlock"),
     TAKE("take"),
     LEAVE("leave"),
     CROSS("cross"),

@@ -18,7 +18,7 @@ public class TraitLockable extends TraitOpenable {
     }
 
     @Override
-    public String open(String itemName) {
+    protected String open(String itemName) {
         if (this.isLocked()) {
             return String.format("Ey! Where do you go?! %s is locked.", itemName);
         } else {

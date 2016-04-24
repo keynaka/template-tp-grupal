@@ -20,7 +20,7 @@ public class TraitOpenable extends AbstractTrait {
         return State.CLOSED.equals(this.state);
     }
 
-    public String open(String itemName) {
+    protected String open(String itemName) {
         if (this.isClosed()) {
             this.state = State.OPEN;
             return String.format("Open %s.", itemName);
@@ -29,7 +29,7 @@ public class TraitOpenable extends AbstractTrait {
         }
     }
 
-    public String close(String itemName) {
+    protected String close(String itemName) {
         if (this.isClosed()) {
             return String.format("%s is already closed.", itemName);
         } else {
