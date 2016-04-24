@@ -33,11 +33,11 @@ public class Client {
     }
 
     public void run(String hostName, int portNumber) {
-        try (
-                Socket serverSocket = new Socket(hostName, portNumber);
-                ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
-        ) {
+        try {
+            Socket serverSocket = new Socket(hostName, portNumber);
+            ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
+
             // stdIn is the client keyboard buffer
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
             String fromUser;

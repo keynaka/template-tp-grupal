@@ -6,9 +6,12 @@ import java.util.Collection;
 
 public class Server {
 
-    public int clientAmount = 0; // Counts total connections
-    protected Collection<Integer> openPorts = new ArrayList<>(); // List of all opened ports
-    public boolean online = true; // Indicates if the server is online
+    private int clientAmount = 0; // Counts total connections
+    private int maxClientAmount = 4;
+    protected Collection<Integer> openPorts = new ArrayList<Integer>(); // List of all opened ports
+    private boolean online = true; // Indicates if the server is online
+    private int defaultPort = 8080;
+    private int timeSleepThread = 4000;
 
     public static void main(String[] args) throws IOException {
         new Server().run();
@@ -17,14 +20,14 @@ public class Server {
 
     // Runs the server and starts listeing
     public void run() {
-        for (int i = 0;i < 4;i++) {
-            int portNumber = i + 8080;
+        for (int i = 0; i < maxClientAmount; i++) {
+            int portNumber = i + defaultPort;
             this.listenPort(portNumber);
         }
 
         try {
             while (openPorts.size() > 0) {
-                Thread.sleep(4000);
+                Thread.sleep(timeSleepThread);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -36,5 +39,21 @@ public class Server {
             new ServerPortListenerThread(portNumber, this).start();
             openPorts.add(portNumber);
         }
+    }
+
+    public void increaseClientAmount() {
+        this.clientAmount++;
+    }
+
+    public void decrementedClientAmount() {
+        this.clientAmount--;
+    }
+
+    public int getClientAmount() {
+        return clientAmount;
+    }
+
+    public boolean isOnline() {
+        return online;
     }
 }

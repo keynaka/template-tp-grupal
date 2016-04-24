@@ -9,38 +9,47 @@ public class ServerClientThread extends Thread {
     private Server server;
 
     public ServerClientThread(Socket clientSocket, Server server) {
-        super("ServerThread" + server.clientAmount);
+        super("ServerThread" + server.getClientAmount());
         this.clientSocket = clientSocket;
         this.server = server;
     }
 
     public void run() {
-        try (
-            ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
-        ) {
-            DTO inputDto;
+        try {
+
             DTO outputDto = new DTO();
+            ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+            welcomeToClient(outputDto, out);
 
-            outputDto.attr1 = "Bienvenido al puerto " + clientSocket.getLocalPort() + "! Usted es el cliente numero " + server.clientAmount;
-
-            out.writeObject(outputDto);
+            DTO inputDto;
+            ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
             while ((inputDto = (DTO)in.readObject()) != null) {
                 outputDto = inputDto;
+                outputDto.attr1 = "Response: " + outputDto.attr1;
                 out.writeObject(outputDto);
                 if (inputDto.attr1.equals("exit")) {
-                    server.clientAmount--;
+                    server.decrementedClientAmount();
+                    System.out.println("Client amount: " + server.getClientAmount());
                     break;
                 }
             }
             clientSocket.close();
+
         } catch (ClassNotFoundException e) {
             System.err.println("Unkown object recived from socket.");
         } catch (SocketException e) {
-            System.out.println("Client has gone away.");
+            server.decrementedClientAmount();
+            System.out.println("Client has gone away. Client amount: " + server.getClientAmount());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private void welcomeToClient(DTO outputDto, ObjectOutputStream out) throws Exception {
+        outputDto.attr1 = "Bienvenido al puerto " + clientSocket.getLocalPort() + "! ";
+        outputDto.attr1 += "Usted es el cliente numero " + server.getClientAmount();
+        out.writeObject(outputDto);
+    }
+
 }
