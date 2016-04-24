@@ -12,7 +12,9 @@ public class Box extends ItemContainer {
     private State state;
 
     public static Box createEmptyAndClosed(int size) {
-        return new Box(size);
+        Box box = new Box(size);
+        box.close();
+        return box;
     }
 
     public static Box createWithItemsAndClosed(int size, Item... items) {
@@ -21,13 +23,13 @@ public class Box extends ItemContainer {
             for (Item item : items) {
                 box.addItem(item);
             }
-            box.open();
+            box.close();
             return box;
         }
         throw new GameException("Error trying to create box. Size lower than amount of items.");
     }
 
-    private Box(int size) {
+    public Box(int size) {
         super("box", "You can open/close the box.", size);
         this.state = State.OPEN;
     }

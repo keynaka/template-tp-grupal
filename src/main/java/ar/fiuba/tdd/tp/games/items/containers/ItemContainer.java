@@ -22,7 +22,7 @@ public class ItemContainer extends Item {
     public String addItem(Item item) {
         if (this.items.size() < this.maxSize) {
             this.items.put(item.getName(), item);
-            return String.format("%s saved in %s", item.getName(), this.name);
+            return String.format("%s saved in %s.", item.getName(), this.name);
         } else {
             return String.format("It's not possible to add %s. Container is full.", item.getName());
         }
