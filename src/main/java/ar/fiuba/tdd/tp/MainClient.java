@@ -1,35 +1,34 @@
 package ar.fiuba.tdd.tp;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+
 public class MainClient {
     public static void main(String[] args) {
-        /*
-        Client oneClient = new Client();
-        oneClient.createSocket();
-        oneClient.createInputOutputThreads();
-
-        Scanner scanner = new Scanner(System.in,"UTF-8");
-
-        String msg;
-        while (true) {
-            System.out.println("Write message to send server: ");
-            msg = scanner.nextLine();
-
-            oneClient.getOutThread().println(msg);
-
-            if ("FIN".equals(msg)) {
-                break;
-            }
-            try {
-                msg = oneClient.getInThread().readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
+        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
+        try {
+            System.out.print("Host [127.0.0.1]: ");
+            String hostName = stdIn.readLine();
+            if (hostName == null) {
+                hostName = "localhost";
             }
 
-            System.out.println("Server Message Received: " + msg);
+            System.out.print("Port Number [8080]: ");
+            String bufferAux = stdIn.readLine();
+            int portNumber;
+            if (bufferAux == null || bufferAux.isEmpty()) {
+                portNumber = 8080;
+            } else {
+                portNumber = Integer.parseInt(bufferAux);
+            }
+
+            new Client(hostName, portNumber).run();
+        } catch (IOException e) {
+            System.err.println("IOException!");
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid Format!");
         }
-
-        oneClient.close();
-        scanner.close();
-        */
     }
 }

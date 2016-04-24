@@ -6,25 +6,17 @@ import java.nio.charset.Charset;
 
 public class Client {
 
-    public static void main(String[] args) {
-        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
+    private Socket serverSocket;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
+    private String hostName;
+
+    public Client(String hostName, int portNumber) {
+        this.hostName = hostName;
         try {
-            System.out.print("Host [127.0.0.1]: ");
-            String hostName = stdIn.readLine();
-            if (hostName == null) {
-                hostName = "localhost";
-            }
-
-            System.out.print("Port Number [8080]: ");
-            String bufferAux = stdIn.readLine();
-            int portNumber;
-            if (bufferAux == null || bufferAux.isEmpty()) {
-                portNumber = 8080;
-            } else {
-                portNumber = Integer.parseInt(bufferAux);
-            }
-
-            new Client().run(hostName, portNumber);
+            serverSocket = new Socket(this.hostName, portNumber);
+            out = new ObjectOutputStream(serverSocket.getOutputStream());
+            in = new ObjectInputStream(serverSocket.getInputStream());
         } catch (IOException e) {
             System.err.println("IOException!");
         } catch (NumberFormatException e) {
@@ -32,16 +24,12 @@ public class Client {
         }
     }
 
-    public void run(String hostName, int portNumber) {
+    public void run() {
         try {
-            Socket serverSocket = new Socket(hostName, portNumber);
-            ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
-
             // stdIn is the client keyboard buffer
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
-            String fromUser;
 
+            String fromUser;
             DTO dto;
 
             // Reads server messages as DTO objects
