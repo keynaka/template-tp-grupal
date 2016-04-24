@@ -11,7 +11,8 @@ public enum Action {
     TAKE("take"),
     LEAVE("leave"),
     CROSS("cross"),
-    UNKNOWNACTION("");
+    EXAMINE("examine"),
+    UNKNOWN_ACTION("");
 
 
     private String actionName;

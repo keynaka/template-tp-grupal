@@ -33,7 +33,7 @@ public class WolfSheepCabbageTest {
 
         this.target.start();
 
-        String response = this.target.play(new Command(Action.UNKNOWNACTION, ""));
+        String response = this.target.play(new Command(Action.UNKNOWN_ACTION, ""));
         assertEquals("Unknown command.", response);
         assertFalse(this.target.isFinished());
 

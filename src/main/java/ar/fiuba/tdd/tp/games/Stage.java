@@ -18,16 +18,7 @@ public class Stage {
     }
 
     public Item pickItem(String itemName) {
-        Item result = null;
-        Iterator<Map.Entry<String, Item>> it = this.items.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String, Item> entry = it.next();
-            if (entry.getValue().getName().equalsIgnoreCase(itemName)) {
-                result = entry.getValue();
-                it.remove();
-            }
-        }
-        return result;
+        return this.items.remove(itemName);
     }
 
     public String lookAround() {

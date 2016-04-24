@@ -27,7 +27,7 @@ public class FetchQuest2 extends AbstractGame {
     }
 
     @Override
-    protected void buildKnownActions() {
+    protected void registerKnownActions() {
         this.knownActions.put(Action.LOOK_AROUND, (itemName) -> this.room.lookAround());
         this.knownActions.put(Action.PICK, (itemName) -> this.pickAction());
     }

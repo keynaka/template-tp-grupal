@@ -26,7 +26,7 @@ public abstract class AbstractGame implements Game {
 
     @Override
     public String start() {
-        this.buildKnownActions();
+        this.registerKnownActions();
         this.doStart();
         return String.format(WELCOME_MESSAGE, this.name);
     }
@@ -49,6 +49,6 @@ public abstract class AbstractGame implements Game {
 
     protected abstract void doStart();
 
-    protected abstract void buildKnownActions();
+    protected abstract void registerKnownActions();
 
 }
