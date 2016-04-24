@@ -12,8 +12,8 @@ import java.util.Map;
  */
 public class Item {
 
-    private String name;
-    private String description;
+    protected String name;
+    protected String description;
     private AbstractTrait trait;
 
     public Item(String name, String description) {
