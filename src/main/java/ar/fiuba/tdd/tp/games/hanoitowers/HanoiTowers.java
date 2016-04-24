@@ -6,9 +6,9 @@ import ar.fiuba.tdd.tp.games.exceptions.InvalidMoveException;
 import ar.fiuba.tdd.tp.games.items.DiskAdapter;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.Tower;
-import org.omg.PortableServer.AdapterActivator;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * Created by Patri on 23/04/2016.
@@ -28,10 +28,8 @@ public class HanoiTowers extends AbstractGame {
     @Override
     protected void doStart() {
         this.disksNumber = 0;
-
         tower2 = new Tower(0, "2");
         tower3 = new Tower(0, "3");
-
         towers = new ArrayList<Tower>();
         towers.add(tower2);
         towers.add(tower3);
@@ -39,7 +37,7 @@ public class HanoiTowers extends AbstractGame {
 
     @Override
     protected void registerKnownActions() {
-        this.knownActions.put(Action.ASK_POSSIBILITY, (itemName) -> this.askPossibility(itemName));
+        this.knownActions.put(Action.EXAMINE, (itemName) -> this.examine(itemName));
         this.knownActions.put(Action.SET_DISKS, (itemName) -> this.setNumberDisks(itemName));
         this.knownActions.put(Action.MOVE_TOP, (itemName) -> this.moveTop(itemName));
         /* To avoid code duplication warning */
@@ -51,83 +49,80 @@ public class HanoiTowers extends AbstractGame {
     }
 
     /*
-    * Input structure must be: tower i
-    * If input does not respect this structure, it returns null
+    * Checks if input matches pattern, if it does splits input into String[].
+    * If it doesn't, returns null.
     */
-    private String[] parseInput(String input) {
-        String[] output = input.split(" ");
-        if (output[0].equals("tower")) {
-            try {
-                Integer.parseInt(output[1]);
-            } catch (NumberFormatException e) {
-                return null;
-            }
-        } else {
-            return null;
+    private String[] getInput(String pattern, String input) {
+
+        Pattern target = Pattern.compile(pattern);
+
+        if (target.matcher(input).matches()) {
+            return input.split(" ");
         }
 
-        return output;
+        return null;
     }
 
-    private String getTopSize(String itemName) {
 
-        String[] input = parseInput(itemName);
+    private String topSize(String[] input) {
 
-        if (input == null) {
-            return "Invalid Command: you must specify the tower.";
-        }
-
+        String errorMsg = "Invalid Command: Error getting top's size.";
         int towerPosition = getTowerPosition(input[1]);
 
         if (towerPosition < 0) {
-            return "Invalid Command: tower's number is invalid.";
-        }
 
-        Item top = towers.get(towerPosition).checkTop();
+            return errorMsg;
 
-        if (top == null) {
-            return "Tower is empty!";
         } else {
-            if (top instanceof DiskAdapter) {
+
+            Item top = towers.get(towerPosition).checkTop();
+
+            if (top == null) {
+
+                return errorMsg;
+
+            } else if (top instanceof DiskAdapter) {
 
                 DiskAdapter topDisk = DiskAdapter.class.cast(top);
                 String topSize = Integer.toString(topDisk.getSize());
                 String message = "Size of top from tower %s is %s.";
                 return String.format(message, input[1], topSize);
+
             }
         }
 
-        return "Error getting top's size.";
-
+        return errorMsg;
     }
 
-    /*
-    * Input structure must be: tower i tower j
-    * If input does not respect this structure, it returns null
-    */
-    private String[] parseMoveTopInput(String input) {
+    private String getTopSize(String itemName) {
 
-        String[] output = input.split(" ");
-        if (output[0].equals("tower") && output[2].equals("tower")) {
-            try {
-                Integer.parseInt(output[1]);
-                Integer.parseInt(output[3]);
-            } catch (NumberFormatException e) {
-                return null;
-            }
-        } else {
-            return null;
+        if (disksNumber == 0) {
+            return "You have to tell me how many disks you want to use first!";
         }
 
-        return output;
-    }
+        String errorMsg = "Invalid Command: Error getting top's size.";
 
+        String pattern = "tower [1-3]";
+        String[] input = getInput(pattern, itemName);
+
+        if (input == null) {
+            return errorMsg;
+        }
+
+        return topSize(input);
+
+    }
 
     private int getTowerPosition(String towerId) {
+
         for (int i = 0; i < towers.size(); i++) {
+
             Tower tower = towers.get(i);
+
             if (tower.getTowerId().equals(towerId)) {
+
                 return i;
+
             }
         }
         return -1;
@@ -139,9 +134,12 @@ public class HanoiTowers extends AbstractGame {
             return "You have to tell me how many disks you want to use first!";
         }
 
-        String[] input = this.parseMoveTopInput(itemName);
+        String pattern = "tower [1-3] tower [1-3]";
+
+        String[] input = getInput(pattern, itemName);
+
         if (input == null) {
-            return "Invalid Command: you must specify origin tower and destiny tower.";
+            return "Invalid Command: you must specify origin tower and destiny tower (between numbers 1 and 3).";
         }
 
         return switchDisk(input);
@@ -153,9 +151,9 @@ public class HanoiTowers extends AbstractGame {
         int destinyPosition = getTowerPosition(input[3]);
 
         if (originPosition < 0) {
-            return "Invalid Command: origin tower's number is invalid.";
+            return "Invalid Command: you must specify origin tower and destiny tower (between numbers 1 and 3).";
         } else if (destinyPosition < 0) {
-            return "Invalid Command: destiny tower's number is invalid.";
+            return "Invalid Command: you must specify origin tower and destiny tower (between numbers 1 and 3).";
         }
 
         Item originTop = towers.get(originPosition).getTop();
@@ -192,14 +190,18 @@ public class HanoiTowers extends AbstractGame {
 
     }
 
-    private String askPossibility(String itemName) {
+    private String examine(String itemName) {
         if (disksNumber == 0) {
             return "You have to tell me how many disks you want to use first!";
         }
-        if (itemName.equals("tower 1") || itemName.equals("tower 2") || itemName.equals("tower 3")) {
+
+        String pattern = "tower [1-3]";
+
+        if (getInput(pattern, itemName) != null) {
             return "You can check top/move top.";
         }
-        return "Invalid command: try asking about one of the towers (you have three).";
+
+        return "Invalid command!";
     }
 
     @Override

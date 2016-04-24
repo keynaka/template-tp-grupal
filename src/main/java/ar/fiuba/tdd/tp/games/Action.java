@@ -14,7 +14,6 @@ public enum Action {
     EXAMINE("examine"),
     SET_DISKS("play with"),
     MOVE_TOP("move top"),
-    ASK_POSSIBILITY("what can i do with"),
     TOP_SIZE("check top"),
     UNKNOWN_ACTION("");
 
