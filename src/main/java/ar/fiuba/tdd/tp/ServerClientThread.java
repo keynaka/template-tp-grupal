@@ -7,26 +7,31 @@ public class ServerClientThread extends Thread {
 
     private Socket clientSocket = null;
     private Server server;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
+    private DTO inputDto;
+    private DTO outputDto;
 
     public ServerClientThread(Socket clientSocket, Server server) {
         super("ServerThread" + server.getClientAmount());
-        this.clientSocket = clientSocket;
-        this.server = server;
+        try {
+            this.clientSocket = clientSocket;
+            this.server = server;
+            this.in = new ObjectInputStream(clientSocket.getInputStream());
+            this.out = new ObjectOutputStream(clientSocket.getOutputStream());
+            this.inputDto = new DTO();
+            this.outputDto = new DTO();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void run() {
         try {
-
-            DTO outputDto = new DTO();
-            ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
             welcomeToClient(outputDto, out);
-
-            DTO inputDto;
-            ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
             while ((inputDto = (DTO)in.readObject()) != null) {
                 outputDto = inputDto;
-                outputDto.attr1 = "Response: " + outputDto.attr1;
                 out.writeObject(outputDto);
                 if (inputDto.attr1.equals("exit")) {
                     server.decrementedClientAmount();

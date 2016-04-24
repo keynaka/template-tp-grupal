@@ -1,6 +1,5 @@
 package ar.fiuba.tdd.tp;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -12,10 +11,6 @@ public class Server {
     private boolean online = true; // Indicates if the server is online
     private int defaultPort = 8080;
     private int timeSleepThread = 4000;
-
-    public static void main(String[] args) throws IOException {
-        new Server().run();
-    }
 
 
     // Runs the server and starts listeing
@@ -41,11 +36,11 @@ public class Server {
         }
     }
 
-    public void increaseClientAmount() {
+    protected void increaseClientAmount() {
         this.clientAmount++;
     }
 
-    public void decrementedClientAmount() {
+    protected void decrementedClientAmount() {
         this.clientAmount--;
     }
 
