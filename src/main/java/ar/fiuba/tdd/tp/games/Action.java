@@ -12,7 +12,11 @@ public enum Action {
     LEAVE("leave"),
     CROSS("cross"),
     EXAMINE("examine"),
+    SET_DISKS("play with"),
+    MOVE_TOP("move top"),
+    ASK_POSSIBILITY("what can i do with"),
     UNKNOWN_ACTION("");
+
 
 
     private String actionName;
