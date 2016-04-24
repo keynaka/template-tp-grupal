@@ -41,6 +41,16 @@ public class HanoiTowers extends AbstractGame {
         this.knownActions.put(Action.ASK_POSSIBILITY, (itemName) -> this.askPossibility(itemName));
         this.knownActions.put(Action.SET_DISKS, (itemName) -> this.setNumberDisks(itemName));
         this.knownActions.put(Action.MOVE_TOP, (itemName) -> this.moveTop(itemName));
+        /* To avoid code duplication warning */
+        registerMoreActions();
+    }
+
+    private void registerMoreActions() {
+        this.knownActions.put(Action.TOP_SIZE, (itemName) -> this.getTopSize(itemName));
+    }
+
+    private String getTopSize(String itemName) {
+        return "1";
     }
 
     /*
@@ -106,6 +116,11 @@ public class HanoiTowers extends AbstractGame {
             return "Origin tower is empty!";
         }
 
+        return move(destinyPosition, originTop, input);
+    }
+
+
+    private String move(int destinyPosition, Item originTop, String[] input) {
         try {
             towers.get(destinyPosition).addDisk(originTop);
         } catch (InvalidMoveException e) {
@@ -114,7 +129,6 @@ public class HanoiTowers extends AbstractGame {
         }
 
         return "moved!";
-
     }
 
     private String setNumberDisks(String itemName) {
