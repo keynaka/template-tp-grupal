@@ -32,7 +32,16 @@ public class HanoiTowerTests {
         assertEquals("You can check top/move top.", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.MOVE_TOP, "tower 1 tower 2"));
+        response = this.target.play(new Command(Action.TOP_SIZE, "tower 1"));
+        assertEquals("Size of top from tower 1 is 1.", response);
+        assertFalse(this.target.isFinished());
+
+        moveDisks();
+
+    }
+
+    private void moveDisks() {
+        String response = this.target.play(new Command(Action.MOVE_TOP, "tower 1 tower 2"));
         assertEquals("moved!", response);
         assertFalse(this.target.isFinished());
 
@@ -43,9 +52,7 @@ public class HanoiTowerTests {
         response = this.target.play(new Command(Action.MOVE_TOP, "tower 2 tower 3"));
         assertEquals("You won the game!", response);
         assertTrue(this.target.isFinished());
-
     }
-
 
     @Test
     public void setInvalidNumberOfDisks() {
@@ -91,7 +98,7 @@ public class HanoiTowerTests {
     }
 
     @Test
-    public void tryToMoveBiggerDiskOverSmallerDisk(){
+    public void tryToMoveBiggerDiskOverSmallerDisk() {
         String response = this.target.start();
         this.target.play(new Command(Action.SET_DISKS, "2"));
         response = this.target.play(new Command(Action.MOVE_TOP, "tower 1 tower 2"));

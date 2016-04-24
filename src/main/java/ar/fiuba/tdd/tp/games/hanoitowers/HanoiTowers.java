@@ -6,6 +6,7 @@ import ar.fiuba.tdd.tp.games.exceptions.InvalidMoveException;
 import ar.fiuba.tdd.tp.games.items.DiskAdapter;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.Tower;
+import org.omg.PortableServer.AdapterActivator;
 
 import java.util.ArrayList;
 
@@ -49,13 +50,60 @@ public class HanoiTowers extends AbstractGame {
         this.knownActions.put(Action.TOP_SIZE, (itemName) -> this.getTopSize(itemName));
     }
 
+    /*
+    * Input structure must be: tower i
+    * If input does not respect this structure, it returns null
+    */
+    private String[] parseInput(String input) {
+        String[] output = input.split(" ");
+        if (output[0].equals("tower")) {
+            try {
+                Integer.parseInt(output[1]);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+
+        return output;
+    }
+
     private String getTopSize(String itemName) {
-        return "1";
+
+        String[] input = parseInput(itemName);
+
+        if (input == null) {
+            return "Invalid Command: you must specify the tower.";
+        }
+
+        int towerPosition = getTowerPosition(input[1]);
+
+        if (towerPosition < 0) {
+            return "Invalid Command: tower's number is invalid.";
+        }
+
+        Item top = towers.get(towerPosition).checkTop();
+
+        if (top == null) {
+            return "Tower is empty!";
+        } else {
+            if (top instanceof DiskAdapter) {
+
+                DiskAdapter topDisk = DiskAdapter.class.cast(top);
+                String topSize = Integer.toString(topDisk.getSize());
+                String message = "Size of top from tower %s is %s.";
+                return String.format(message, input[1], topSize);
+            }
+        }
+
+        return "Error getting top's size.";
+
     }
 
     /*
     * Input structure must be: tower i tower j
-    * If input does not respect this structure, it returns empty ArrayList
+    * If input does not respect this structure, it returns null
     */
     private String[] parseMoveTopInput(String input) {
 
