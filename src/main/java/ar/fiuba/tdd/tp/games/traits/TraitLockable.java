@@ -74,12 +74,11 @@ public class TraitLockable extends TraitOpenable {
 
     @Override
     protected void registerActions() {
-        this.knownActions.put(Action.OPEN, (itemName, args) -> this.open(itemName));
-        this.knownActions.put(Action.CLOSE, (itemName, args) -> this.close(itemName));
+        super.registerActions();
         this.knownActions.put(Action.LOCK, (itemName, args) -> this.lock(itemName));
         this.knownActions.put(Action.UNLOCK, (itemName, args) -> {
-            String keyName = args[0];
-            return this.unlock(itemName, keyName);
+                String keyName = args[0];
+                return this.unlock(itemName, keyName);
         });
     }
 

@@ -27,6 +27,6 @@ public abstract class AbstractTrait {
         return method.isPresent() ? method.get().execute(itemName, args) : "Unknown action.";
     }
 
-    abstract protected void registerActions();
+    protected abstract void registerActions();
 
 }
