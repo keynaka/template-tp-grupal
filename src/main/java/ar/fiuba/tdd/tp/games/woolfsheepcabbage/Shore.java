@@ -8,11 +8,11 @@ import java.util.List;
  */
 public class Shore {
 
-    private List<Transportable> transportables;
+    private ArrayList<Transportable> transportables;
     //private boolean hasBoat;
     private String description;
 
-    public Shore(String description, List<Transportable> transportables/*, boolean hasBoat*/) {
+    public Shore(String description, ArrayList<Transportable> transportables/*, boolean hasBoat*/) {
         this.description = description;
         this.transportables = transportables;
         //this.hasBoat = hasBoat;
@@ -43,7 +43,7 @@ public class Shore {
         return "You are at: " + getDescripcion() + " and have " + getTransportablesDescription();
     }
 
-    public List<Transportable> getTransportables() {
+    public ArrayList<Transportable> getTransportables() {
         return transportables;
     }
 
