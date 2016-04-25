@@ -28,11 +28,21 @@ public class HanoiTowerTests {
         assertEquals("You are now playing with 2 disks !", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.ASK_POSSIBILITY, "tower 1"));
+        response = this.target.play(new Command(Action.EXAMINE, "tower 1"));
         assertEquals("You can check top/move top.", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.MOVE_TOP, "tower 1 tower 2"));
+        response = this.target.play(new Command(Action.TOP_SIZE, "tower 1"));
+        assertEquals("Size of top from tower 1 is 1.", response);
+        assertFalse(this.target.isFinished());
+
+        moveDisks();
+
+    }
+
+
+    private void moveDisks() {
+        String response = this.target.play(new Command(Action.MOVE_TOP, "tower 1 tower 2"));
         assertEquals("moved!", response);
         assertFalse(this.target.isFinished());
 
@@ -43,9 +53,7 @@ public class HanoiTowerTests {
         response = this.target.play(new Command(Action.MOVE_TOP, "tower 2 tower 3"));
         assertEquals("You won the game!", response);
         assertTrue(this.target.isFinished());
-
     }
-
 
     @Test
     public void setInvalidNumberOfDisks() {
@@ -56,17 +64,70 @@ public class HanoiTowerTests {
     }
 
     @Test
-    public void invalidAskPossibility() {
+    public void invalidExamine() {
         this.target.start();
         this.target.play(new Command(Action.SET_DISKS, "2"));
-        String response = this.target.play(new Command(Action.ASK_POSSIBILITY, "nothing"));
-        assertEquals("Invalid command: try asking about one of the towers (you have three).", response);
+        String response = this.target.play(new Command(Action.EXAMINE, "nothing"));
+        assertEquals("Invalid command!", response);
+        assertFalse(this.target.isFinished());
+    }
+
+    @Test
+    public void tryToOperateWithHanoiTowersWithoutIndicatingDiskNumber() {
+        this.target.start();
+        String response = this.target.play(new Command(Action.EXAMINE, "tower 1"));
+        assertEquals("You have to tell me how many disks you want to use first!", response);
+        assertFalse(this.target.isFinished());
+    }
+
+    @Test
+    public void invalidMoveOperation() {
+        String response = this.target.start();
+        this.target.play(new Command(Action.SET_DISKS, "2"));
+        response = this.target.play(new Command(Action.MOVE_TOP, "anything else"));
+        assertEquals("Invalid Command: you must specify origin tower and destiny tower (between numbers 1 and 3).", response);
+        assertFalse(this.target.isFinished());
+    }
+
+    @Test
+    public void tryToMoveTopWhenOriginTowerIsEmpty() {
+        String response = this.target.start();
+        this.target.play(new Command(Action.SET_DISKS, "2"));
+        response = this.target.play(new Command(Action.MOVE_TOP, "tower 2 tower 3"));
+        assertEquals("Origin tower is empty!", response);
+        assertFalse(this.target.isFinished());
+    }
+
+    @Test
+    public void tryToMoveBiggerDiskOverSmallerDisk() {
+        String response = this.target.start();
+        this.target.play(new Command(Action.SET_DISKS, "2"));
+        response = this.target.play(new Command(Action.MOVE_TOP, "tower 1 tower 2"));
+        response = this.target.play(new Command(Action.MOVE_TOP, "tower 1 tower 2"));
+        assertEquals("Invalid Move: tower 1 top is smaller than tower 2 top!", response);
+        assertFalse(this.target.isFinished());
+    }
+
+    @Test
+    public void invalidOriginTower() {
+        String response = this.target.start();
+        this.target.play(new Command(Action.SET_DISKS, "2"));
+        response = this.target.play(new Command(Action.MOVE_TOP, "tower 80 tower 2"));
+        assertEquals("Invalid Command: you must specify origin tower and destiny tower (between numbers 1 and 3).", response);
+        assertFalse(this.target.isFinished());
+    }
+
+    @Test
+    public void invalidDestinyTower() {
+        String response = this.target.start();
+        this.target.play(new Command(Action.SET_DISKS, "2"));
+        response = this.target.play(new Command(Action.MOVE_TOP, "tower 2 tower 80"));
+        assertEquals("Invalid Command: you must specify origin tower and destiny tower (between numbers 1 and 3).", response);
         assertFalse(this.target.isFinished());
     }
 
     @Test
     public void createDiskSizeTwo() {
-
         DiskAdapter disk = new DiskAdapter("disk", "2");
         assertEquals(disk.getSize(), 2);
     }
@@ -111,5 +172,7 @@ public class HanoiTowerTests {
         disk.getSize();
     }
 
+
+    //Invalid Command: Error getting top's size
 }
 
