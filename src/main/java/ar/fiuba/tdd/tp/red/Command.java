@@ -1,12 +1,21 @@
-package ar.fiuba.tdd.tp.games;
+package ar.fiuba.tdd.tp.red;
+
+import ar.fiuba.tdd.tp.games.Action;
+
+import java.io.Serializable;
 
 /**
  * Created by swandelow on 4/22/16.
  */
-public class Command {
+public class Command implements Serializable {
     private Action action;
     private String itemName;
     private String argument;
+    private String response;
+
+    public Command(String response) {
+        this.response = response;
+    }
 
     public Command(Action action, String itemName) {
         this.action = action;
@@ -29,5 +38,9 @@ public class Command {
 
     public String getArgument() {
         return this.argument;
+    }
+
+    public String getResponse() {
+        return response;
     }
 }
