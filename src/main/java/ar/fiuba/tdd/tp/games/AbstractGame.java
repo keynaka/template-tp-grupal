@@ -35,7 +35,7 @@ public abstract class AbstractGame implements Game {
     public String play(Command command) {
         String result = null;
         Optional<ActionFunction> actionMethod = Optional.ofNullable(this.knownActions.get(command.getAction()));
-        result = actionMethod.isPresent() ? actionMethod.get().execute(command.getItemName()) : "Unknown command.";
+        result = actionMethod.isPresent() ? actionMethod.get().execute(command.getItemName(),command.getArgument()) : "Unknown command.";
 
         if (this.isFinished()) {
             result = this.getEndGameMessage();

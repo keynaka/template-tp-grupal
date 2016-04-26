@@ -1,8 +1,7 @@
 package ar.fiuba.tdd.tp.games.items.containers;
 
 import ar.fiuba.tdd.tp.games.exceptions.InvalidMoveException;
-import ar.fiuba.tdd.tp.games.items.DiskAdapter;
-import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.items.Disk;
 
 import java.util.EmptyStackException;
 import java.util.Stack;
@@ -13,13 +12,13 @@ import java.util.Stack;
 
 public class Tower {
 
-    private Stack<DiskAdapter> disks;
+    private Stack<Disk> disks;
     private String towerId;
 
 
     public Tower(int numberOfDisks, String towerId) {
 
-        this.disks = new Stack<DiskAdapter>();
+        this.disks = new Stack<Disk>();
 
         this.towerId = towerId;
 
@@ -27,7 +26,7 @@ public class Tower {
 
         while (size > 0) {
             try {
-                this.addDisk(new DiskAdapter("disk", Integer.toString(size)));
+                this.addDisk(new Disk("disk", Integer.toString(size)));
             } catch (InvalidMoveException e) {
                 e.getMessage();
             }
@@ -43,40 +42,36 @@ public class Tower {
     *  If it's bigger than the current top, throws an InvalidMoveException.
     */
 
-    public void addDisk(Item received) throws InvalidMoveException {
+    public void addDisk(Disk disk) throws InvalidMoveException {
 
-        if (received instanceof DiskAdapter) {
+        if (!this.disks.isEmpty()) {
 
-            DiskAdapter disk = DiskAdapter.class.cast(received);
+            Disk topDisk = this.disks.peek();
 
-            if (!this.disks.isEmpty()) {
-
-                DiskAdapter topDisk = this.disks.peek();
-
-                if (disk.getSize() < topDisk.getSize()) {
-
-                    this.disks.push(disk);
-
-                } else {
-
-                    throw new InvalidMoveException();
-
-                }
-
-            } else {
+            if (disk.getSize() < topDisk.getSize()) {
 
                 this.disks.push(disk);
 
+            } else {
+
+                throw new InvalidMoveException();
+
             }
+
+        } else {
+
+            this.disks.push(disk);
+
         }
     }
+
 
     /*
     * Gets the top disk without removing it from the tower
     * If the tower is empty, returns null
     */
 
-    public Item checkTop() {
+    public Disk checkTop() {
         try {
             return this.disks.peek();
         } catch (EmptyStackException e) {
@@ -89,7 +84,7 @@ public class Tower {
     * If the tower is empty, returns null
     */
 
-    public Item getTop() {
+    public Disk getTop() {
         try {
             return this.disks.pop();
         } catch (EmptyStackException e) {
