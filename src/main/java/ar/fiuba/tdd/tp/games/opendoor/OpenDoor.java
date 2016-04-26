@@ -33,7 +33,7 @@ public class OpenDoor extends AbstractOpenDoor {
     }
 
     private void addKnownActions() {
-        this.knownActions.put(Action.OPEN, (itemName) -> this.openAction(itemName));
+        this.knownActions.put(Action.OPEN, (itemName, args) -> this.openAction(itemName));
     }
 }
 

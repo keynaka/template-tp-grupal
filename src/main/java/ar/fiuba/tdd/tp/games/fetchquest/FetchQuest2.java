@@ -7,9 +7,8 @@ import ar.fiuba.tdd.tp.games.items.Item;
 /**
  * Created by swandelow on 4/21/16.
  */
-public class FetchQuest2 extends AbstractGame {
+public class FetchQuest2 extends AbstractGameWithStage {
 
-    private Stage room;
     private Character character;
     private Item stick;
 
@@ -19,20 +18,20 @@ public class FetchQuest2 extends AbstractGame {
 
     @Override
     protected void doStart() {
+        super.doStart();
         this.character = new Character();
         this.stick = new Item("stick", "It's just a simple stick.");
-        this.room = new Stage();
-        this.room.addItem(this.stick);
+        this.stage.addItem(this.stick);
     }
 
     @Override
     protected void registerKnownActions() {
-        this.knownActions.put(Action.LOOK_AROUND, (itemName) -> this.room.lookAround());
-        this.knownActions.put(Action.PICK, (itemName) -> this.pickAction());
+        super.registerKnownActions();
+        this.knownActions.put(Action.PICK, (itemName, args) -> this.pickAction());
     }
 
     private String pickAction() {
-        Item stick = this.room.pickItem("stick");
+        Item stick = this.stage.pickItem("stick");
         this.character.getInventory().addItem(stick);
         return "There you go.";
     }

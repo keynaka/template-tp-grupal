@@ -6,10 +6,17 @@ package ar.fiuba.tdd.tp.games;
 public class Command {
     private Action action;
     private String itemName;
+    private String argument;
 
     public Command(Action action, String itemName) {
         this.action = action;
         this.itemName = itemName;
+    }
+
+    public Command(Action action, String itemName, String argument) {
+        this.action = action;
+        this.itemName = itemName;
+        this.argument = argument;
     }
 
     public Action getAction() {
@@ -20,4 +27,7 @@ public class Command {
         return this.itemName;
     }
 
+    public String getArgument() {
+        return this.argument;
+    }
 }

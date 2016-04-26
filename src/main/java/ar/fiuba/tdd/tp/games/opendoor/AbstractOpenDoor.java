@@ -39,8 +39,8 @@ public abstract class AbstractOpenDoor extends AbstractGame {
 
     @Override
     protected void registerKnownActions() {
-        this.knownActions.put(Action.LOOK_AROUND, (itemName) -> this.room.lookAround());
-        this.knownActions.put(Action.PICK, (itemName) -> this.pickAction(itemName));
+        this.knownActions.put(Action.LOOK_AROUND, (itemName, args) -> this.room.lookAround());
+        this.knownActions.put(Action.PICK, (itemName, args) -> this.pickAction(itemName));
     }
 
     protected String pickAction(String itemName) {

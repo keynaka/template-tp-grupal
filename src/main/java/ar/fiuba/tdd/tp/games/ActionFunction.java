@@ -6,5 +6,5 @@ package ar.fiuba.tdd.tp.games;
 @FunctionalInterface
 public interface ActionFunction {
 
-    String execute(String itemName);
+    String execute(String itemName, String... arguments);
 }
