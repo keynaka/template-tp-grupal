@@ -1,9 +1,10 @@
 package ar.fiuba.tdd.tp.games;
 
+import ar.fiuba.tdd.tp.red.Command;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.StringJoiner;
 
 /**
  * Created by swandelow on 4/23/16.

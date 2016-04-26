@@ -1,5 +1,7 @@
 package ar.fiuba.tdd.tp.red;
 
+import ar.fiuba.tdd.tp.games.Action;
+
 import java.io.*;
 import java.net.*;
 import java.nio.charset.Charset;
@@ -7,9 +9,12 @@ import java.nio.charset.Charset;
 public class Client {
 
     private Socket serverSocket;
-    private ObjectOutputStream out;
     private ObjectInputStream in;
+    private ObjectOutputStream out;
     private String hostName;
+    private String exitClient = "exit";
+    private Command command;
+    private Response response;
 
     public Client(String hostName, int portNumber) {
         this.hostName = hostName;
@@ -26,38 +31,49 @@ public class Client {
 
     public void run() {
         try {
-            // stdIn is the client keyboard buffer
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
+            receive();
 
-            String fromUser;
-            DTO dto;
+            while (!exitToClient()) {
 
-            // Reads server messages as DTO objects
-            while ((dto = (DTO)in.readObject()) != null) {
-                // Shows Server's reply
-                System.out.println("Server: " + dto.attr1);
+                String action = setInstruction("action");
+                String item = setInstruction("item");
 
-                // Handle client exit
-                if (dto.attr1.equals("exit")) {
-                    break;
-                }
-
-                // Reads from command line and sends it to the server
-                fromUser = stdIn.readLine();
-                if (fromUser != null) {
-                    dto = new DTO(fromUser, "");
-                    out.writeObject(dto);
-                }
+                send(action, item);
+                receive();
             }
-
             serverSocket.close();
+
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
-        } catch (ClassNotFoundException e) {
-            System.err.println("Unkown object recived from socket.");
+        } catch (Exception e) {
+            System.err.println("Couldn't transfer data");
         }
     }
 
+    private String setInstruction(String type) throws Exception {
+        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
+        System.out.println("Ingrese " + type + ": ");
+        String instrution = stdIn.readLine();
+        return instrution;
+    }
+
+    private void receive() throws Exception {
+        response = (Response) in.readObject();
+        System.out.println("Server: " + response.getResponse());
+    }
+
+    private void send(String actionStr, String item) throws Exception {
+
+        if (actionStr != null) {
+            Action action = Action.getActionByValue(actionStr);
+            command = new Command(action, item);
+            out.writeObject(command);
+        }
+    }
+
+    private boolean exitToClient() {
+        return exitClient.equalsIgnoreCase(response.getResponse());
+    }
 }

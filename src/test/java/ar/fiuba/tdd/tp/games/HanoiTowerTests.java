@@ -2,10 +2,10 @@ package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.exceptions.InvalidMoveException;
 import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
-import ar.fiuba.tdd.tp.games.items.Disk;
 import ar.fiuba.tdd.tp.games.items.DiskAdapter;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.Tower;
+import ar.fiuba.tdd.tp.red.Command;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

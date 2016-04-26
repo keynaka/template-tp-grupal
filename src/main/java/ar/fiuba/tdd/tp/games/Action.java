@@ -17,13 +17,23 @@ public enum Action {
     TOP_SIZE("check top"),
     UNKNOWN_ACTION("");
 
-
-
     private String actionName;
 
     Action(String actionName) {
         this.actionName = actionName;
     }
 
+    private String getValue() {
+        return this.actionName;
+    }
+
+    public static Action getActionByValue(String value) {
+        for (Action action : Action.values()) {
+            if (action.getValue().equals(value)) {
+                return action;
+            }
+        }
+        return null;
+    }
 
 }

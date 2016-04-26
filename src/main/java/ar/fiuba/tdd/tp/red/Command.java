@@ -11,11 +11,6 @@ public class Command implements Serializable {
     private Action action;
     private String itemName;
     private String argument;
-    private String response;
-
-    public Command(String response) {
-        this.response = response;
-    }
 
     public Command(Action action, String itemName) {
         this.action = action;
@@ -40,7 +35,4 @@ public class Command implements Serializable {
         return this.argument;
     }
 
-    public String getResponse() {
-        return response;
-    }
 }

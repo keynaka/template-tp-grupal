@@ -1,16 +1,23 @@
 package ar.fiuba.tdd.tp.red;
 
-import java.io.*;
-import java.net.*;
+import ar.fiuba.tdd.tp.games.Game;
+import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest2;
+
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.SocketException;
 
 public class ServerClientThread extends Thread {
 
-    private Socket clientSocket = null;
+    private Socket clientSocket;
     private Server server;
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    private DTO inputDto;
-    private DTO outputDto;
+    private Command command;
+    private Response response;
+    private Game game;
+    private static String exitServer = "exit";
 
     public ServerClientThread(Socket clientSocket, Server server) {
         super("ServerThread" + server.getClientAmount());
@@ -19,8 +26,8 @@ public class ServerClientThread extends Thread {
             this.server = server;
             this.in = new ObjectInputStream(clientSocket.getInputStream());
             this.out = new ObjectOutputStream(clientSocket.getOutputStream());
-            this.inputDto = new DTO();
-            this.outputDto = new DTO();
+            //TODO Juego pre seteado - Cambiarlo
+            this.game = new FetchQuest2();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -28,33 +35,60 @@ public class ServerClientThread extends Thread {
 
     public void run() {
         try {
-            welcomeToClient(outputDto, out);
+            welcomeToClient();
+            readMessage();
 
-            while ((inputDto = (DTO)in.readObject()) != null) {
-                outputDto = inputDto;
-                out.writeObject(outputDto);
-                if (inputDto.attr1.equals("exit")) {
-                    server.decrementedClientAmount();
-                    System.out.println("Client amount: " + server.getClientAmount());
-                    break;
-                }
+            while (!exitToServer()) {
+                processGame();
+                sendMessage();
+
+                readMessage();
             }
+            disconnectClient();
             clientSocket.close();
 
         } catch (ClassNotFoundException e) {
+            disconnectClient();
             System.err.println("Unkown object recived from socket.");
         } catch (SocketException e) {
-            server.decrementedClientAmount();
-            System.out.println("Client has gone away. Client amount: " + server.getClientAmount());
+            System.out.println("Client has gone away.");
+            disconnectClient();
         } catch (Exception e) {
+            disconnectClient();
             e.printStackTrace();
         }
     }
 
-    private void welcomeToClient(DTO outputDto, ObjectOutputStream out) throws Exception {
-        outputDto.attr1 = "Bienvenido al puerto " + clientSocket.getLocalPort() + "! ";
-        outputDto.attr1 += "Usted es el cliente numero " + server.getClientAmount();
-        out.writeObject(outputDto);
+    private void welcomeToClient() throws Exception {
+        StringBuilder welcomeMessage = new StringBuilder();
+        welcomeMessage.append("Bienvenido al puerto " + clientSocket.getLocalPort() + "! ");
+        welcomeMessage.append("\nUsted es el cliente numero " + server.getClientAmount());
+        String welcomeStart = game.start();
+        welcomeMessage.append("\nUsted va a jugar al juego: " + welcomeStart);
+        response = new Response(welcomeMessage.toString());
+        out.writeObject(response);
     }
 
+    private void readMessage() throws Exception {
+        command = (Command) in.readObject();
+    }
+
+    private void processGame() throws Exception {
+        String responseStr = game.play(command);
+        response = new Response(responseStr);
+        //command = new Command(response);
+    }
+
+    private void sendMessage() throws Exception {
+        out.writeObject(response);
+    }
+
+    private void disconnectClient() {
+        server.decrementedClientAmount();
+        System.out.println("Client amount: " + server.getClientAmount());
+    }
+
+    private boolean exitToServer() {
+        return exitServer.equalsIgnoreCase(command.getItemName());
+    }
 }
