@@ -1,7 +1,6 @@
 package ar.fiuba.tdd.tp.red;
 
 import ar.fiuba.tdd.tp.games.Game;
-import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest2;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,15 +18,14 @@ public class ServerClientThread extends Thread {
     private Game game;
     private static String exitServer = "exit";
 
-    public ServerClientThread(Socket clientSocket, Server server) {
+    public ServerClientThread(Socket clientSocket, Server server, Game game) {
         super("ServerThread" + server.getClientAmount());
         try {
             this.clientSocket = clientSocket;
             this.server = server;
             this.in = new ObjectInputStream(clientSocket.getInputStream());
             this.out = new ObjectOutputStream(clientSocket.getOutputStream());
-            //TODO Juego pre seteado - Cambiarlo
-            this.game = new FetchQuest2();
+            this.game = game;
         } catch (Exception e) {
             e.printStackTrace();
         }

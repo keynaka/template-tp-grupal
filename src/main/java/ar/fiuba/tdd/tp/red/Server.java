@@ -1,7 +1,16 @@
 package ar.fiuba.tdd.tp.red;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import ar.fiuba.tdd.tp.games.Game;
+import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest2;
+import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
+import ar.fiuba.tdd.tp.games.opendoor.OpenDoor;
+import ar.fiuba.tdd.tp.games.opendoor.OpenDoor2;
+import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbage;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.*;
 
 public class Server {
 
@@ -11,10 +20,12 @@ public class Server {
     private boolean online = true; // Indicates if the server is online
     private int defaultPort = 8080;
     private int timeSleepThread = 4000;
+    private Map<String, Game> games;
 
 
     // Runs the server and starts listeing
     public void run() {
+        loadGames();
         for (int i = 0; i < maxClientAmount; i++) {
             int portNumber = i + defaultPort;
             this.listenPort(portNumber);
@@ -31,7 +42,8 @@ public class Server {
 
     public void listenPort(int portNumber) {
         if (!openPorts.contains(portNumber)) {
-            new ServerPortListenerThread(portNumber, this).start();
+            Game game = loadGame(portNumber);
+            new ServerPortListenerThread(portNumber, this, game).start();
             openPorts.add(portNumber);
         }
     }
@@ -50,5 +62,49 @@ public class Server {
 
     public boolean isOnline() {
         return online;
+    }
+
+    private Game loadGame(int portNumber) {
+
+        Game game = null;
+        String gameStr = setGame(portNumber);
+        game = searchGame(gameStr);
+        boolean searchedGame = (game != null);
+
+        while (!searchedGame) {
+            System.out.println("Error - Game not found ");
+            gameStr = setGame(portNumber);
+            game = searchGame(gameStr);
+            searchedGame = (game != null);
+        }
+        return game;
+    }
+
+    private String setGame(int portNumber) {
+        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
+        String gameStr = null;
+        try {
+            System.out.println("load game in port " + portNumber);
+            gameStr = stdIn.readLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return gameStr;
+    }
+
+    private Game searchGame(String gameStr) {
+        if (gameStr == null) {
+            return null;
+        }
+        return games.get(gameStr);
+    }
+
+    private void loadGames() {
+        games = new HashMap<String, Game>();
+        games.put("fetch quest", new FetchQuest2());
+        games.put("hanoi towers", new HanoiTowers());
+        games.put("open door", new OpenDoor());
+        games.put("open door 2", new OpenDoor2());
+        games.put("wolf", new WolfSheepCabbage());
     }
 }

@@ -1,18 +1,28 @@
 package ar.fiuba.tdd.tp.games.items;
 
 /**
- * Created by Patri on 23/04/2016.
+ * Created by Patri on 24/04/2016.
  */
-public class Disk {
+public class Disk extends Item {
 
-    private int size;
-
-    public Disk(int size) {
-        this.size = size;
+    public Disk(String name, String description) {
+        super(name, description);
     }
 
-    public int getSize() {
-        return size;
+    /* Returns disk size, if size cannot be converted to int throws an exception. */
+    public int getSize() throws NumberFormatException {
+        return Integer.parseInt(this.description);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
 
 }

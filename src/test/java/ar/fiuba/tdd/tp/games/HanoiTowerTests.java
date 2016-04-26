@@ -2,8 +2,7 @@ package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.exceptions.InvalidMoveException;
 import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
-import ar.fiuba.tdd.tp.games.items.DiskAdapter;
-import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.items.Disk;
 import ar.fiuba.tdd.tp.games.items.containers.Tower;
 import ar.fiuba.tdd.tp.red.Command;
 import org.junit.Test;
@@ -42,15 +41,15 @@ public class HanoiTowerTests {
 
 
     private void moveDisks() {
-        String response = this.target.play(new Command(Action.MOVE_TOP, "tower 1 tower 2"));
+        String response = this.target.play(new Command(Action.MOVE_TOP, "tower 1", "tower 2"));
         assertEquals("moved!", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.MOVE_TOP, "tower 1 tower 3"));
+        response = this.target.play(new Command(Action.MOVE_TOP, "tower 1", "tower 3"));
         assertEquals("moved!", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.MOVE_TOP, "tower 2 tower 3"));
+        response = this.target.play(new Command(Action.MOVE_TOP, "tower 2", "tower 3"));
         assertEquals("You won the game!", response);
         assertTrue(this.target.isFinished());
     }
@@ -93,7 +92,7 @@ public class HanoiTowerTests {
     public void tryToMoveTopWhenOriginTowerIsEmpty() {
         String response = this.target.start();
         this.target.play(new Command(Action.SET_DISKS, "2"));
-        response = this.target.play(new Command(Action.MOVE_TOP, "tower 2 tower 3"));
+        response = this.target.play(new Command(Action.MOVE_TOP, "tower 2", "tower 3"));
         assertEquals("Origin tower is empty!", response);
         assertFalse(this.target.isFinished());
     }
@@ -102,8 +101,8 @@ public class HanoiTowerTests {
     public void tryToMoveBiggerDiskOverSmallerDisk() {
         String response = this.target.start();
         this.target.play(new Command(Action.SET_DISKS, "2"));
-        response = this.target.play(new Command(Action.MOVE_TOP, "tower 1 tower 2"));
-        response = this.target.play(new Command(Action.MOVE_TOP, "tower 1 tower 2"));
+        response = this.target.play(new Command(Action.MOVE_TOP, "tower 1", "tower 2"));
+        response = this.target.play(new Command(Action.MOVE_TOP, "tower 1", "tower 2"));
         assertEquals("Invalid Move: tower 1 top is smaller than tower 2 top!", response);
         assertFalse(this.target.isFinished());
     }
@@ -112,7 +111,7 @@ public class HanoiTowerTests {
     public void invalidOriginTower() {
         String response = this.target.start();
         this.target.play(new Command(Action.SET_DISKS, "2"));
-        response = this.target.play(new Command(Action.MOVE_TOP, "tower 80 tower 2"));
+        response = this.target.play(new Command(Action.MOVE_TOP, "tower 80", "tower 2"));
         assertEquals("Invalid Command: you must specify origin tower and destiny tower (between numbers 1 and 3).", response);
         assertFalse(this.target.isFinished());
     }
@@ -121,14 +120,14 @@ public class HanoiTowerTests {
     public void invalidDestinyTower() {
         String response = this.target.start();
         this.target.play(new Command(Action.SET_DISKS, "2"));
-        response = this.target.play(new Command(Action.MOVE_TOP, "tower 2 tower 80"));
+        response = this.target.play(new Command(Action.MOVE_TOP, "tower 2", "tower 80"));
         assertEquals("Invalid Command: you must specify origin tower and destiny tower (between numbers 1 and 3).", response);
         assertFalse(this.target.isFinished());
     }
 
     @Test
     public void createDiskSizeTwo() {
-        DiskAdapter disk = new DiskAdapter("disk", "2");
+        Disk disk = new Disk("disk", "2");
         assertEquals(disk.getSize(), 2);
     }
 
@@ -144,7 +143,7 @@ public class HanoiTowerTests {
     public void moveDisk() throws InvalidMoveException {
         Tower tower1 = new Tower(0, "1");
         Tower tower2 = new Tower(2, "2");
-        Item disk;
+        Disk disk;
 
         try {
             disk = tower2.getTop();
@@ -162,13 +161,13 @@ public class HanoiTowerTests {
     @Test(expected = InvalidMoveException.class)
     public void addInvalidDisk() throws InvalidMoveException {
         tower = new Tower(1, "1"); // creates tower with one disk, size = 1
-        Item disk = new DiskAdapter("disk", "2");
+        Disk disk = new Disk("disk", "2");
         tower.addDisk(disk); // throws exception, cannot add disk size = 2 over disk size = 1
     }
 
     @Test(expected = NumberFormatException.class)
     public void createDiskWithInvalidSize() throws NumberFormatException {
-        DiskAdapter disk = new DiskAdapter("disk", "invalid size");
+        Disk disk = new Disk("disk", "invalid size");
         disk.getSize();
     }
 
