@@ -36,7 +36,6 @@ public class WolfSheepCabbage extends AbstractGame {
     protected void registerKnownActions() {
         this.registerLookAround();
         this.knownActions.put(Action.CROSS, (itemName, args) -> this.cross(itemName));
-        /* To avoid code duplication warning */
         this.registerMoreActions();
     }
 
@@ -87,22 +86,37 @@ public class WolfSheepCabbage extends AbstractGame {
 
     private String cross(String item) {
 
-        if (!item.equals("north-shore") && !item.equals("south-shore")) {
-            return "Unknown location";
-        }
-
-        if (item.equals("north-shore") && !this.boatAtSouth) {
-            return "You are at north-shore!";
-        }
-
-        if (item.equals("south-shore") && this.boatAtSouth) {
-            return "You are at south-shore!";
+        String validateShore = this.validateShore(item);
+        if (!validateShore.equals("Ok")) {
+            return validateShore;
         }
 
         String validateEatSituation = this.validateEatSituation();
         if (!validateEatSituation.equals("Ok")) {
             return validateEatSituation;
         }
+
+        return this.crossToShore(item);
+
+    }
+
+    private String validateShore(String item) {
+
+        if (item.equals("north-shore")) {
+            if (!this.boatAtSouth) {
+                return "You are at north-shore!";
+            }
+        } else if (item.equals("south-shore")) {
+            if (this.boatAtSouth) {
+                return "You are at south-shore!";
+            }
+        } else {
+            return "Unknown location";
+        }
+        return "Ok";
+    }
+
+    private String crossToShore(String item) {
 
         if (item.equals("north-shore")) {
             this.boatAtSouth = false;
@@ -118,9 +132,11 @@ public class WolfSheepCabbage extends AbstractGame {
         for (Transportable transportableToCompare : this.getActualShore().getTransportables()) {
             for (Transportable transportable : this.getActualShore().getTransportables()) {
                 if (transportableToCompare.eats(transportable)) {
-                    return "You can't do that. The " + transportableToCompare.getDescription() + " will eat the " + transportable.getDescription();
+                    return "You can't do that. The " + transportableToCompare.getDescription()
+                            + " will eat the " + transportable.getDescription();
                 } else if (transportable.eats(transportableToCompare)) {
-                    return "You can't do that. The " + transportable.getDescription() + " will eat the " + transportableToCompare.getDescription();
+                    return "You can't do that. The " + transportable.getDescription()
+                            + " will eat the " + transportableToCompare.getDescription();
                 }
             }
         }
@@ -131,6 +147,11 @@ public class WolfSheepCabbage extends AbstractGame {
         if (this.transportableAtboat != null) {
             return "You can't do that. The boat is full";
         }
+        return this.takeTransportable(item);
+    }
+
+    private String takeTransportable(String item) {
+
         if (item.equals("wolf") && shoreHasTransportable(new Wolf())) {
             this.transportableAtboat = new Wolf();
             this.removeTransportable(new Wolf());
@@ -143,7 +164,6 @@ public class WolfSheepCabbage extends AbstractGame {
         } else {
             return "The shore doesn't have that object";
         }
-
         return "Ok";
     }
 
@@ -162,6 +182,12 @@ public class WolfSheepCabbage extends AbstractGame {
         if (this.transportableAtboat == null) {
             return "You can't do that. The boat is empty";
         }
+        return this.leaveTransportable(item);
+
+    }
+
+    private String leaveTransportable(String item) {
+
         if (item.equals("wolf") && transportableAtboat instanceof Wolf) {
             this.transportableAtboat = null;
             return this.addTransportable(new Wolf());
