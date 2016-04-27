@@ -1,5 +1,7 @@
 package ar.fiuba.tdd.tp.red;
 
+import ar.fiuba.tdd.tp.games.AbstractGame;
+import ar.fiuba.tdd.tp.games.Action;
 import ar.fiuba.tdd.tp.games.Game;
 
 import java.io.ObjectInputStream;
@@ -17,6 +19,7 @@ public class ServerClientThread extends Thread {
     private Response response;
     private Game game;
     private CommandInterpreter interpreter;
+    private boolean forceFinish = false;
 
     public ServerClientThread(Socket clientSocket, Server server, Game game) {
         super("ServerThread" + server.getClientAmount());
@@ -37,11 +40,13 @@ public class ServerClientThread extends Thread {
             welcomeToClient();
             readMessage();
 
-            while (!gameEnded()) {
+            while (!gameEnded() && !this.forceFinish) {
                 processGame();
                 sendMessage();
 
-                readMessage();
+                if (!this.forceFinish) {
+                    readMessage();
+                }
             }
             disconnectClient();
             clientSocket.close();
@@ -65,8 +70,9 @@ public class ServerClientThread extends Thread {
         welcomeMessage.append("Welcome to port " + clientSocket.getLocalPort() + "! ");
         welcomeMessage.append("\nYou are the client number " + server.getClientAmount() + '.');
         welcomeMessage.append("\nAre you ready to play '" + this.game.getName() + "'?");
-        response = new Response(welcomeMessage.toString());
-        out.writeObject(response);
+        this.response = new Response(welcomeMessage.toString());
+
+        this.sendMessage();
     }
 
     private void readMessage() throws Exception {
@@ -78,9 +84,36 @@ public class ServerClientThread extends Thread {
     }
 
     private void processGame() throws Exception {
-        String responseStr = game.play(command);
-        response = new Response(responseStr);
-        response.setGameFinalized(game.isFinished());
+        if (this.command.isSystemAction()) {
+            this.processSystemAction();
+        } else {
+            String responseStr = game.play(command);
+            response = new Response(responseStr);
+            response.setGameFinalized(game.isFinished());
+        }
+    }
+
+    private void processSystemAction() {
+        if (this.command.getAction() == Action._HELP) {
+            this.setHelpResponse();
+        } else if (this.command.getAction() == Action._EXIT) {
+            this.forceFinish = true;
+            this.response = new Response("Thank you for playing with us! Good bye!");
+            response.setGameFinalized(true);
+        }
+    }
+
+    private void setHelpResponse() {
+        StringBuilder helpMessage = new StringBuilder();
+        helpMessage.append("Available commands:\n");
+
+        for (Action action : ((AbstractGame)this.game).getKnownActions().keySet()) {
+            helpMessage.append(action.getActionName() + "\n");
+        }
+        helpMessage.append(Action._HELP.getActionName() + "\n");
+        helpMessage.append(Action._EXIT.getActionName() + "\n");
+
+        this.response = new Response(helpMessage.toString());
     }
 
     private void sendMessage() throws Exception {

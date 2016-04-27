@@ -16,6 +16,8 @@ public enum Action {
     MOVE_TOP("move top"),
     TOP_SIZE("check top"),
     DROP("drop"),
+    _HELP("help"),
+    _EXIT("exit"),
     UNKNOWN_ACTION("");
 
     private String actionName;

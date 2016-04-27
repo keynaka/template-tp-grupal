@@ -38,25 +38,41 @@ public class CommandInterpreter {
 
     public Command getCommand(String gameCommand) {
 
-        Command command = new Command();
+        Command command = this.checkSystemAction(gameCommand);
+
+        if (command.isSystemAction()) {
+            return command;
+        }
+
         for (AbstractGame game : this.games) {
-
-            Map<Action, ActionFunction> knownActions = game.getKnownActions();
-
-            for (Action action : knownActions.keySet()) {
-
-                String actionName = action.getActionName();
-
-                if (gameCommand.contains(actionName)) {
-                    String itemName = this.getItemName(action.getActionName(), gameCommand);
-                    String argument = this.getArgument(action.getActionName(), gameCommand, itemName);
-                    command = new Command(action, itemName, argument);
-                }
+            command = this.bindActions(gameCommand, game);
+            if (command.getAction() != Action.UNKNOWN_ACTION) {
+                break;
             }
         }
         return command;
     }
 
+    private Command bindActions(String gameCommand, AbstractGame game) {
+        Command command = new Command();
+        for (Action action : game.getKnownActions().keySet()) {
+
+            String actionName = action.getActionName();
+
+            if (gameCommand.contains(actionName)) {
+                String itemName = this.getItemName(action.getActionName(), gameCommand);
+                String argument = this.getArgument(action.getActionName(), gameCommand, itemName);
+                command = new Command(action, itemName, argument);
+                break;
+            }
+        }
+        return command;
+    }
+
+    private Command checkSystemAction(String gameCommand) {
+        Action systemAction = Command.checkSystemAction(gameCommand);
+        return new Command(systemAction);
+    }
 
     private String getItemName(String actionName, String gameCommand) {
         String itemName = "";
