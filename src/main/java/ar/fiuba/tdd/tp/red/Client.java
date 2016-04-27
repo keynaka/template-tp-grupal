@@ -12,7 +12,7 @@ public class Client {
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private String hostName;
-    private Command command;
+    //private Command command;
     private Response response;
     private boolean connected;
 
@@ -34,10 +34,13 @@ public class Client {
         try {
             receive();
             while (connected) {
-                String action = setInstruction("action");
-                String item = setInstruction("item");
 
-                send(action, item);
+                //Command command = this.readCommand();
+                //sendCommand(command);
+
+                String rawCommand = this.readRawCommand();
+                sendRawCommand(rawCommand);
+
                 receive();
             }
             serverSocket.close();
@@ -51,32 +54,36 @@ public class Client {
         }
     }
 
-    private String setInstruction(String type) throws Exception {
+    /* (Nico) No puedo usar CommandInterpreter del lado del cliente porque usa los juegos. Esa logica
+     * debe estar del lado del servidor.
+    private void sendCommand(Command command) throws Exception {
+        this.out.writeObject(command);
+    }
+
+    private Command readCommand() throws Exception {
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
-        System.out.println("Ingrese " + type + ": ");
-        String instrution = stdIn.readLine();
-        return instrution;
+        System.out.print("Type command: ");
+        CommandInterpreter interpreter = new CommandInterpreter();
+        return interpreter.getCommand(stdIn.readLine());
+    }
+    */
+
+    private String readRawCommand() throws Exception {
+        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
+        System.out.print("Type command: ");
+        return stdIn.readLine();
+    }
+
+
+    private void sendRawCommand(String string) throws Exception {
+        this.out.writeObject(string);
     }
 
     private void receive() throws Exception {
         response = (Response) in.readObject();
-        System.out.println("Server: " + response.getResponse());
+        System.out.println(response.getResponse());
         if (response.isGameFinalized()) {
             connected = false;
         }
     }
-
-
-    private void send(String actionStr, String item) throws Exception {
-
-        if (actionStr != null) {
-            Action action = Action.getActionByValue(actionStr);
-            command = new Command(action, item);
-            out.writeObject(command);
-        }
-    }
-
-    //private boolean exitToClient() {
-    //    return exitClient.equalsIgnoreCase(response.getResponse());
-    //}
 }

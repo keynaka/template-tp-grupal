@@ -16,6 +16,7 @@ public class ServerClientThread extends Thread {
     private Command command;
     private Response response;
     private Game game;
+    private CommandInterpreter interpreter;
 
     public ServerClientThread(Socket clientSocket, Server server, Game game) {
         super("ServerThread" + server.getClientAmount());
@@ -25,6 +26,7 @@ public class ServerClientThread extends Thread {
             this.in = new ObjectInputStream(clientSocket.getInputStream());
             this.out = new ObjectOutputStream(clientSocket.getOutputStream());
             this.game = game;
+            this.interpreter = new CommandInterpreter();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,18 +59,21 @@ public class ServerClientThread extends Thread {
     }
 
     private void welcomeToClient() throws Exception {
+        this.game.start(); // Starts the game
+
         StringBuilder welcomeMessage = new StringBuilder();
-        welcomeMessage.append("Bienvenido al puerto " + clientSocket.getLocalPort() + "! ");
-        welcomeMessage.append("\nUsted es el cliente numero " + server.getClientAmount());
-        String welcomeStart = game.start();
-        welcomeMessage.append("\nUsted va a jugar al juego: " + welcomeStart);
+        welcomeMessage.append("Welcome to port " + clientSocket.getLocalPort() + "! ");
+        welcomeMessage.append("\nYou are the client number " + server.getClientAmount() + '.');
+        welcomeMessage.append("\nAre you ready to play '" + this.game.getName() + "'?");
         response = new Response(welcomeMessage.toString());
         out.writeObject(response);
     }
 
     private void readMessage() throws Exception {
         if (!game.isFinished()) {
-            command = (Command) in.readObject();
+            //command = (Command) in.readObject();
+            String rawCommand = (String)in.readObject();
+            this.command = this.interpreter.getCommand(rawCommand);
         }
     }
 

@@ -74,7 +74,7 @@ public class Server {
 
     private Game loadGame(int portNumber) {
 
-        Game game = null;
+        Game game;
         String gameStr = setGame();
         game = searchGame(gameStr);
         boolean searchedGame = (game != null);
@@ -95,7 +95,7 @@ public class Server {
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
         String gameStr = null;
         try {
-            System.out.println("load game ");
+            System.out.println("Type a game:");
             gameStr = stdIn.readLine();
         } catch (Exception e) {
             e.printStackTrace();
