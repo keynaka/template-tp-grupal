@@ -47,7 +47,7 @@ public class CommandInterpreter {
     public Command getCommand(String gameCommand) {
 
         Command command = new Command();
-        for (AbstractGame game : games) {
+        for (AbstractGame game : this.games) {
 
             Map<Action, ActionFunction> knownActions = game.getKnownActions();
 

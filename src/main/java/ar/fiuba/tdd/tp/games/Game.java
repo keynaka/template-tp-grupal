@@ -25,4 +25,9 @@ public interface Game {
      * @return A description of the game.
      */
     String getDescription();
+
+    /**
+     * @return The name of the game.
+     */
+    String getName();
 }

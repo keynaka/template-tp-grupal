@@ -75,23 +75,23 @@ public class Server {
     private Game loadGame(int portNumber) {
 
         Game game = null;
-        String gameStr = setGame(portNumber);
+        String gameStr = setGame();
         game = searchGame(gameStr);
         boolean searchedGame = (game != null);
 
         while (!searchedGame) {
             System.out.println("Error - Game not found ");
-            gameStr = setGame(portNumber);
+            gameStr = setGame();
             game = searchGame(gameStr);
             searchedGame = (game != null);
         }
 
-        System.out.println(gameStr + " loaded and listening on port " + portNumber);
+        System.out.println('"' + game.getName() + '"' + " loaded and listening on port " + portNumber);
 
         return game;
     }
 
-    private String setGame(int portNumber) {
+    private String setGame() {
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
         String gameStr = null;
         try {
