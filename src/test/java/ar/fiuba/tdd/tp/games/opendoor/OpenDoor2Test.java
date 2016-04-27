@@ -18,18 +18,6 @@ public class OpenDoor2Test {
 
         String response =  this.testStart();
 
-        response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("Items in the room: door, box.", response);
-        assertFalse(this.target.isFinished());
-
-        response = this.target.play(new Command(Action.OPEN, "door"));
-        assertEquals("Ey! Where do you go?! Room 2 is locked.", response);
-        assertFalse(this.target.isFinished());
-
-        response = this.target.play(new Command(Action.EXAMINE, "box"));
-        assertEquals("You can open/close the box.", response);
-        assertFalse(this.target.isFinished());
-
         response = this.target.play(new Command(Action.OPEN, "box"));
         assertEquals("The box is opened!", response);
         assertFalse(this.target.isFinished());
@@ -52,6 +40,37 @@ public class OpenDoor2Test {
         assertEquals("Welcome to OpenDoor2!", response);
         assertFalse(this.target.isFinished());
         return response;
+    }
+
+    @Test
+    public void testLookAround() {
+
+        String response =  this.testStart();
+
+        response = this.target.play(new Command(Action.LOOK_AROUND, ""));
+        assertEquals("Items in the room: door, box.", response);
+        assertFalse(this.target.isFinished());
+    }
+
+    @Test
+    public void testOpenBox() {
+        String response =  this.testStart();
+
+        response = this.target.play(new Command(Action.OPEN, "door"));
+        assertEquals("Ey! Where do you go?! Room 2 is locked.", response);
+        assertFalse(this.target.isFinished());
+
+        response = this.target.play(new Command(Action.EXAMINE, "box"));
+        assertEquals("You can open/close the box.", response);
+        assertFalse(this.target.isFinished());
+
+        response = this.target.play(new Command(Action.OPEN, "box"));
+        assertEquals("The box is opened!", response);
+        assertFalse(this.target.isFinished());
+
+        response = this.target.play(new Command(Action.LOOK_AROUND, ""));
+        assertEquals("Items in the room: door, box, key.", response);
+        assertFalse(this.target.isFinished());
     }
 
     @Test
