@@ -21,7 +21,6 @@ public class ServerPortListenerThread extends Thread {
     public void run() {
         try {
             ServerSocket serverSocket = new ServerSocket(portNumber);
-            System.out.println("Server is now listening at port " + portNumber);
 
             while (this.server.isOnline()) {
                 // Starts new thread

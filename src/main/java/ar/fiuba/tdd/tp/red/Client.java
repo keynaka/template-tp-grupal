@@ -15,9 +15,11 @@ public class Client {
     private String exitClient = "exit";
     private Command command;
     private Response response;
+    private boolean connected;
 
     public Client(String hostName, int portNumber) {
         this.hostName = hostName;
+        connected = true;
         try {
             serverSocket = new Socket(this.hostName, portNumber);
             out = new ObjectOutputStream(serverSocket.getOutputStream());
@@ -32,9 +34,7 @@ public class Client {
     public void run() {
         try {
             receive();
-
-            while (!exitToClient()) {
-
+            while (connected) {
                 String action = setInstruction("action");
                 String item = setInstruction("item");
 
@@ -62,7 +62,9 @@ public class Client {
     private void receive() throws Exception {
         response = (Response) in.readObject();
         System.out.println("Server: " + response.getResponse());
+        if (response.isGameFinalized()) { connected = false; }
     }
+
 
     private void send(String actionStr, String item) throws Exception {
 
@@ -73,7 +75,7 @@ public class Client {
         }
     }
 
-    private boolean exitToClient() {
-        return exitClient.equalsIgnoreCase(response.getResponse());
-    }
+    //private boolean exitToClient() {
+    //    return exitClient.equalsIgnoreCase(response.getResponse());
+    //}
 }

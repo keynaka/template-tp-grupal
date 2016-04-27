@@ -7,9 +7,11 @@ import java.io.Serializable;
  */
 public class Response implements Serializable {
 
+    private boolean gameFinalized;
     private String response;
 
     public Response(String response) {
+        gameFinalized = false;
         this.response = response;
     }
 
@@ -17,4 +19,11 @@ public class Response implements Serializable {
         return response;
     }
 
+    public boolean isGameFinalized() {
+        return gameFinalized;
+    }
+
+    public void setGameFinalized(boolean gameFinalized) {
+        this.gameFinalized = gameFinalized;
+    }
 }

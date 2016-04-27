@@ -16,7 +16,6 @@ public class ServerClientThread extends Thread {
     private Command command;
     private Response response;
     private Game game;
-    private static String exitServer = "exit";
 
     public ServerClientThread(Socket clientSocket, Server server, Game game) {
         super("ServerThread" + server.getClientAmount());
@@ -36,7 +35,7 @@ public class ServerClientThread extends Thread {
             welcomeToClient();
             readMessage();
 
-            while (!exitToServer()) {
+            while (!gameEnded()) {
                 processGame();
                 sendMessage();
 
@@ -68,13 +67,15 @@ public class ServerClientThread extends Thread {
     }
 
     private void readMessage() throws Exception {
-        command = (Command) in.readObject();
+        if (!game.isFinished()) {
+            command = (Command) in.readObject();
+        }
     }
 
     private void processGame() throws Exception {
         String responseStr = game.play(command);
         response = new Response(responseStr);
-        //command = new Command(response);
+        response.setGameFinalized(game.isFinished());
     }
 
     private void sendMessage() throws Exception {
@@ -86,7 +87,7 @@ public class ServerClientThread extends Thread {
         System.out.println("Client amount: " + server.getClientAmount());
     }
 
-    private boolean exitToServer() {
-        return exitServer.equalsIgnoreCase(command.getItemName());
+    private boolean gameEnded() {
+        return game.isFinished();
     }
 }

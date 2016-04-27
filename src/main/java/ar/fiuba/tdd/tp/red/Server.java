@@ -23,7 +23,7 @@ public class Server {
     private Map<String, Game> games;
 
 
-    // Runs the server and starts listeing
+    // Runs the server and starts listening
     public void run() {
         loadGames();
         for (int i = 0; i < maxClientAmount; i++) {
@@ -31,12 +31,19 @@ public class Server {
             this.listenPort(portNumber);
         }
 
-        try {
-            while (openPorts.size() > 0) {
-                Thread.sleep(timeSleepThread);
+        String answer = "";
+        while (openPorts.size() > 0) {
+            try {
+                BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
+                answer = stdIn.readLine();
+                String delimitadores= "[ .,;?!¡¿\'\"\\[\\]]+";
+                String[] palabrasSeparadas = answer.split(delimitadores);
+                System.out.println( palabrasSeparadas [0]);
+                System.out.println(palabrasSeparadas [1]);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -77,6 +84,9 @@ public class Server {
             game = searchGame(gameStr);
             searchedGame = (game != null);
         }
+
+        System.out.println(gameStr + " loaded and listening on port " + portNumber);
+
         return game;
     }
 
@@ -84,7 +94,7 @@ public class Server {
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
         String gameStr = null;
         try {
-            System.out.println("load game in port " + portNumber);
+            System.out.println("load game ");
             gameStr = stdIn.readLine();
         } catch (Exception e) {
             e.printStackTrace();
