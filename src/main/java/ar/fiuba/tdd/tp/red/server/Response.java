@@ -1,4 +1,4 @@
-package ar.fiuba.tdd.tp.red;
+package ar.fiuba.tdd.tp.red.server;
 
 import java.io.Serializable;
 

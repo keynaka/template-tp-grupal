@@ -7,12 +7,12 @@ import ar.fiuba.tdd.tp.games.items.Item;
 /**
  * Created by swandelow on 4/21/16.
  */
-public class FetchQuest2 extends AbstractGameWithStage {
+public class FetchQuest extends AbstractGameWithStage {
 
     private Character character;
     private Item stick;
 
-    public FetchQuest2() {
+    public FetchQuest() {
         super("Fetch Quest", "You won the game!");
     }
 

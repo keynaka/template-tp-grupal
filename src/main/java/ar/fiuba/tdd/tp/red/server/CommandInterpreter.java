@@ -1,9 +1,8 @@
-package ar.fiuba.tdd.tp.red;
+package ar.fiuba.tdd.tp.red.server;
 
 import ar.fiuba.tdd.tp.games.AbstractGame;
 import ar.fiuba.tdd.tp.games.Action;
-import ar.fiuba.tdd.tp.games.ActionFunction;
-import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest2;
+import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest;
 import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
 import ar.fiuba.tdd.tp.games.opendoor.OpenDoor;
 import ar.fiuba.tdd.tp.games.opendoor.OpenDoor2;
@@ -11,7 +10,6 @@ import ar.fiuba.tdd.tp.games.treasurehunt.TreasureHunt;
 import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbage;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by Patri on 26/04/2016.
@@ -23,7 +21,7 @@ public class CommandInterpreter {
     public CommandInterpreter() {
         this.games = new ArrayList<AbstractGame>();
 
-        this.addGame(new FetchQuest2());
+        this.addGame(new FetchQuest());
         this.addGame(new OpenDoor());
         this.addGame(new OpenDoor2());
         this.addGame(new HanoiTowers());

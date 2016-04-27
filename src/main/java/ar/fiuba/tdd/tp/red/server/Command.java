@@ -1,9 +1,8 @@
-package ar.fiuba.tdd.tp.red;
+package ar.fiuba.tdd.tp.red.server;
 
 import ar.fiuba.tdd.tp.games.Action;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 /**
  * Created by swandelow on 4/22/16.
