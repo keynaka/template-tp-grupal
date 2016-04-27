@@ -12,9 +12,12 @@ public class Command implements Serializable {
     private String itemName;
     private String argument;
 
+    public Command() {
+        this(Action.UNKNOWN_ACTION, "", "");
+    }
+
     public Command(Action action, String itemName) {
-        this.action = action;
-        this.itemName = itemName;
+        this(action, itemName, "");
     }
 
     public Command(Action action, String itemName, String argument) {
