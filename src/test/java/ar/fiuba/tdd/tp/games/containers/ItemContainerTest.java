@@ -66,8 +66,20 @@ public class ItemContainerTest {
         assertEquals("item2 saved in container.", this.target.addItem(new Item("item2", "item2 test")));
         assertEquals("item3 saved in container.", this.target.addItem(new Item("item3", "item3 test")));
         assertEquals("It's not possible to add item4. Container is full.", this.target.addItem(new Item("item4", "item4 test")));
-        ;
+    }
 
+    @Test
+    public void testContains() {
+        this.target.addItem(new Item("item1", "item1 test"));
+        assertTrue(this.target.contains("item1"));
+    }
 
+    @Test
+    public void testGetItem() {
+        this.target.addItem(new Item("item1", "item1 test"));
+        Item item = this.target.getItem("item1");
+        assertEquals("item1", item.getName());
+        assertEquals("item1 test", item.getDescription());
+        assertFalse(this.target.isEmpty());
     }
 }

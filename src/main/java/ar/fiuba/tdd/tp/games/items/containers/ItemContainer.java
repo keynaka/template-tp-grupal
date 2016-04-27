@@ -63,4 +63,17 @@ public class ItemContainer extends Item {
     public int hashCode() {
         return super.hashCode();
     }
+
+    public boolean contains(String itemName) {
+        Item item = this.items.get(itemName);
+        return item != null;
+    }
+
+    public Item getItem(String itemName) {
+        return this.items.get(itemName);
+    }
+
+    public Collection<Item> getAllItems() {
+        return this.items.values();
+    }
 }
