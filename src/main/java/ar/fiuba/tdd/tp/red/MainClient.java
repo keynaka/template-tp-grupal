@@ -1,5 +1,7 @@
 package ar.fiuba.tdd.tp.red;
 
+import ar.fiuba.tdd.tp.red.client.Client;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

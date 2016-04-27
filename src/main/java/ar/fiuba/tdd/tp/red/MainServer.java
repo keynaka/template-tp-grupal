@@ -1,5 +1,7 @@
 package ar.fiuba.tdd.tp.red;
 
+import ar.fiuba.tdd.tp.red.server.Server;
+
 import java.io.IOException;
 
 public class MainServer {

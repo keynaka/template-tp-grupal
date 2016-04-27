@@ -1,7 +1,7 @@
 package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.treasurehunt.TreasureHunt;
-import ar.fiuba.tdd.tp.red.Command;
+import ar.fiuba.tdd.tp.red.server.Command;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

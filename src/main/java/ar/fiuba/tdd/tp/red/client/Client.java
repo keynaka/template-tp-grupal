@@ -1,6 +1,6 @@
 package ar.fiuba.tdd.tp.red.client;
 
-import ar.fiuba.tdd.tp.red.Response;
+import ar.fiuba.tdd.tp.red.server.Response;
 
 import java.io.*;
 import java.net.*;

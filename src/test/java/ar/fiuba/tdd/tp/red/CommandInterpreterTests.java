@@ -1,6 +1,8 @@
 package ar.fiuba.tdd.tp.red;
 
 import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.red.server.Command;
+import ar.fiuba.tdd.tp.red.server.CommandInterpreter;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
