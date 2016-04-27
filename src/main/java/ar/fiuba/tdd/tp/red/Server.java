@@ -34,10 +34,11 @@ public class Server {
         String answer = "";
         while (openPorts.size() > 0) {
             try {
-                BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
-                answer = stdIn.readLine();
-                String delimitadores= "[ .,;?!¡¿\'\"\\[\\]]+";
-                String[] palabrasSeparadas = answer.split(delimitadores);
+                Thread.sleep(timeSleepThread);
+                //BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
+                //answer = stdIn.readLine();
+                //String delimitadores = "[ .,;?!¡¿\'\"\\[\\]]+";
+                //String[] palabrasSeparadas = answer.split(delimitadores);
                 //System.out.println( palabrasSeparadas [0]);
                 //System.out.println(palabrasSeparadas [1]);
             } catch (Exception e) {

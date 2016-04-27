@@ -12,7 +12,6 @@ public class Client {
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private String hostName;
-    private String exitClient = "exit";
     private Command command;
     private Response response;
     private boolean connected;
@@ -62,7 +61,9 @@ public class Client {
     private void receive() throws Exception {
         response = (Response) in.readObject();
         System.out.println("Server: " + response.getResponse());
-        if (response.isGameFinalized()) { connected = false; }
+        if (response.isGameFinalized()) {
+            connected = false;
+        }
     }
 
 
