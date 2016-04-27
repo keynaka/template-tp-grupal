@@ -4,7 +4,7 @@ import ar.fiuba.tdd.tp.games.exceptions.InvalidMoveException;
 import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
 import ar.fiuba.tdd.tp.games.items.Disk;
 import ar.fiuba.tdd.tp.games.items.containers.Tower;
-import ar.fiuba.tdd.tp.red.Command;
+import ar.fiuba.tdd.tp.red.server.Command;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

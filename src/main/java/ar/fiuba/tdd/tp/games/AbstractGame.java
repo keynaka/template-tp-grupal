@@ -1,6 +1,6 @@
 package ar.fiuba.tdd.tp.games;
 
-import ar.fiuba.tdd.tp.red.Command;
+import ar.fiuba.tdd.tp.red.server.Command;
 
 import java.util.HashMap;
 import java.util.Map;
