@@ -9,10 +9,21 @@ import java.util.*;
  */
 public class Stage {
 
+    private String name;
     private Map<String, Item> items;
 
     public Stage() {
         this.items = new HashMap<String, Item>();
+        this.name = "room";
+    }
+
+    public Stage(String name) {
+        this();
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public void addItem(Item item) {
@@ -25,7 +36,7 @@ public class Stage {
 
     public String lookAround() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Items in the room: ");
+        sb.append(String.format("Items in the %s: ", this.getName()));
         Iterator<Item> it = items.values().iterator();
         while (it.hasNext()) {
             sb.append(it.next().getName());

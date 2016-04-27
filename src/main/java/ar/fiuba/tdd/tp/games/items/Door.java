@@ -1,12 +1,14 @@
 package ar.fiuba.tdd.tp.games.items;
 
+import ar.fiuba.tdd.tp.games.Character;
+import ar.fiuba.tdd.tp.games.Openable;
 import ar.fiuba.tdd.tp.games.State;
 import ar.fiuba.tdd.tp.games.items.Item;
 
 /**
  * Created by swandelow on 4/22/16.
  */
-public class Door extends Item {
+public class Door extends Item implements Openable {
 
     private State state;
 
@@ -26,6 +28,11 @@ public class Door extends Item {
         } else {
             return "Door it's already open.";
         }
+    }
+
+    @Override
+    public String open(Character character) {
+        return this.open();
     }
 
     public String close() {

@@ -1,9 +1,10 @@
 package ar.fiuba.tdd.tp.games;
 
+import ar.fiuba.tdd.tp.red.Command;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.StringJoiner;
 
 /**
  * Created by swandelow on 4/23/16.
@@ -35,7 +36,7 @@ public abstract class AbstractGame implements Game {
     public String play(Command command) {
         String result = null;
         Optional<ActionFunction> actionMethod = Optional.ofNullable(this.knownActions.get(command.getAction()));
-        result = actionMethod.isPresent() ? actionMethod.get().execute(command.getItemName()) : "Unknown command.";
+        result = actionMethod.isPresent() ? actionMethod.get().execute(command.getItemName(),command.getArgument()) : "Unknown command.";
 
         if (this.isFinished()) {
             result = this.getEndGameMessage();
@@ -51,4 +52,7 @@ public abstract class AbstractGame implements Game {
 
     protected abstract void registerKnownActions();
 
+    public Map<Action,ActionFunction> getKnownActions() {
+        return knownActions;
+    }
 }

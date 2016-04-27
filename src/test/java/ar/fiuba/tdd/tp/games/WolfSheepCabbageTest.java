@@ -1,7 +1,7 @@
 package ar.fiuba.tdd.tp.games;
 
-import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest2;
 import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbage;
+import ar.fiuba.tdd.tp.red.Command;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

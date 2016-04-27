@@ -15,9 +15,10 @@ public enum Action {
     SET_DISKS("play with"),
     MOVE_TOP("move top"),
     TOP_SIZE("check top"),
+    DROP("drop"),
+    _HELP("help"),
+    _EXIT("exit"),
     UNKNOWN_ACTION("");
-
-
 
     private String actionName;
 
@@ -25,5 +26,17 @@ public enum Action {
         this.actionName = actionName;
     }
 
+    public String getActionName() {
+        return this.actionName;
+    }
+
+    public static Action getActionByValue(String value) {
+        for (Action action : Action.values()) {
+            if (action.getActionName().equals(value)) {
+                return action;
+            }
+        }
+        return null;
+    }
 
 }

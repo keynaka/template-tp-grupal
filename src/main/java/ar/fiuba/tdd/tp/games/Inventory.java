@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,17 +11,29 @@ import java.util.Collection;
  */
 public class Inventory {
 
-    private Collection<Item> items;
+    private ItemContainer items;
 
     public Inventory() {
-        this.items = new ArrayList<Item>();
+        this.items = new ItemContainer("inventory", "it's the inventory", 2);
     }
 
-    public boolean contains(Item item) {
-        return this.items.contains(item);
+    public boolean contains(String itemName) {
+        return this.items.contains(itemName);
     }
 
-    public void addItem(Item item) {
-        this.items.add(item);
+    public String addItem(Item item) {
+        return this.items.addItem(item);
+    }
+
+    public Item dropItem(String itemName) {
+        return this.items.extract(itemName);
+    }
+
+    public Collection<Item> dropAllItems() {
+        return this.items.extractAll();
+    }
+
+    public int size() {
+        return this.items.getSize();
     }
 }

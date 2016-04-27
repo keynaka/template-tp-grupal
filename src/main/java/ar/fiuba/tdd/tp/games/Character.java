@@ -22,6 +22,6 @@ public class Character {
     }
 
     public boolean hasItem(Item item) {
-        return this.inventory.contains(item);
+        return this.inventory.contains(item.getName());
     }
 }
