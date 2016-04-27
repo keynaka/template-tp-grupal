@@ -1,9 +1,12 @@
-package ar.fiuba.tdd.tp.red;
+package ar.fiuba.tdd.tp.red.server;
 
 import ar.fiuba.tdd.tp.games.AbstractGame;
 import ar.fiuba.tdd.tp.games.Action;
 import ar.fiuba.tdd.tp.games.Game;
 import ar.fiuba.tdd.tp.games.creation.GamesCreator;
+import ar.fiuba.tdd.tp.red.Command;
+import ar.fiuba.tdd.tp.red.CommandInterpreter;
+import ar.fiuba.tdd.tp.red.Response;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
