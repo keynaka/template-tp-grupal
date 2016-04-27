@@ -1,7 +1,5 @@
 package ar.fiuba.tdd.tp.red;
 
-import ar.fiuba.tdd.tp.games.Action;
-
 import java.io.*;
 import java.net.*;
 import java.nio.charset.Charset;
@@ -12,7 +10,6 @@ public class Client {
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private String hostName;
-    //private Command command;
     private Response response;
     private boolean connected;
 
@@ -35,9 +32,6 @@ public class Client {
             receive();
             while (connected) {
 
-                //Command command = this.readCommand();
-                //sendCommand(command);
-
                 String rawCommand = this.readRawCommand();
                 sendRawCommand(rawCommand);
 
@@ -54,23 +48,9 @@ public class Client {
         }
     }
 
-    /* (Nico) No puedo usar CommandInterpreter del lado del cliente porque usa los juegos. Esa logica
-     * debe estar del lado del servidor.
-    private void sendCommand(Command command) throws Exception {
-        this.out.writeObject(command);
-    }
-
-    private Command readCommand() throws Exception {
-        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
-        System.out.print("Type command: ");
-        CommandInterpreter interpreter = new CommandInterpreter();
-        return interpreter.getCommand(stdIn.readLine());
-    }
-    */
-
     private String readRawCommand() throws Exception {
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
-        System.out.print("Type command: ");
+        System.out.print("> ");
         return stdIn.readLine();
     }
 
@@ -81,7 +61,7 @@ public class Client {
 
     private void receive() throws Exception {
         response = (Response) in.readObject();
-        System.out.println(response.getResponse());
+        System.out.println("> " + response.getResponse());
         if (response.isGameFinalized()) {
             connected = false;
         }

@@ -3,6 +3,7 @@ package ar.fiuba.tdd.tp.red;
 import ar.fiuba.tdd.tp.games.AbstractGame;
 import ar.fiuba.tdd.tp.games.Action;
 import ar.fiuba.tdd.tp.games.Game;
+import ar.fiuba.tdd.tp.games.creation.GamesCreator;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,14 +22,14 @@ public class ServerClientThread extends Thread {
     private CommandInterpreter interpreter;
     private boolean forceFinish = false;
 
-    public ServerClientThread(Socket clientSocket, Server server, Game game) {
+    public ServerClientThread(Socket clientSocket, Server server, String nameGame) {
         super("ServerThread" + server.getClientAmount());
         try {
             this.clientSocket = clientSocket;
             this.server = server;
             this.in = new ObjectInputStream(clientSocket.getInputStream());
             this.out = new ObjectOutputStream(clientSocket.getOutputStream());
-            this.game = game;
+            this.game = GamesCreator.getGameByName(nameGame);
             this.interpreter = new CommandInterpreter();
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +70,7 @@ public class ServerClientThread extends Thread {
         StringBuilder welcomeMessage = new StringBuilder();
         welcomeMessage.append("Welcome to port " + clientSocket.getLocalPort() + "! ");
         welcomeMessage.append("\nYou are the client number " + server.getClientAmount() + '.');
-        welcomeMessage.append("\nAre you ready to play '" + this.game.getName() + "'?");
+        welcomeMessage.append("\nYou are going to play " + this.game.getName());
         this.response = new Response(welcomeMessage.toString());
 
         this.sendMessage();

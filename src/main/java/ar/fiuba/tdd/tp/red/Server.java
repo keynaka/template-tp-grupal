@@ -1,12 +1,6 @@
 package ar.fiuba.tdd.tp.red;
 
-import ar.fiuba.tdd.tp.games.Game;
-import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest2;
-import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
-import ar.fiuba.tdd.tp.games.opendoor.OpenDoor;
-import ar.fiuba.tdd.tp.games.opendoor.OpenDoor2;
-import ar.fiuba.tdd.tp.games.treasurehunt.TreasureHunt;
-import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbage;
+import ar.fiuba.tdd.tp.games.creation.GamesCreator;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -16,32 +10,22 @@ import java.util.*;
 public class Server {
 
     private int clientAmount = 0; // Counts total connections
-    private int maxClientAmount = 4;
+    private int maxClientAmount = 1;
     protected Collection<Integer> openPorts = new ArrayList<Integer>(); // List of all opened ports
     private boolean online = true; // Indicates if the server is online
     private int defaultPort = 8080;
-    private int timeSleepThread = 4000;
-    private Map<String, Game> games;
-
 
     // Runs the server and starts listening
     public void run() {
-        loadGames();
         for (int i = 0; i < maxClientAmount; i++) {
             int portNumber = i + defaultPort;
             this.listenPort(portNumber);
         }
 
-        String answer = "";
-        while (openPorts.size() > 0) {
+        String inOptional = "";
+        while (!"exit".equalsIgnoreCase(inOptional)) {
             try {
-                Thread.sleep(timeSleepThread);
-                //BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
-                //answer = stdIn.readLine();
-                //String delimitadores = "[ .,;?!¡¿\'\"\\[\\]]+";
-                //String[] palabrasSeparadas = answer.split(delimitadores);
-                //System.out.println( palabrasSeparadas [0]);
-                //System.out.println(palabrasSeparadas [1]);
+                inOptional = userInput();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -49,10 +33,21 @@ public class Server {
         }
     }
 
+    private String userInput() {
+        try {
+            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
+            System.out.print("> ");
+            return stdIn.readLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void listenPort(int portNumber) {
         if (!openPorts.contains(portNumber)) {
-            Game game = loadGame(portNumber);
-            new ServerPortListenerThread(portNumber, this, game).start();
+            String gameName = loadGame(portNumber);
+            new ServerPortListenerThread(portNumber, this, gameName).start();
             openPorts.add(portNumber);
         }
     }
@@ -73,30 +68,27 @@ public class Server {
         return online;
     }
 
-    private Game loadGame(int portNumber) {
+    private String loadGame(int portNumber) {
 
-        Game game;
-        String gameStr = setGame();
-        game = searchGame(gameStr);
-        boolean searchedGame = (game != null);
+        String gameStr = getGame();
+        boolean searchedGame = searchGame(gameStr);
 
         while (!searchedGame) {
             System.out.println("Error - Game not found ");
-            gameStr = setGame();
-            game = searchGame(gameStr);
-            searchedGame = (game != null);
+            gameStr = getGame();
+            searchedGame = searchGame(gameStr);
         }
 
-        System.out.println('"' + game.getName() + '"' + " loaded and listening on port " + portNumber);
+        System.out.println('"' + gameStr + '"' + " loaded and listening on port " + portNumber);
 
-        return game;
+        return gameStr;
     }
 
-    private String setGame() {
+    private String getGame() {
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
         String gameStr = null;
         try {
-            System.out.println("Type a game:");
+            System.out.print("> load game ");
             gameStr = stdIn.readLine();
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,20 +96,11 @@ public class Server {
         return gameStr;
     }
 
-    private Game searchGame(String gameStr) {
+    private boolean searchGame(String gameStr) {
         if (gameStr == null) {
-            return null;
+            return false;
         }
-        return games.get(gameStr);
+        return GamesCreator.existGame(gameStr);
     }
 
-    private void loadGames() {
-        games = new HashMap<String, Game>();
-        games.put("fetch quest", new FetchQuest2());
-        games.put("hanoi towers", new HanoiTowers());
-        games.put("open door", new OpenDoor());
-        games.put("open door 2", new OpenDoor2());
-        games.put("wolf", new WolfSheepCabbage());
-        games.put("treasure hunt", new TreasureHunt());
-    }
 }
