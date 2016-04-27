@@ -38,8 +38,8 @@ public class Server {
                 answer = stdIn.readLine();
                 String delimitadores= "[ .,;?!¡¿\'\"\\[\\]]+";
                 String[] palabrasSeparadas = answer.split(delimitadores);
-                System.out.println( palabrasSeparadas [0]);
-                System.out.println(palabrasSeparadas [1]);
+                //System.out.println( palabrasSeparadas [0]);
+                //System.out.println(palabrasSeparadas [1]);
             } catch (Exception e) {
                 e.printStackTrace();
             }
