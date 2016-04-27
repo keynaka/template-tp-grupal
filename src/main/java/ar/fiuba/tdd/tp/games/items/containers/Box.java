@@ -1,5 +1,7 @@
 package ar.fiuba.tdd.tp.games.items.containers;
 
+import ar.fiuba.tdd.tp.games.Character;
+import ar.fiuba.tdd.tp.games.Openable;
 import ar.fiuba.tdd.tp.games.State;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
@@ -7,7 +9,7 @@ import ar.fiuba.tdd.tp.games.items.Item;
 /**
  * Created by swandelow on 4/23/16.
  */
-public class Box extends ItemContainer {
+public class Box extends ItemContainer implements Openable {
 
     private State state;
 
@@ -50,6 +52,11 @@ public class Box extends ItemContainer {
         } else {
             return String.format("%s it's already open.", this.getName());
         }
+    }
+
+    @Override
+    public String open(Character character) {
+        return this.open();
     }
 
     public boolean isClosed() {
