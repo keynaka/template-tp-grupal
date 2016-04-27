@@ -38,7 +38,7 @@ public class FetchQuest2 extends AbstractGameWithStage {
 
     @Override
     public boolean isFinished() {
-        return this.character.getInventory().contains(this.stick);
+        return this.character.getInventory().contains(this.stick.getName());
     }
 
     @Override

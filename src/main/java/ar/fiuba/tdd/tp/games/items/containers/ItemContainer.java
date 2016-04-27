@@ -54,6 +54,10 @@ public class ItemContainer extends Item {
         return this.maxSize;
     }
 
+    public Item getItem(String itemName) {
+        return this.items.get(itemName);
+    }
+
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
@@ -69,11 +73,11 @@ public class ItemContainer extends Item {
         return item != null;
     }
 
-    public Item getItem(String itemName) {
-        return this.items.get(itemName);
-    }
-
     public Collection<Item> getAllItems() {
         return this.items.values();
+    }
+
+    public int getSize() {
+        return this.items.size();
     }
 }
