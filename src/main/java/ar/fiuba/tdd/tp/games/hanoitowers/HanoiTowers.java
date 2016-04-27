@@ -27,8 +27,8 @@ public class HanoiTowers extends AbstractGame {
     @Override
     protected void doStart() {
         this.disksNumber = 0;
-        tower2 = new Tower(0, "tower 2");
-        tower3 = new Tower(0, "tower 3");
+        tower2 = new Tower(0, "2");
+        tower3 = new Tower(0, "3");
         towers = new ArrayList<Tower>();
         towers.add(tower2);
         towers.add(tower3);
@@ -74,7 +74,7 @@ public class HanoiTowers extends AbstractGame {
             } else {
 
                 String topSize = Integer.toString(topDisk.getSize());
-                String message = "Size of top from %s is %s.";
+                String message = "Size of top from tower %s is %s.";
                 return String.format(message, input, topSize);
 
             }
@@ -157,7 +157,7 @@ public class HanoiTowers extends AbstractGame {
         try {
             towers.get(destinyPosition).addDisk(originTop);
         } catch (InvalidMoveException e) {
-            String message = "Invalid Move: %s top is smaller than %s top!";
+            String message = "Invalid Move: tower %s top is smaller than tower %s top!";
             return String.format(message, originTower, destinyTower);
         }
 
@@ -168,7 +168,7 @@ public class HanoiTowers extends AbstractGame {
 
         try {
             this.disksNumber = Integer.parseInt(itemName);
-            tower1 = new Tower(disksNumber, "tower 1");
+            tower1 = new Tower(disksNumber, "1");
             towers.add(tower1);
             return String.format("You are now playing with %s disks !", itemName);
         } catch (NumberFormatException e) {

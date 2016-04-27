@@ -52,4 +52,7 @@ public abstract class AbstractGame implements Game {
 
     protected abstract void registerKnownActions();
 
+    public Map<Action,ActionFunction> getKnownActions() {
+        return knownActions;
+    }
 }

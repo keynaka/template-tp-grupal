@@ -20,13 +20,13 @@ public class ServerPortListenerThread extends Thread {
 
     public void run() {
         try {
-            ServerSocket serverSocket = new ServerSocket(portNumber);
+            ServerSocket serverSocket = new ServerSocket(this.portNumber);
 
             while (this.server.isOnline()) {
                 // Starts new thread
-                new ServerClientThread(serverSocket.accept(), server, game).start();
-                server.increaseClientAmount();
-                System.out.println("New connection in port " + portNumber + "! Client amount: " + server.getClientAmount());
+                new ServerClientThread(serverSocket.accept(), this.server, this.game).start();
+                this.server.increaseClientAmount();
+                System.out.println("New connection in port " + this.portNumber + "! Client amount: " + this.server.getClientAmount());
             }
         } catch (IOException e) {
             e.printStackTrace();

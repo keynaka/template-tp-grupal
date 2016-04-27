@@ -23,13 +23,13 @@ public enum Action {
         this.actionName = actionName;
     }
 
-    private String getValue() {
+    public String getActionName() {
         return this.actionName;
     }
 
     public static Action getActionByValue(String value) {
         for (Action action : Action.values()) {
-            if (action.getValue().equals(value)) {
+            if (action.getActionName().equals(value)) {
                 return action;
             }
         }
