@@ -5,6 +5,7 @@ import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest2;
 import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
 import ar.fiuba.tdd.tp.games.opendoor.OpenDoor;
 import ar.fiuba.tdd.tp.games.opendoor.OpenDoor2;
+import ar.fiuba.tdd.tp.games.treasurehunt.TreasureHunt;
 import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbage;
 
 import java.io.BufferedReader;
@@ -117,5 +118,6 @@ public class Server {
         games.put("open door", new OpenDoor());
         games.put("open door 2", new OpenDoor2());
         games.put("wolf", new WolfSheepCabbage());
+        games.put("treasure hunt", new TreasureHunt());
     }
 }

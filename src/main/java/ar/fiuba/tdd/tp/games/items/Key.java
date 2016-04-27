@@ -9,6 +9,10 @@ public class Key extends Item {
         super("key", "it's a key.");
     }
 
+    public Key(String name, String description) {
+        super(name, description);
+    }
+
     public void openDoor(Door door) {
         door.open();
     }

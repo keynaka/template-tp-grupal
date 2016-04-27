@@ -23,4 +23,8 @@ public class Inventory {
     public void addItem(Item item) {
         this.items.add(item);
     }
+
+    public int size() {
+        return this.items.size();
+    }
 }

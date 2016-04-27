@@ -15,6 +15,7 @@ public enum Action {
     SET_DISKS("play with"),
     MOVE_TOP("move top"),
     TOP_SIZE("check top"),
+    DROP("drop"),
     UNKNOWN_ACTION("");
 
     private String actionName;

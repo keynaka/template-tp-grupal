@@ -7,6 +7,7 @@ import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest2;
 import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
 import ar.fiuba.tdd.tp.games.opendoor.OpenDoor;
 import ar.fiuba.tdd.tp.games.opendoor.OpenDoor2;
+import ar.fiuba.tdd.tp.games.treasurehunt.TreasureHunt;
 import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbage;
 
 import java.util.ArrayList;
@@ -22,21 +23,12 @@ public class CommandInterpreter {
     public CommandInterpreter() {
         this.games = new ArrayList<AbstractGame>();
 
-        FetchQuest2 fetchQuest2 = new FetchQuest2();
-        this.addGame(fetchQuest2);
-
-        OpenDoor openDoor = new OpenDoor();
-        this.addGame(openDoor);
-
-        OpenDoor2 openDoor2 = new OpenDoor2();
-        this.addGame(openDoor2);
-
-        HanoiTowers hanoiTowers = new HanoiTowers();
-        this.addGame(hanoiTowers);
-
-        WolfSheepCabbage wolfSheepCabbage = new WolfSheepCabbage();
-        this.addGame(wolfSheepCabbage);
-
+        this.addGame(new FetchQuest2());
+        this.addGame(new OpenDoor());
+        this.addGame(new OpenDoor2());
+        this.addGame(new HanoiTowers());
+        this.addGame(new WolfSheepCabbage());
+        this.addGame(new TreasureHunt());
     }
 
     public void addGame(AbstractGame game) {

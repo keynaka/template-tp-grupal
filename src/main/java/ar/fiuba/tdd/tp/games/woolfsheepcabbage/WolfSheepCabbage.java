@@ -55,7 +55,7 @@ public class WolfSheepCabbage extends AbstractGame {
 
     @Override
     public String getDescription() {
-        return "Wolf, Sheep and Cabbage";
+        return "Welcome to: Wolf, Sheep and Cabbage. Accepted commands: look around, cross, take, leave";
     }
 
     private Shore getActualShore() {
