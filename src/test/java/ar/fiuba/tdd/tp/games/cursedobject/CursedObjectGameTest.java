@@ -1,12 +1,11 @@
 package ar.fiuba.tdd.tp.games.cursedobject;
 
 import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.red.server.Command;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by swandelow on 4/27/16.
@@ -71,6 +70,18 @@ public class CursedObjectGameTest {
 
         response = this.target.play(new Command(Action.EXAMINE, "CursedObject"));
         assertEquals("You can pick: pick CursedObject.", response);
+    }
+
+    @Test
+    public void testUnsupportedAction() {
+        assertEquals("Welcome to Cursed Object!", this.target.start());
+
+        try {
+            this.target.play(new Command(Action.PICK, "door1"));
+            fail("GameException expected.");
+        } catch (GameException e) {
+            assertEquals("Unsupported action.", e.getMessage());
+        }
     }
 
     @Test

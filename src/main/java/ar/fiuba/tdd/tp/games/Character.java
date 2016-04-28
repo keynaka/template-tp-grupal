@@ -1,5 +1,6 @@
 package ar.fiuba.tdd.tp.games;
 
+import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
 
 /**
@@ -46,7 +47,12 @@ public class Character {
 
     public String pickFromStage(Stage stage, String itemName) {
         Item pickedItem = stage.pickItem(itemName);
-        Collectible collectibleItem = (Collectible) pickedItem;
+        Collectible collectibleItem = null;
+        try {
+            collectibleItem = (Collectible) pickedItem;
+        } catch (ClassCastException e) {
+            throw new GameException("Unsupported action.");
+        }
         String resultPick = collectibleItem.pick(this);
         String resultAdd = this.inventory.addItem(pickedItem);
         return resultAdd.concat(" ").concat(resultPick);
@@ -54,13 +60,24 @@ public class Character {
 
     public String openFromStage(Stage stage, String itemName) {
         Item item = stage.getItem(itemName);
-        Openable openable = (Openable) item;
+        Openable openable = null;
+        try {
+            openable = (Openable) item;
+        } catch (ClassCastException e) {
+            throw new GameException("Unsupported action.");
+        }
         return openable.open(this);
     }
 
     public String talkTo(Stage currentRoom, String itemName, String message) {
         Item item = currentRoom.getItem(itemName);
-        Talking talking = (Talking) item;
+        Talking talking = null;
+        try {
+            talking = (Talking) item;
+        } catch (ClassCastException e) {
+            throw new GameException("Unsupported action.");
+        }
         return talking.talk(this, message);
     }
+
 }
