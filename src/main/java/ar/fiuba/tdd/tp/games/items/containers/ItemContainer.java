@@ -8,13 +8,11 @@ import java.util.*;
  * Created by swandelow on 4/23/16.
  */
 public class ItemContainer extends Item {
-    private String name;
     private int maxSize;
     protected Map<String, Item> items;
 
     public ItemContainer(String name, String description, int maxSize) {
         super(name, description);
-        this.name = name;
         this.maxSize = maxSize;
         this.items = new HashMap<>();
     }
