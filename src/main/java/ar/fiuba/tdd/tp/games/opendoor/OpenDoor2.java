@@ -1,10 +1,12 @@
 package ar.fiuba.tdd.tp.games.opendoor;
 
 import ar.fiuba.tdd.tp.games.*;
+import ar.fiuba.tdd.tp.games.Character;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.Box;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -51,7 +53,7 @@ public class OpenDoor2 extends AbstractOpenDoor {
     }
 
     private String examineItem(String itemName) {
-        Optional<Item> item = Optional.of(this.room.getItem(itemName));
+        Optional<Item> item = Optional.ofNullable(this.room.getItem(itemName));
         return item.isPresent() ? item.get().getDescription() : "Item not found.";
     }
 
