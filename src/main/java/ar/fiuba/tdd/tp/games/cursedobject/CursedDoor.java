@@ -44,4 +44,5 @@ public class CursedDoor extends Door implements Openable {
     public int hashCode() {
         return super.hashCode();
     }
+
 }

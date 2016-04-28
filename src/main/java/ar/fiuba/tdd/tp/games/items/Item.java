@@ -52,6 +52,10 @@ public class Item implements Examinable {
         return this.supportedActions;
     }
 
+    public void registerActionAndHelp(Action action, String help) {
+        this.supportedActions.put(action, help);
+    }
+
     /**
      * @return A message about supported actions and help. If not supports actions returns the description.
      */

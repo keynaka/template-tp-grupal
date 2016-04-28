@@ -62,5 +62,26 @@ public class CursedObjectGameTest {
         assertEquals("Items in the room2: door2, thief.", response);
     }
 
+    @Test
+    public void testExamineInRoom1() {
+        assertEquals("Welcome to Cursed Object!", this.target.start());
+
+        String response = this.target.play(new Command(Action.EXAMINE, "door1"));
+        assertEquals("You can open: open door1.", response);
+
+        response = this.target.play(new Command(Action.EXAMINE, "CursedObject"));
+        assertEquals("You can pick: pick CursedObject.", response);
+    }
+
+    @Test
+    public void testExamineInRoom2() {
+        this.testHappyPathRoom1();
+
+        String response = this.target.play(new Command(Action.EXAMINE, "door2"));
+        assertEquals("You can open: open door2.", response);
+
+        response = this.target.play(new Command(Action.EXAMINE, "thief"));
+        assertEquals("You can talk: “Hello”, “Bye”.", response);
+    }
 
 }
