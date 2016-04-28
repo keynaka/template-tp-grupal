@@ -17,6 +17,11 @@ public class Door extends Item implements Openable {
         this.state = state;
     }
 
+    public Door(String doorName, State state) {
+        super(doorName, "it's a door.");
+        this.state = state;
+    }
+
     public boolean isClosed() {
         return State.CLOSED.equals(this.state);
     }
