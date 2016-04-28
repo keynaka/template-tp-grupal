@@ -11,6 +11,7 @@ import ar.fiuba.tdd.tp.games.items.Item;
 public class Door extends Item implements Openable {
 
     private State state;
+    private String nextStageName;
 
     public Door(State state) {
         super("door", "it's a door.");
@@ -47,6 +48,14 @@ public class Door extends Item implements Openable {
             this.state = State.CLOSED;
             return "Closed door.";
         }
+    }
+
+    public String getNextStageName() {
+        return this.nextStageName;
+    }
+
+    public void setNextStageName(String nextStageName) {
+        this.nextStageName = nextStageName;
     }
 
     @Override

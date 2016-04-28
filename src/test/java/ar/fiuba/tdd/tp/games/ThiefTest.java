@@ -21,7 +21,7 @@ public class ThiefTest {
         Item item = new Item("item", "An item.");
         character.addToInventory(item);
         assertEquals("The thief has just stolen your object!", this.target.steal(character));
-        assertFalse(character.hasItem(item));
+        assertFalse(character.hasItem(item.getName()));
     }
 
     @Test

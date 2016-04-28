@@ -24,8 +24,8 @@ public class Character {
         this.inventory.addItem(item);
     }
 
-    public boolean hasItem(Item item) {
-        return this.inventory.contains(item.getName());
+    public boolean hasItem(String itemName) {
+        return this.inventory.contains(itemName);
     }
 
     public String getCurrentStage() {

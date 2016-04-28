@@ -16,11 +16,13 @@ public class CursedDoorTest {
     @Before
     public void setUp() {
         this.target = new CursedDoor("CursedDoor");
+        this.target.setNextStageName("room2");
     }
 
     @Test
     public void testOpenWithoutCursedObject() {
         Character character = new Character();
+        this.target.setOpenCondition((someCharacter) -> someCharacter.hasItem("CursedObject"));
         assertTrue(this.target.isClosed());
         assertEquals("You can't open this door. You need the CursedObject.", this.target.open(character));
         assertTrue(this.target.isClosed());
@@ -29,6 +31,7 @@ public class CursedDoorTest {
     @Test
     public void testOpenWithCursedObject() {
         Character character = new Character();
+        this.target.setOpenCondition((someCharacter) -> someCharacter.hasItem("CursedObject"));
         character.addToInventory(new CursedObject());
         assertTrue(this.target.isClosed());
         assertEquals("Open door. You have entered the room2.", this.target.open(character));

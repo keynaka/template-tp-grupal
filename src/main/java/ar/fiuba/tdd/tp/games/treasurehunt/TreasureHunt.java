@@ -101,7 +101,7 @@ public class TreasureHunt extends AbstractGame {
 
     @Override
     public boolean isFinished() {
-        return (this.character.hasItem(treasure) && this.actualRoom == 0);
+        return (this.character.hasItem(treasure.getName()) && this.actualRoom == 0);
     }
 
     @Override

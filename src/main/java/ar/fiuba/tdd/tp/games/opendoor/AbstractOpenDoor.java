@@ -77,6 +77,6 @@ public abstract class AbstractOpenDoor extends AbstractGame {
     }
 
     private boolean hasTheCharacterTheKey() {
-        return this.character.hasItem(this.key);
+        return this.character.hasItem(this.key.getName());
     }
 }

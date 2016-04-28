@@ -69,7 +69,6 @@ public class CursedObjectGame extends AbstractGame {
         this.knownActions.put(Action.PICK, (itemName, args) -> this.pickHandler(itemName));
     }
 
-
     private void buildCharacter() {
         this.character = new Character();
         this.character.setCurrentStage("room1");
@@ -78,7 +77,9 @@ public class CursedObjectGame extends AbstractGame {
     private void buildRoom1() {
         Stage room1 = new Stage("room1");
         Item cursedObject = new CursedObject();
-        Door cursedDoor = new CursedDoor("door1");
+        CursedDoor cursedDoor = new CursedDoor("door1");
+        cursedDoor.setOpenCondition((someCharacter) -> someCharacter.hasItem("CursedObject"));
+        cursedDoor.setNextStageName("room2");
         room1.addItems(cursedObject, cursedDoor);
         this.rooms.put(room1.getName(), room1);
     }
@@ -86,7 +87,10 @@ public class CursedObjectGame extends AbstractGame {
     private void buildRoom2() {
         Stage room2 = new Stage("room2");
         Thief thief = new Thief();
-        room2.addItems(thief);
+        CursedDoor cursedDoor = new CursedDoor("door2");
+        cursedDoor.setOpenCondition((someCharacter) -> !someCharacter.hasItem("CursedObject"));
+        cursedDoor.setNextStageName("room3");
+        room2.addItems(thief, cursedDoor);
         this.rooms.put(room2.getName(), room2);
     }
 }
