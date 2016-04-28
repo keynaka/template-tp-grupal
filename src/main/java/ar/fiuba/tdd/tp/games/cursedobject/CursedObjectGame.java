@@ -17,7 +17,7 @@ public class CursedObjectGame extends AbstractGame {
     private Map<String, Stage> rooms;
 
     protected CursedObjectGame() {
-        super("Cursed Object", "You won!");
+        super("Cursed Object", "You won the game!");
         this.rooms = new HashMap<>();
     }
 
@@ -33,6 +33,7 @@ public class CursedObjectGame extends AbstractGame {
         this.registerPickHandler();
         this.knownActions.put(Action.OPEN, (itemName, args) -> this.openHandler(itemName));
         this.knownActions.put(Action.TALK, (itemName, args) -> this.talkHandler(itemName, args[0]));
+        this.knownActions.put(Action.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler());
     }
 
     @Override
@@ -42,7 +43,7 @@ public class CursedObjectGame extends AbstractGame {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return this.character.getCurrentStage().equalsIgnoreCase("room3");
     }
 
     private String pickHandler(String itemName) {
@@ -59,6 +60,15 @@ public class CursedObjectGame extends AbstractGame {
         Stage currentRoom = this.getCurrentRoom();
         return this.character.talkTo(currentRoom, itemName, message);
     }
+
+    private String lookAroundHandler() {
+        Stage currentRoom = this.getCurrentRoom();
+        return currentRoom.lookAround();
+    }
+
+//    private String examineHandler(String itemName) {
+//        Stage currentRoom = this.getCurrentRoom();
+//    }
 
     private Stage getCurrentRoom() {
         String currentRoomName = this.character.getCurrentStage();

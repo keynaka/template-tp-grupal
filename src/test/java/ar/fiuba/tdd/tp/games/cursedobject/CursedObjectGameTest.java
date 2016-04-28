@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by swandelow on 4/27/16.
@@ -39,5 +40,27 @@ public class CursedObjectGameTest {
         String response = this.target.play(new Command(Action.TALK, "thief", "Hello"));
         assertEquals("Hi!. The thief has just stolen your object!", response);
         assertFalse(this.target.isFinished());
+
+        response = this.target.play(new Command(Action.OPEN, "door2"));
+        assertEquals("You won the game!", response);
+        assertTrue(this.target.isFinished());
     }
+
+    @Test
+    public void testLookAroundRoom1() {
+        assertEquals("Welcome to Cursed Object!", this.target.start());
+
+        String response = this.target.play(new Command(Action.LOOK_AROUND));
+        assertEquals("Items in the room1: CursedObject, door1.", response);
+    }
+
+    @Test
+    public void testLookAroundRoom2() {
+        this.testHappyPathRoom1();
+
+        String response = this.target.play(new Command(Action.LOOK_AROUND));
+        assertEquals("Items in the room2: door2, thief.", response);
+    }
+
+
 }
