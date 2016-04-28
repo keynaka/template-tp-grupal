@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 
 import java.util.*;
 
@@ -9,17 +10,20 @@ import java.util.*;
  */
 public class Stage {
 
+    private static final int DEFAULT_STAGE_SIZE = 20;
+
     private String name;
-    private Map<String, Item> items;
+    private ItemContainer itemContainer;
 
     public Stage() {
-        this.items = new HashMap<String, Item>();
         this.name = "room";
+        this.itemContainer = new ItemContainer(this.name, "", DEFAULT_STAGE_SIZE);
     }
 
     public Stage(String name) {
         this();
         this.name = name;
+        this.itemContainer = new ItemContainer(name, "", DEFAULT_STAGE_SIZE);
     }
 
     public String getName() {
@@ -27,17 +31,17 @@ public class Stage {
     }
 
     public void addItem(Item item) {
-        this.items.put(item.getName(), item);
+        this.itemContainer.addItem(item);
     }
 
     public Item pickItem(String itemName) {
-        return this.items.remove(itemName);
+        return this.itemContainer.extract(itemName);
     }
 
     public String lookAround() {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("Items in the %s: ", this.getName()));
-        Iterator<Item> it = items.values().iterator();
+        Iterator<Item> it = itemContainer.getAllItems().iterator();
         while (it.hasNext()) {
             sb.append(it.next().getName());
             if (it.hasNext()) {
@@ -50,7 +54,7 @@ public class Stage {
     }
 
     public Item getItem(String itemName) {
-        return this.items.get(itemName);
+        return this.itemContainer.getItem(itemName);
     }
 
 }
