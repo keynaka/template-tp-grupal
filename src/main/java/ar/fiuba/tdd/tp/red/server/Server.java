@@ -10,13 +10,14 @@ import java.util.*;
 public class Server {
 
     private int clientAmount = 0; // Counts total connections
-    private int maxClientAmount = 1;
+    private Integer maxClientAmount = 1;
     protected Collection<Integer> openPorts = new ArrayList<Integer>(); // List of all opened ports
     private boolean online = true; // Indicates if the server is online
     private int defaultPort = 8080;
 
     // Runs the server and starts listening
     public void run() {
+        this.maxClientAmount = readAmountOfGames();
         for (int i = 0; i < maxClientAmount; i++) {
             int portNumber = i + defaultPort;
             this.listenPort(portNumber);
@@ -31,6 +32,19 @@ public class Server {
             }
 
         }
+    }
+
+    private Integer readAmountOfGames() {
+        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
+        Integer amountOfGames = 1;
+        try {
+            System.out.print("> Amount of games: ");
+            amountOfGames = Integer.valueOf(stdIn.readLine());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error. Using default value: 1");
+        }
+        return amountOfGames;
     }
 
     private String userInput() {
@@ -102,5 +116,4 @@ public class Server {
         }
         return GamesCreator.existGame(gameStr);
     }
-
 }
