@@ -57,4 +57,10 @@ public class Character {
         Openable openable = (Openable) item;
         return openable.open(this);
     }
+
+    public String talkTo(Stage currentRoom, String itemName, String message) {
+        Item item = currentRoom.getItem(itemName);
+        Talking talking = (Talking) item;
+        return talking.talk(this, message);
+    }
 }

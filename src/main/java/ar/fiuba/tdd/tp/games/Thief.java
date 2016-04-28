@@ -2,18 +2,16 @@ package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.items.Item;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Created by swandelow on 4/26/16.
  */
-public class Thief extends Item {
+public class Thief extends Item implements Talking {
 
     public Thief() {
         super("thief", "A horrible thief.");
     }
 
+    @Override
     public String talk(Character speaker, String message) {
         String response = "No answer.";
         if ("Hello".equalsIgnoreCase(message)) {

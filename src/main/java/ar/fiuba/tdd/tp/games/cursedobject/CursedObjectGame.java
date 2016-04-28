@@ -1,9 +1,7 @@
 package ar.fiuba.tdd.tp.games.cursedobject;
 
-import ar.fiuba.tdd.tp.games.AbstractGame;
-import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.Character;
-import ar.fiuba.tdd.tp.games.Stage;
 import ar.fiuba.tdd.tp.games.items.Door;
 import ar.fiuba.tdd.tp.games.items.Item;
 
@@ -27,12 +25,14 @@ public class CursedObjectGame extends AbstractGame {
     protected void doStart() {
         this.buildCharacter();
         this.buildRoom1();
+        this.buildRoom2();
     }
 
     @Override
     protected void registerKnownActions() {
         this.registerPickHandler();
         this.knownActions.put(Action.OPEN, (itemName, args) -> this.openHandler(itemName));
+        this.knownActions.put(Action.TALK, (itemName, args) -> this.talkHandler(itemName, args[0]));
     }
 
     @Override
@@ -53,6 +53,11 @@ public class CursedObjectGame extends AbstractGame {
     private String openHandler(String itemName) {
         Stage currentRoom = this.getCurrentRoom();
         return this.character.openFromStage(currentRoom, itemName);
+    }
+
+    private String talkHandler(String itemName, String message) {
+        Stage currentRoom = this.getCurrentRoom();
+        return this.character.talkTo(currentRoom, itemName, message);
     }
 
     private Stage getCurrentRoom() {
@@ -76,5 +81,12 @@ public class CursedObjectGame extends AbstractGame {
         Door cursedDoor = new CursedDoor("door1");
         room1.addItems(cursedObject, cursedDoor);
         this.rooms.put(room1.getName(), room1);
+    }
+
+    private void buildRoom2() {
+        Stage room2 = new Stage("room2");
+        Thief thief = new Thief();
+        room2.addItems(thief);
+        this.rooms.put(room2.getName(), room2);
     }
 }

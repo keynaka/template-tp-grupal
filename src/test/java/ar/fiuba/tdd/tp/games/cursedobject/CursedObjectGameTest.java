@@ -31,4 +31,13 @@ public class CursedObjectGameTest {
         assertEquals("Open door. You have entered the room2.", response);
         assertFalse(this.target.isFinished());
     }
+
+    @Test
+    public void testHappyPathRoom2() {
+        this.testHappyPathRoom1();
+
+        String response = this.target.play(new Command(Action.TALK, "thief", "Hello"));
+        assertEquals("Hi!. The thief has just stolen your object!", response);
+        assertFalse(this.target.isFinished());
+    }
 }
