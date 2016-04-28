@@ -1,16 +1,26 @@
 package ar.fiuba.tdd.tp.games.items;
 
+import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.Examinable;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by swandelow on 4/21/16.
  */
-public class Item {
+public class Item implements Examinable {
+
+    private static final String EXAMINE_MSG = "You can %s: %s.";
 
     protected String name;
     protected String description;
+    protected Map<Action, String> supportedActions;
 
     public Item(String name, String description) {
         this.name = name;
         this.description = description;
+        this.supportedActions = new HashMap<>();
     }
 
     public String getName() {
@@ -36,5 +46,27 @@ public class Item {
         result = 31 * result + (name != null ? name.hashCode() : 0);
 
         return result;
+    }
+
+    public Map<Action, String> getSupportedActions() {
+        return this.supportedActions;
+    }
+
+    /**
+     * @return A message about supported actions and help. If not supports actions returns the description.
+     */
+    @Override
+    public String examine() {
+        if (this.supportedActions.isEmpty()) {
+            return this.getDescription();
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for (Map.Entry<Action, String> entry : supportedActions.entrySet()) {
+                Action action = entry.getKey();
+                String helpText = entry.getValue();
+                sb.append(String.format(EXAMINE_MSG, action.getActionName(), helpText));
+            }
+            return sb.toString();
+        }
     }
 }
