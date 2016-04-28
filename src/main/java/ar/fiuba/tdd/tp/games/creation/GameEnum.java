@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.games.creation;
 
 import ar.fiuba.tdd.tp.games.Game;
+import ar.fiuba.tdd.tp.games.cursedobject.CursedObjectGame;
 import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest;
 import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
 import ar.fiuba.tdd.tp.games.opendoor.OpenDoor;
@@ -13,7 +14,8 @@ public enum GameEnum {
     OPEN_DOOR("Open Door", new OpenDoor()),
     OPEN_DOOR_2("Open Door 2", new OpenDoor2()),
     WOLF("Wolf", new WolfSheepCabbage()),
-    HANOI_TOWERS("Hanoi Towers", new HanoiTowers());
+    HANOI_TOWERS("Hanoi Towers", new HanoiTowers()),
+    CURSED_OBJECT("Cursed Object", new CursedObjectGame());
 
     GameEnum(String name, Game game) {
         this.gameName = name;

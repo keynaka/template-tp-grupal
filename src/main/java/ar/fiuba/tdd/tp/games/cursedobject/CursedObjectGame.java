@@ -16,7 +16,7 @@ public class CursedObjectGame extends AbstractGame {
     private Character character;
     private Map<String, Stage> rooms;
 
-    protected CursedObjectGame() {
+    public CursedObjectGame() {
         super("Cursed Object", "You won the game!");
         this.rooms = new HashMap<>();
     }
