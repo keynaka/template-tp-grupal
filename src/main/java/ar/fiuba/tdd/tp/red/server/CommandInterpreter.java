@@ -2,6 +2,8 @@ package ar.fiuba.tdd.tp.red.server;
 
 import ar.fiuba.tdd.tp.games.AbstractGame;
 import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.creation.GamesCreator;
+import ar.fiuba.tdd.tp.games.cursedobject.CursedObjectGame;
 import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest;
 import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
 import ar.fiuba.tdd.tp.games.opendoor.OpenDoor;
@@ -19,6 +21,11 @@ public class CommandInterpreter {
     private ArrayList<AbstractGame> games;
 
     public CommandInterpreter() {
+
+        this.games = GamesCreator.getAllGames();
+        startGames();
+    }
+        /*
         this.games = new ArrayList<AbstractGame>();
 
         this.addGame(new FetchQuest());
@@ -27,11 +34,18 @@ public class CommandInterpreter {
         this.addGame(new HanoiTowers());
         this.addGame(new WolfSheepCabbage());
         this.addGame(new TreasureHunt());
-    }
+        this.addGame(new CursedObjectGame());
+
 
     public void addGame(AbstractGame game) {
         game.start();
         this.games.add(game);
+    }
+    */
+    private void startGames() {
+        for (AbstractGame game : this.games) {
+            game.start();
+        }
     }
 
     public Command getCommand(String gameCommand) {

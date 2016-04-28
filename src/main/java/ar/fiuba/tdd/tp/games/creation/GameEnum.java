@@ -1,5 +1,6 @@
 package ar.fiuba.tdd.tp.games.creation;
 
+import ar.fiuba.tdd.tp.games.AbstractGame;
 import ar.fiuba.tdd.tp.games.Game;
 import ar.fiuba.tdd.tp.games.cursedobject.CursedObjectGame;
 import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest;
@@ -7,6 +8,8 @@ import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
 import ar.fiuba.tdd.tp.games.opendoor.OpenDoor;
 import ar.fiuba.tdd.tp.games.opendoor.OpenDoor2;
 import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbage;
+
+import java.util.ArrayList;
 
 public enum GameEnum {
 
@@ -41,6 +44,16 @@ public enum GameEnum {
             }
         }
         return false;
+    }
+
+    public static ArrayList<AbstractGame> getAllGames() {
+        ArrayList<AbstractGame> listGames = new ArrayList<AbstractGame>();
+
+        for (GameEnum gameEnum : GameEnum.values()) {
+            listGames.add((AbstractGame)gameEnum.getGame());
+        }
+
+        return listGames;
     }
 
     public String getGameName() {
