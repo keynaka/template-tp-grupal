@@ -1,9 +1,11 @@
 package ar.fiuba.tdd.tp.games.cursedobject;
 
-import org.junit.Assert;
+import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.red.server.Command;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Created by swandelow on 4/27/16.
@@ -15,5 +17,18 @@ public class CursedObjectGameTest {
     @Test
     public void testStart() {
         assertEquals("Welcome to Cursed Object!", this.target.start());
+    }
+
+    @Test
+    public void testHappyPathRoom1() {
+        assertEquals("Welcome to Cursed Object!", this.target.start());
+
+        String response = this.target.play(new Command(Action.PICK, "CursedObject"));
+        assertEquals("CursedObject saved in inventory. Now you are cursed!", response);
+        assertFalse(this.target.isFinished());
+
+        response = this.target.play(new Command(Action.OPEN, "door1"));
+        assertEquals("Open door. You have entered the room2.", response);
+        assertFalse(this.target.isFinished());
     }
 }

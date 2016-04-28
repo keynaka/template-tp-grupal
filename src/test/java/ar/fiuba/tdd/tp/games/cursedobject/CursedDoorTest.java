@@ -31,7 +31,7 @@ public class CursedDoorTest {
         Character character = new Character();
         character.addToInventory(new CursedObject());
         assertTrue(this.target.isClosed());
-        assertEquals("Open door.", this.target.open(character));
+        assertEquals("Open door. You have entered the room2.", this.target.open(character));
         assertFalse(this.target.isClosed());
     }
 }

@@ -18,7 +18,9 @@ public class CursedDoor extends Door implements Openable {
     @Override
     public String open(Character character) {
         if (character.getInventory().contains("CursedObject")) {
-            return this.open();
+            character.setCurrentStage("room2");
+            String result = this.open();
+            return this.isClosed() ? result : result.concat(" ").concat("You have entered the room2.");
         }
         return "You can't open this door. You need the CursedObject.";
     }

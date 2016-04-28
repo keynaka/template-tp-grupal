@@ -34,6 +34,12 @@ public class Stage {
         this.itemContainer.addItem(item);
     }
 
+    public void addItems(Item... items) {
+        for (Item item : items) {
+            this.addItem(item);
+        }
+    }
+
     public Item pickItem(String itemName) {
         return this.itemContainer.extract(itemName);
     }

@@ -43,4 +43,18 @@ public class Character {
     public void modifyState(CharacterState state) {
         this.state = state;
     }
+
+    public String pickFromStage(Stage stage, String itemName) {
+        Item pickedItem = stage.pickItem(itemName);
+        Collectible collectibleItem = (Collectible) pickedItem;
+        String resultPick = collectibleItem.pick(this);
+        String resultAdd = this.inventory.addItem(pickedItem);
+        return resultAdd.concat(" ").concat(resultPick);
+    }
+
+    public String openFromStage(Stage stage, String itemName) {
+        Item item = stage.getItem(itemName);
+        Openable openable = (Openable) item;
+        return openable.open(this);
+    }
 }
