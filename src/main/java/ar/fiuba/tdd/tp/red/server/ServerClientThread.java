@@ -4,6 +4,7 @@ import ar.fiuba.tdd.tp.games.AbstractGame;
 import ar.fiuba.tdd.tp.games.Action;
 import ar.fiuba.tdd.tp.games.Game;
 import ar.fiuba.tdd.tp.games.creation.GamesCreator;
+import ar.fiuba.tdd.tp.games.exceptions.GameException;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -79,7 +80,7 @@ public class ServerClientThread extends Thread {
     private void readMessage() throws Exception {
         if (!game.isFinished()) {
             //command = (Command) in.readObject();
-            String rawCommand = (String)in.readObject();
+            String rawCommand = (String) in.readObject();
             this.command = this.interpreter.getCommand(rawCommand);
         }
     }
@@ -88,7 +89,12 @@ public class ServerClientThread extends Thread {
         if (this.command.isSystemAction()) {
             this.processSystemAction();
         } else {
-            String responseStr = game.play(command);
+            String responseStr = null;
+            try {
+                responseStr = game.play(command);
+            } catch (GameException e) {
+                responseStr = e.getMessage();
+            }
             response = new Response(responseStr);
             response.setGameFinalized(game.isFinished());
         }
@@ -108,7 +114,7 @@ public class ServerClientThread extends Thread {
         StringBuilder helpMessage = new StringBuilder();
         helpMessage.append("Available commands:\n");
 
-        for (Action action : ((AbstractGame)this.game).getKnownActions().keySet()) {
+        for (Action action : ((AbstractGame) this.game).getKnownActions().keySet()) {
             helpMessage.append(action.getActionName() + "\n");
         }
         helpMessage.append(Action._HELP.getActionName() + "\n");

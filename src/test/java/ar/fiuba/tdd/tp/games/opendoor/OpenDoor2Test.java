@@ -23,7 +23,7 @@ public class OpenDoor2Test {
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("Items in the room: door, box, key.", response);
+        assertEquals("Items in the room: box, door, key.", response);
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(Action.PICK, "key"));
@@ -48,7 +48,7 @@ public class OpenDoor2Test {
         String response =  this.testStart();
 
         response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("Items in the room: door, box.", response);
+        assertEquals("Items in the room: box, door.", response);
         assertFalse(this.target.isFinished());
     }
 
@@ -69,7 +69,7 @@ public class OpenDoor2Test {
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("Items in the room: door, box, key.", response);
+        assertEquals("Items in the room: box, door, key.", response);
         assertFalse(this.target.isFinished());
     }
 

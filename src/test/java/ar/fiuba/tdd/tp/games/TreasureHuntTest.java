@@ -19,7 +19,7 @@ public class TreasureHuntTest {
         this.target.start();
 
         String response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("Items in the room: door, Box1, Trunk1, Closet1.", response);
+        assertEquals("Items in the room: Box1, Closet1, door, Trunk1.", response);
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(Action.PICK, "Box1"));
@@ -29,7 +29,7 @@ public class TreasureHuntTest {
         assertEquals("The container is opened!", response);
 
         response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("Items in the room: door, Box1, Trunk1, Closet1.", response);
+        assertEquals("Items in the room: Box1, Closet1, door, Trunk1.", response);
 
         response = this.target.play(new Command(Action.OPEN, "Trunk1"));
         assertEquals("The container is opened!", response);
@@ -41,7 +41,7 @@ public class TreasureHuntTest {
         assertEquals("The container is opened!", response);
 
         response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("Items in the room: door, Key1, Poison1, Antidote1, Box2, Box1, Trunk1, Closet1.", response);
+        assertEquals("Items in the room: Antidote1, Box1, Box2, Closet1, door, Key1, Poison1, Trunk1.", response);
 
     }
 }
