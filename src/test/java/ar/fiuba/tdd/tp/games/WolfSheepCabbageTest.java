@@ -4,12 +4,10 @@ import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbage;
 import ar.fiuba.tdd.tp.red.server.Command;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
- * Created by Fede on 23/04/2016.
+ * Created by Fede on 07/05/2016.
  */
 public class WolfSheepCabbageTest {
     private WolfSheepCabbage target = new WolfSheepCabbage();
@@ -77,7 +75,7 @@ public class WolfSheepCabbageTest {
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("You are at: SouthShore and have Sheep Cabbage ", response);
+        assertEquals("Items in the SouthShore: Cabbage, Sheep.", response);
         assertFalse(this.target.isFinished());
     }
 
@@ -93,7 +91,7 @@ public class WolfSheepCabbageTest {
         assertEquals("You are at south-shore!", response);
 
         response = this.target.play(new Command(Action.CROSS, "north-shore"));
-        assertEquals("You can't do that. The Wolf will eat the Sheep", response);
+        assertEquals("You can't do that. The Sheep will eat the Cabbage", response);
 
         response = this.target.play(new Command(Action.TAKE, "sheep"));
         response = this.target.play(new Command(Action.CROSS, "north-shore"));
@@ -139,6 +137,6 @@ public class WolfSheepCabbageTest {
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("You are at: NorthShore and have Sheep ", response);
+        assertEquals("Items in the NorthShore: Sheep.", response);
     }
 }

@@ -2,8 +2,11 @@ package ar.fiuba.tdd.tp.games.items;
 
 import ar.fiuba.tdd.tp.games.Action;
 import ar.fiuba.tdd.tp.games.Examinable;
+import ar.fiuba.tdd.tp.games.State;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,10 +20,13 @@ public class Item implements Examinable {
     protected String description;
     protected Map<Action, String> supportedActions;
 
+    protected List<State> estados;
+
     public Item(String name, String description) {
         this.name = name;
         this.description = description;
         this.supportedActions = new HashMap<>();
+        this.estados = new ArrayList<State>();
     }
 
     public String getName() {
@@ -72,5 +78,10 @@ public class Item implements Examinable {
             }
             return sb.toString();
         }
+    }
+
+
+    public List<State> getEstados() {
+        return estados;
     }
 }

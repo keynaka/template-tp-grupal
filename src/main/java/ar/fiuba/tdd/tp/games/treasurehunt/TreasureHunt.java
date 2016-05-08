@@ -16,8 +16,8 @@ import java.util.Collection;
 /**
  * Created by Fede on 26/04/2016.
  */
-public class TreasureHunt extends AbstractGame {
-
+public class TreasureHunt /*extends AbstractGame*/ {
+/*
     private ArrayList<Stage> rooms;
     private int actualRoom;
     private Character character;
@@ -97,7 +97,7 @@ public class TreasureHunt extends AbstractGame {
 
     private void buildRoomFive() {
 
-    }*/
+    }
 
     @Override
     public boolean isFinished() {
@@ -158,5 +158,5 @@ public class TreasureHunt extends AbstractGame {
             }
         }
         return false;
-    }
+    }*/
 }

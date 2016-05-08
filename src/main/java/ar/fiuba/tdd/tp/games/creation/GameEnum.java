@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public enum GameEnum {
 
     FETCH_QUEST("Fetch Quest", new FetchQuest()),
-    OPEN_DOOR("Open Door", new OpenDoor()),
-    OPEN_DOOR_2("Open Door 2", new OpenDoor2()),
+    //OPEN_DOOR("Open Door", new OpenDoor()),
+    //OPEN_DOOR_2("Open Door 2", new OpenDoor2()),
     WOLF("Wolf", new WolfSheepCabbage()),
     HANOI_TOWERS("Hanoi Towers", new HanoiTowers()),
     CURSED_OBJECT("Cursed Object", new CursedObjectGame());

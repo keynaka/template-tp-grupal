@@ -9,8 +9,8 @@ import ar.fiuba.tdd.tp.games.items.LockedDoor;
 /**
  * Created by swandelow on 4/23/16.
  */
-public abstract class AbstractOpenDoor extends AbstractGame {
-
+public abstract class AbstractOpenDoor /*extends AbstractGame*/ {
+/*
     protected Character character;
     protected Stage room;
     protected LockedDoor door;
@@ -79,4 +79,5 @@ public abstract class AbstractOpenDoor extends AbstractGame {
     private boolean hasTheCharacterTheKey() {
         return this.character.hasItem(this.key.getName());
     }
+    */
 }

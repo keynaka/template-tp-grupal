@@ -13,6 +13,7 @@ public class Stage {
     private static final int DEFAULT_STAGE_SIZE = 20;
 
     private String name;
+
     private ItemContainer itemContainer;
 
     public Stage() {
@@ -61,6 +62,10 @@ public class Stage {
 
     public Item getItem(String itemName) {
         return this.itemContainer.getItem(itemName);
+    }
+
+    public ItemContainer getItemContainer() {
+        return itemContainer;
     }
 
 }
