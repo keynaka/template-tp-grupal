@@ -11,6 +11,7 @@ public class OpenDoorNew extends AbstractOpenDoorNew {
     public OpenDoorNew() {
         super("OpenDoor", "You enter room 2. You won the game!");
     }
+
     @Override
     protected void registerKnownActions() {
         super.registerKnownActions();
@@ -26,7 +27,6 @@ public class OpenDoorNew extends AbstractOpenDoorNew {
     private void addKnownActions() {
         this.knownActions.put(Action.OPEN, (itemName, args) -> openAction());
     }
-
 
 
 }

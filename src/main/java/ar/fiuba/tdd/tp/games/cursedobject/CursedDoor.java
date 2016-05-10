@@ -1,7 +1,7 @@
 package ar.fiuba.tdd.tp.games.cursedobject;
 
-import ar.fiuba.tdd.tp.games.Character;
 import ar.fiuba.tdd.tp.games.Openable;
+import ar.fiuba.tdd.tp.games.Player;
 import ar.fiuba.tdd.tp.games.State;
 import ar.fiuba.tdd.tp.games.items.Door;
 
@@ -14,16 +14,16 @@ public class CursedDoor extends Door implements Openable {
 
     private static final String ENTERED_MSG = "You have entered the %s.";
 
-    private Predicate<Character> openCondition;
+    private Predicate<Player> openCondition;
 
     public CursedDoor(String name) {
         super(name, State.CLOSED);
     }
 
     @Override
-    public String open(Character character) {
-        if (openCondition.test(character)) {
-            character.setCurrentStage(this.getNextStageName());
+    public String open(Player player) {
+        if (openCondition.test(player)) {
+            player.setCurrentStage(this.getNextStageName());
             String result = this.open();
             String nextStageMsg = String.format(ENTERED_MSG, this.getNextStageName());
             return this.isClosed() ? result : result.concat(" ").concat(nextStageMsg);
@@ -31,7 +31,7 @@ public class CursedDoor extends Door implements Openable {
         return "You can't open this door. You need the CursedObject.";
     }
 
-    public void setOpenCondition(Predicate<Character> openCondition) {
+    public void setOpenCondition(Predicate<Player> openCondition) {
         this.openCondition = openCondition;
     }
 

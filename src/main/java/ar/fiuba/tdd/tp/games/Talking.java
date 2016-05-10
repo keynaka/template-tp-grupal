@@ -6,10 +6,10 @@ package ar.fiuba.tdd.tp.games;
 public interface Talking {
 
     /**
-     * For game objects that can talk and modify the character.
-     * @param speaker A game character.
+     * For game objects that can talk and modify the player.
+     * @param speaker A game player.
      * @param message Message.
      * @return A result message for Talk operation.
      */
-    String talk(Character speaker, String message);
+    String talk(Player speaker, String message);
 }

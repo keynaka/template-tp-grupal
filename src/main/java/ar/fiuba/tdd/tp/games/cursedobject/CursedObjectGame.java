@@ -1,7 +1,7 @@
 package ar.fiuba.tdd.tp.games.cursedobject;
 
 import ar.fiuba.tdd.tp.games.*;
-import ar.fiuba.tdd.tp.games.Character;
+import ar.fiuba.tdd.tp.games.Player;
 import ar.fiuba.tdd.tp.games.items.Door;
 import ar.fiuba.tdd.tp.games.items.Item;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class CursedObjectGame extends AbstractGame {
 
-    private Character character;
+    private Player player;
     private Map<String, Stage> rooms;
 
     public CursedObjectGame() {
@@ -44,22 +44,22 @@ public class CursedObjectGame extends AbstractGame {
 
     @Override
     public boolean isFinished() {
-        return this.character.getCurrentStage().equalsIgnoreCase("room3");
+        return this.player.getCurrentStage().equalsIgnoreCase("room3");
     }
 
     private String pickHandler(String itemName) {
         Stage currentRoom = this.getCurrentRoom();
-        return this.character.pickFromStage(currentRoom, itemName);
+        return this.player.pickFromStage(currentRoom, itemName);
     }
 
     private String openHandler(String itemName) {
         Stage currentRoom = this.getCurrentRoom();
-        return this.character.openFromStage(currentRoom, itemName);
+        return this.player.openFromStage(currentRoom, itemName);
     }
 
     private String talkHandler(String itemName, String message) {
         Stage currentRoom = this.getCurrentRoom();
-        return this.character.talkTo(currentRoom, itemName, message);
+        return this.player.talkTo(currentRoom, itemName, message);
     }
 
     private String lookAroundHandler() {
@@ -73,7 +73,7 @@ public class CursedObjectGame extends AbstractGame {
     }
 
     private Stage getCurrentRoom() {
-        String currentRoomName = this.character.getCurrentStage();
+        String currentRoomName = this.player.getCurrentStage();
         return this.rooms.get(currentRoomName);
     }
 
@@ -82,8 +82,8 @@ public class CursedObjectGame extends AbstractGame {
     }
 
     private void buildCharacter() {
-        this.character = new Character();
-        this.character.setCurrentStage("room1");
+        this.player = new Player();
+        this.player.setCurrentStage("room1");
     }
 
     private void buildRoom1() {

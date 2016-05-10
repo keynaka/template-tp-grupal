@@ -6,13 +6,13 @@ import ar.fiuba.tdd.tp.games.items.Item;
 /**
  * Created by swandelow on 4/21/16.
  */
-public class Character {
+public class Player {
 
     private Inventory inventory;
     private String currentStage;
     private CharacterState state;
 
-    public Character() {
+    public Player() {
         this.inventory = new Inventory();
         this.state = CharacterState.HEALTHY;
     }

@@ -1,7 +1,6 @@
 package ar.fiuba.tdd.tp.games.opendoor;
 
 import ar.fiuba.tdd.tp.games.*;
-import ar.fiuba.tdd.tp.games.Character;
 import ar.fiuba.tdd.tp.games.items.Item;
 
 /**
@@ -10,7 +9,7 @@ import ar.fiuba.tdd.tp.games.items.Item;
 public class AbstractOpenDoorNew extends AbstractGame {
 
 
-    protected Character character;
+    protected Player player;
     protected Stage room;
     protected Item door;
     protected Item key;
@@ -28,22 +27,22 @@ public class AbstractOpenDoorNew extends AbstractGame {
     }
 
     protected String openAction() {
-        if (this.hasTheCharacterTheItem(this.key)){
+        if (this.hasThePlayerTheItem(this.key)) {
             this.door.getEstados().remove(State.LOCKED);
             this.door.getEstados().add(State.OPEN);
             return "Open door.";
-        }else{
+        } else {
             return "Ey! Where do you go?! Room 2 is locked.";
         }
     }
 
-    private boolean hasTheCharacterTheItem(Item item) {
-        return this.character.hasItem(item.getName());
+    private boolean hasThePlayerTheItem(Item item) {
+        return this.player.hasItem(item.getName());
     }
 
     @Override
     public void doStart() {
-        this.createTheCharacter();
+        this.createThePlayer();
         this.buildRoom();
     }
 
@@ -57,8 +56,8 @@ public class AbstractOpenDoorNew extends AbstractGame {
         return null;
     }
 
-    protected void createTheCharacter() {
-        this.character = new Character();
+    protected void createThePlayer() {
+        this.player = new Player();
     }
 
     protected String pickAction(String itemName) {
@@ -71,7 +70,7 @@ public class AbstractOpenDoorNew extends AbstractGame {
 
     private String pickKey(String keyName) {
         Item key = this.room.pickItem(keyName);
-        this.character.getInventory().addItem(key);
+        this.player.getInventory().addItem(key);
         return "There you go!";
     }
 

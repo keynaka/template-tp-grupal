@@ -1,7 +1,7 @@
 package ar.fiuba.tdd.tp.games.opendoor;
 
-import ar.fiuba.tdd.tp.games.*;
-import ar.fiuba.tdd.tp.games.Character;
+import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.State;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 

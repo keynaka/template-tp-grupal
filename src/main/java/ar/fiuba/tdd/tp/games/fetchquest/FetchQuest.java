@@ -1,7 +1,7 @@
 package ar.fiuba.tdd.tp.games.fetchquest;
 
 import ar.fiuba.tdd.tp.games.*;
-import ar.fiuba.tdd.tp.games.Character;
+import ar.fiuba.tdd.tp.games.Player;
 import ar.fiuba.tdd.tp.games.items.Item;
 
 /**
@@ -9,7 +9,7 @@ import ar.fiuba.tdd.tp.games.items.Item;
  */
 public class FetchQuest extends AbstractGameWithStage {
 
-    private Character character;
+    private Player player;
     private Item stick;
 
     public FetchQuest() {
@@ -19,7 +19,7 @@ public class FetchQuest extends AbstractGameWithStage {
     @Override
     protected void doStart() {
         super.doStart();
-        this.character = new Character();
+        this.player = new Player();
         this.stick = new Item("stick", "It's just a simple stick.");
         this.stage.addItem(this.stick);
     }
@@ -32,13 +32,13 @@ public class FetchQuest extends AbstractGameWithStage {
 
     private String pickAction() {
         Item stick = this.stage.pickItem("stick");
-        this.character.getInventory().addItem(stick);
+        this.player.getInventory().addItem(stick);
         return "There you go.";
     }
 
     @Override
     public boolean isFinished() {
-        return this.character.getInventory().contains(this.stick.getName());
+        return this.player.getInventory().contains(this.stick.getName());
     }
 
     @Override

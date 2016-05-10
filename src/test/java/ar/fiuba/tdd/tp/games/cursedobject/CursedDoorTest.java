@@ -1,6 +1,6 @@
 package ar.fiuba.tdd.tp.games.cursedobject;
 
-import ar.fiuba.tdd.tp.games.Character;
+import ar.fiuba.tdd.tp.games.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,20 +21,20 @@ public class CursedDoorTest {
 
     @Test
     public void testOpenWithoutCursedObject() {
-        Character character = new Character();
+        Player player = new Player();
         this.target.setOpenCondition((someCharacter) -> someCharacter.hasItem("CursedObject"));
         assertTrue(this.target.isClosed());
-        assertEquals("You can't open this door. You need the CursedObject.", this.target.open(character));
+        assertEquals("You can't open this door. You need the CursedObject.", this.target.open(player));
         assertTrue(this.target.isClosed());
     }
 
     @Test
     public void testOpenWithCursedObject() {
-        Character character = new Character();
+        Player player = new Player();
         this.target.setOpenCondition((someCharacter) -> someCharacter.hasItem("CursedObject"));
-        character.addToInventory(new CursedObject());
+        player.addToInventory(new CursedObject());
         assertTrue(this.target.isClosed());
-        assertEquals("Open door. You have entered the room2.", this.target.open(character));
+        assertEquals("Open door. You have entered the room2.", this.target.open(player));
         assertFalse(this.target.isClosed());
     }
 }

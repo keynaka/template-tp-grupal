@@ -1,7 +1,7 @@
 package ar.fiuba.tdd.tp.games.items;
 
-import ar.fiuba.tdd.tp.games.Character;
 import ar.fiuba.tdd.tp.games.Openable;
+import ar.fiuba.tdd.tp.games.Player;
 import ar.fiuba.tdd.tp.games.State;
 
 import java.util.function.Predicate;
@@ -12,11 +12,11 @@ import java.util.function.Predicate;
 public class Door extends Item implements Openable {
 
     private static final String DEFAULT_OPENING_ERROR_MSG = "You can't open this door.";
-    private static final Predicate<Character> DEFAULT_OPENING_CONDITION = (character) -> true;
+    private static final Predicate<Player> DEFAULT_OPENING_CONDITION = (character) -> true;
 
     private State state;
     private String nextStageName;
-    private Predicate<Character> openingCondition;
+    private Predicate<Player> openingCondition;
     private String openingErrorMessage;
 
     public Door(State state) {
@@ -43,8 +43,8 @@ public class Door extends Item implements Openable {
     }
 
     @Override
-    public String open(Character character) {
-        if (this.getOpeningCondition().test(character)) {
+    public String open(Player player) {
+        if (this.getOpeningCondition().test(player)) {
             return this.open();
         }
         return this.getOpeningErrorMessage();
@@ -77,11 +77,11 @@ public class Door extends Item implements Openable {
         return super.hashCode();
     }
 
-    public Predicate<Character> getOpeningCondition() {
+    public Predicate<Player> getOpeningCondition() {
         return this.openingCondition != null ? this.openingCondition : DEFAULT_OPENING_CONDITION;
     }
 
-    public void setOpeningCondition(Predicate<Character> condition) {
+    public void setOpeningCondition(Predicate<Player> condition) {
         this.openingCondition = condition;
     }
 
@@ -99,7 +99,7 @@ public class Door extends Item implements Openable {
         private String name;
         private State state;
         private String nextStageName;
-        private Predicate<Character> openingCondition;
+        private Predicate<Player> openingCondition;
         private String openingErrorMessage;
 
         public DoorBuilder(State state) {
@@ -116,7 +116,7 @@ public class Door extends Item implements Openable {
             return this;
         }
 
-        public DoorBuilder openingCondition(Predicate<Character> openingCondition) {
+        public DoorBuilder openingCondition(Predicate<Player> openingCondition) {
             this.openingCondition = openingCondition;
             return this;
         }
