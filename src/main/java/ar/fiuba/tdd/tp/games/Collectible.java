@@ -6,9 +6,9 @@ package ar.fiuba.tdd.tp.games;
 public interface Collectible {
 
     /**
-     * Method to be implemented for items that support action Pick and modify the character's state.
-     * @param character A game character.
+     * Method to be implemented for items that support action Pick and modify the player's state.
+     * @param player A game player.
      * @return A message resulted of pick the object.
      */
-    String pick(Character character);
+    String pick(Player player);
 }

@@ -1,7 +1,6 @@
 package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.items.Item;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -17,17 +16,17 @@ public class ThiefTest {
 
     @Test
     public void testSteal() {
-        Character character = new Character();
+        Player player = new Player();
         Item item = new Item("item", "An item.");
-        character.addToInventory(item);
-        assertEquals("The thief has just stolen your object!", this.target.steal(character));
-        assertFalse(character.hasItem(item.getName()));
+        player.addToInventory(item);
+        assertEquals("The thief has just stolen your object!", this.target.steal(player));
+        assertFalse(player.hasItem(item.getName()));
     }
 
     @Test
     public void testTalk() {
-        Character character = new Character();
-        assertEquals("Hi!. The thief has just stolen your object!", this.target.talk(character, "Hello"));
-        assertEquals("Bye.", this.target.talk(character, "Bye"));
+        Player player = new Player();
+        assertEquals("Hi!. The thief has just stolen your object!", this.target.talk(player, "Hello"));
+        assertEquals("Bye.", this.target.talk(player, "Bye"));
     }
 }

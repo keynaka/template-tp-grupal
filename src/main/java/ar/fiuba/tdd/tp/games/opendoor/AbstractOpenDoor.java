@@ -1,7 +1,7 @@
 package ar.fiuba.tdd.tp.games.opendoor;
 
 import ar.fiuba.tdd.tp.games.*;
-import ar.fiuba.tdd.tp.games.Character;
+import ar.fiuba.tdd.tp.games.Player;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.Key;
 import ar.fiuba.tdd.tp.games.items.LockedDoor;
@@ -11,7 +11,7 @@ import ar.fiuba.tdd.tp.games.items.LockedDoor;
  */
 public abstract class AbstractOpenDoor extends AbstractGame {
 
-    protected Character character;
+    protected Player player;
     protected Stage room;
     protected LockedDoor door;
     protected Item key;
@@ -67,16 +67,16 @@ public abstract class AbstractOpenDoor extends AbstractGame {
     }
 
     protected void createTheCharacter() {
-        this.character = new Character();
+        this.player = new Player();
     }
 
     private String pickKey(String keyName) {
         Item key = this.room.pickItem(keyName);
-        this.character.getInventory().addItem(key);
+        this.player.getInventory().addItem(key);
         return "There you go!";
     }
 
     private boolean hasTheCharacterTheKey() {
-        return this.character.hasItem(this.key.getName());
+        return this.player.hasItem(this.key.getName());
     }
 }

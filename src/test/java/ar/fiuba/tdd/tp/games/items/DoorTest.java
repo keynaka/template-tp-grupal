@@ -1,6 +1,6 @@
 package ar.fiuba.tdd.tp.games.items;
 
-import ar.fiuba.tdd.tp.games.Character;
+import ar.fiuba.tdd.tp.games.Player;
 import ar.fiuba.tdd.tp.games.State;
 import org.junit.Test;
 
@@ -14,22 +14,22 @@ import static org.junit.Assert.assertTrue;
 public class DoorTest {
 
     private Door target = new Door(State.CLOSED);
-    private Character character = new Character();
+    private Player player = new Player();
 
     @Test
     public void testDefaultOpeningCondition() {
-        assertEquals("Open door.", this.target.open(character));
+        assertEquals("Open door.", this.target.open(player));
         assertFalse(this.target.isClosed());
     }
 
     @Test
     public void testSetOpeningCondition() {
         this.target.setOpeningCondition((character) -> character.hasItem("key1"));
-        assertEquals("You can't open this door.", this.target.open(this.character));
+        assertEquals("You can't open this door.", this.target.open(this.player));
         assertTrue(this.target.isClosed());
 
-        character.addToInventory(new Item("key1", "test key."));
-        assertEquals("Open door.", this.target.open(character));
+        player.addToInventory(new Item("key1", "test key."));
+        assertEquals("Open door.", this.target.open(player));
         assertFalse(this.target.isClosed());
     }
 }

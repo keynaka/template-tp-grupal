@@ -6,9 +6,9 @@ package ar.fiuba.tdd.tp.games;
 public interface Openable {
 
     /**
-     * For game objects that can be opened and modify the character.
-     * @param character A game character.
+     * For game objects that can be opened and modify the player.
+     * @param player A game player.
      * @return A result message for Open operation.
      */
-    String open(Character character);
+    String open(Player player);
 }

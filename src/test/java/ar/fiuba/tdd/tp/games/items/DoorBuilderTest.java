@@ -1,6 +1,6 @@
 package ar.fiuba.tdd.tp.games.items;
 
-import ar.fiuba.tdd.tp.games.Character;
+import ar.fiuba.tdd.tp.games.Player;
 import ar.fiuba.tdd.tp.games.State;
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class DoorBuilderTest {
 
-    private Character character = new Character();
+    private Player player = new Player();
 
     @Test
     public void testDefault() {
@@ -21,7 +21,7 @@ public class DoorBuilderTest {
         assertEquals("door", door.getName());
         assertTrue(door.isClosed());
 
-        assertEquals("Open door.", door.open(this.character));
+        assertEquals("Open door.", door.open(this.player));
         assertFalse(door.isClosed());
     }
 
@@ -42,10 +42,10 @@ public class DoorBuilderTest {
         Door door = new Door.DoorBuilder(State.CLOSED).name("doorTest")
                 .openingCondition((character) -> character.hasItem("disk1")).build();
         assertEquals("doorTest", door.getName());
-        assertEquals("You can't open this door.", door.open(this.character));
+        assertEquals("You can't open this door.", door.open(this.player));
 
-        this.character.addToInventory(new Item("disk1", "test disk."));
-        assertEquals("Open door.", door.open(this.character));
+        this.player.addToInventory(new Item("disk1", "test disk."));
+        assertEquals("Open door.", door.open(this.player));
         assertFalse(door.isClosed());
     }
 
@@ -55,10 +55,10 @@ public class DoorBuilderTest {
                 .openingCondition((character) -> character.hasItem("disk1"))
                 .openingErrorMessage("You can't open this door. You need the disk1.").build();
         assertEquals("doorTest", door.getName());
-        assertEquals("You can't open this door. You need the disk1.", door.open(this.character));
+        assertEquals("You can't open this door. You need the disk1.", door.open(this.player));
 
-        this.character.addToInventory(new Item("disk1", "test disk."));
-        assertEquals("Open door.", door.open(this.character));
+        this.player.addToInventory(new Item("disk1", "test disk."));
+        assertEquals("Open door.", door.open(this.player));
         assertFalse(door.isClosed());
     }
 }

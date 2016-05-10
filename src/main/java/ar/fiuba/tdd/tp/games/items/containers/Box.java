@@ -1,7 +1,7 @@
 package ar.fiuba.tdd.tp.games.items.containers;
 
-import ar.fiuba.tdd.tp.games.Character;
 import ar.fiuba.tdd.tp.games.Openable;
+import ar.fiuba.tdd.tp.games.Player;
 import ar.fiuba.tdd.tp.games.State;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
@@ -55,7 +55,7 @@ public class Box extends ItemContainer implements Openable {
     }
 
     @Override
-    public String open(Character character) {
+    public String open(Player player) {
         return this.open();
     }
 

@@ -2,7 +2,7 @@ package ar.fiuba.tdd.tp.games.treasurehunt;
 
 import ar.fiuba.tdd.tp.games.AbstractGame;
 import ar.fiuba.tdd.tp.games.Action;
-import ar.fiuba.tdd.tp.games.Character;
+import ar.fiuba.tdd.tp.games.Player;
 import ar.fiuba.tdd.tp.games.Stage;
 import ar.fiuba.tdd.tp.games.items.Door;
 import ar.fiuba.tdd.tp.games.items.Item;
@@ -20,7 +20,7 @@ public class TreasureHunt extends AbstractGame {
 
     private ArrayList<Stage> rooms;
     private int actualRoom;
-    private Character character;
+    private Player player;
     private boolean isPoisoned;
     private Item treasure;
 
@@ -38,7 +38,7 @@ public class TreasureHunt extends AbstractGame {
         this.treasure = new Item("Treasure", "Its the treasure!");
         this.actualRoom = 0;
         this.rooms = new ArrayList<Stage>();
-        this.character = new Character();
+        this.player = new Player();
         this.buildRoomOne();
         //this.buildRoomTwo();
         //this.buildRoomThree();
@@ -101,7 +101,7 @@ public class TreasureHunt extends AbstractGame {
 
     @Override
     public boolean isFinished() {
-        return (this.character.hasItem(treasure.getName()) && this.actualRoom == 0);
+        return (this.player.hasItem(treasure.getName()) && this.actualRoom == 0);
     }
 
     @Override
@@ -118,8 +118,8 @@ public class TreasureHunt extends AbstractGame {
         if (item instanceof ItemContainer) {
             return "You cant pick up a container";
         }
-        if (this.character.getInventory().size() < 2) {
-            this.character.getInventory().addItem(item);
+        if (this.player.getInventory().size() < 2) {
+            this.player.getInventory().addItem(item);
         }
         return "Ok";
     }

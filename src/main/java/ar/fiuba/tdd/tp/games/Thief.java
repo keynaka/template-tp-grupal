@@ -12,7 +12,7 @@ public class Thief extends Item implements Talking {
     }
 
     @Override
-    public String talk(Character speaker, String message) {
+    public String talk(Player speaker, String message) {
         String response = "No answer.";
         if ("Hello".equalsIgnoreCase(message)) {
             response = "Hi!.";
@@ -24,8 +24,8 @@ public class Thief extends Item implements Talking {
         return response;
     }
 
-    public String steal(Character character) {
-        character.getInventory().dropAllItems();
+    public String steal(Player player) {
+        player.getInventory().dropAllItems();
         return "The thief has just stolen your object!";
     }
 }
