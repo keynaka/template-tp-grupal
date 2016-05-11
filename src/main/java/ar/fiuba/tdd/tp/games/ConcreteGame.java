@@ -24,6 +24,12 @@ public class ConcreteGame extends AbstractGame {
         this.stages = new HashMap<>();
     }
 
+    public ConcreteGame(String name, String endGameMessage) {
+        super(name, endGameMessage);
+        this.knownActions = new HashMap<>();
+        this.stages = new HashMap<>();
+    }
+
     @Override
     public String getName() {
         return this.name;

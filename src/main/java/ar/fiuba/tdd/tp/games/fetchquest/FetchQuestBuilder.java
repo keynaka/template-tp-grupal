@@ -22,11 +22,11 @@ public class FetchQuestBuilder implements GameBuilder {
         fetchQuest.setPlayer(this.buildPlayer());
         fetchQuest.addStage(this.buildRoom1());
         fetchQuest.setWinningCondition(this.buildWinningCondition());
-        registerSupportedActions(fetchQuest);
+        registerKnownActions(fetchQuest);
         return fetchQuest;
     }
 
-    private void registerSupportedActions(ConcreteGame game) {
+    private void registerKnownActions(ConcreteGame game) {
         game.registerKnownAction(Action.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler(game));
         game.registerKnownAction(Action.PICK, (itemName, args) -> this.pickHandler(game, itemName));
     }
