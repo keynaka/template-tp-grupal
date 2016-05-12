@@ -19,10 +19,13 @@ apply from: 'gradle/quality.gradle'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-repositories {
-    jcenter()
-    maven {
-        url "http://nexus-tecnicas7510.rhcloud.com/nexus/content/repositories/third-party"
+allprojects {
+
+    repositories {
+        jcenter()
+        maven {
+            url "http://nexus-tecnicas7510.rhcloud.com/nexus/content/repositories/third-party"
+        }
     }
 }
 

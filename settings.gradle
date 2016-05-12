@@ -1,2 +1,4 @@
 rootProject.name = 'tp-tp-grupal'
+include 'client'
+include 'server'
 
