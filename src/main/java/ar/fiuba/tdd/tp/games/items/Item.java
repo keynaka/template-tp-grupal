@@ -1,8 +1,10 @@
 package ar.fiuba.tdd.tp.games.items;
 
 import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.ConcreteGame;
 import ar.fiuba.tdd.tp.games.Examinable;
 import ar.fiuba.tdd.tp.games.State;
+import ar.fiuba.tdd.tp.games.behavior.Behavior;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ public class Item implements Examinable {
     protected String name;
     protected String description;
     protected Map<Action, String> supportedActions;
+    private Map<String, Behavior> behaviors;
 
     protected List<State> estados;
 
@@ -27,6 +30,7 @@ public class Item implements Examinable {
         this.description = description;
         this.supportedActions = new HashMap<>();
         this.estados = new ArrayList<State>();
+        this.behaviors = new HashMap<>();
     }
 
     public String getName() {
@@ -84,4 +88,14 @@ public class Item implements Examinable {
     public List<State> getEstados() {
         return estados;
     }
+
+    public void addBehavior(Behavior behavior) {
+        this.behaviors.put(behavior.getActionName(), behavior);
+    }
+
+    public String execute(ConcreteGame game, Action action) {
+        Behavior behavior = this.behaviors.get(action.getActionName());
+        return behavior.execute(game);
+    }
+
 }

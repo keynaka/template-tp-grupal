@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.games.fetchquest;
 
 import ar.fiuba.tdd.tp.games.*;
+import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.items.Item;
 
 import java.util.function.Predicate;
@@ -36,10 +37,13 @@ public class FetchQuestBuilder implements GameBuilder {
     }
 
     private String pickHandler(ConcreteGame game, String itemName) {
+//        Stage currentStage = game.getCurrentStage();
+//        Item item = currentStage.pickItem(itemName);
+//        game.getPlayer().addToInventory(item);
+//        return "There you go.";
         Stage currentStage = game.getCurrentStage();
-        Item item = currentStage.pickItem(itemName);
-        game.getPlayer().addToInventory(item);
-        return "There you go.";
+        Item item = currentStage.getItem(itemName);
+        return item.execute(game, Action.PICK);
     }
 
     private Predicate<ConcreteGame> buildWinningCondition() {
@@ -56,7 +60,27 @@ public class FetchQuestBuilder implements GameBuilder {
 
     private Stage buildRoom1() {
         Stage stage = new Stage("room");
-        stage.addItem(new Item("stick", "it's a stick."));
+        stage.addItem(this.buildStick());
         return stage;
+    }
+
+    private Item buildStick() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("pick");
+        behavior.setResultMessage("There you go.");
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((game) -> {
+                this.pickBehavior(game);
+            });
+
+        Item stick = new Item("stick", "it's a stick.");
+        stick.addBehavior(behavior);
+        return stick;
+    }
+
+    private void pickBehavior(ConcreteGame game) {
+        Stage currentStage = game.getCurrentStage();
+        Item item = currentStage.pickItem("stick");
+        game.getPlayer().addToInventory(item);
     }
 }
