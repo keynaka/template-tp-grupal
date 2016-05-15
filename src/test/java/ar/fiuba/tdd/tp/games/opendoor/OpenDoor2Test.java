@@ -78,7 +78,7 @@ public class OpenDoor2Test {
 
         this.target.start();
 
-        String response = this.target.play(new Command(Action.unknow(), ""));
+        String response = this.target.play(new Command(new Action("Unknow Action"), ""));
         assertEquals("Unknown command.", response);
         assertFalse(this.target.isFinished());
 

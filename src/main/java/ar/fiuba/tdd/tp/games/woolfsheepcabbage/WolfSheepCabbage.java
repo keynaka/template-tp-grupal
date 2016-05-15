@@ -43,10 +43,13 @@ public class WolfSheepCabbage extends AbstractGame {
         this.knownActions.put(new Action("Look Around"), (itemName, args) -> this.lookAround());
     }
 
+    @SuppressWarnings("CPD-START")
     private void registerMoreActions() {
         this.knownActions.put(new Action("Take"), (itemName, args) -> this.take(itemName));
         this.knownActions.put(new Action("Leave"), (itemName, args) -> this.leave(itemName));
     }
+
+    @SuppressWarnings("CPD-END")
 
     @Override
     public boolean isFinished() {

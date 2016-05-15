@@ -1,23 +1,13 @@
 package ar.fiuba.tdd.tp.games;
 
+import java.io.Serializable;
+
 /**
  * Created by swandelow on 4/22/16.
  */
-public class Action {
+public class Action implements Serializable {
 
     private String actionName;
-
-    public static Action unknow() {
-        return new Action("Unknow action");
-    }
-
-    public static Action help() {
-        return new Action("Help");
-    }
-
-    public static Action exit() {
-        return new Action("Exit");
-    }
 
     public Action(String action) {
         this.actionName = action;

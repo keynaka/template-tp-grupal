@@ -21,11 +21,14 @@ public class OpenDoor2 extends AbstractOpenDoor {
     }
 
     @Override
+    @SuppressWarnings("CPD-START")
     protected void registerKnownActions() {
         super.registerKnownActions();
         this.knownActions.put(new Action("Open"), (itemName, args) -> this.openAction(itemName));
         this.knownActions.put(new Action("Examine"), (itemName, args) -> this.examineItem(itemName));
     }
+
+    @SuppressWarnings("CPD-END")
 
     private String openAction(String itemName) {
         Item item = this.room.getItem(itemName);

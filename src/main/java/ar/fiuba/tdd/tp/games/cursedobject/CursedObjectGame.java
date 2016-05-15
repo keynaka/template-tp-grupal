@@ -29,6 +29,7 @@ public class CursedObjectGame extends AbstractGame {
     }
 
     @Override
+    @SuppressWarnings("CPD-START")
     protected void registerKnownActions() {
         this.registerPickHandler();
         this.knownActions.put(new Action("Open"), (itemName, args) -> this.openHandler(itemName));
@@ -36,6 +37,8 @@ public class CursedObjectGame extends AbstractGame {
         this.knownActions.put(new Action("Look Around"), (itemName, args) -> this.lookAroundHandler());
         this.knownActions.put(new Action("Examine"), (itemName, args) -> this.examineHandler(itemName));
     }
+
+    @SuppressWarnings("CPD-END")
 
     @Override
     public String getDescription() {

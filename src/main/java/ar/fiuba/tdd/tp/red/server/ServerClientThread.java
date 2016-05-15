@@ -95,9 +95,9 @@ public class ServerClientThread extends Thread {
     }
 
     private void processSystemAction() {
-        if (this.command.getAction() == Action.help()) {
+        if (this.command.getAction() == new Action("Help")) {
             this.setHelpResponse();
-        } else if (this.command.getAction() == Action.exit()) {
+        } else if (this.command.getAction() == new Action("Exit")) {
             this.forceFinish = true;
             this.response = new Response("Thank you for playing with us! Good bye!");
             response.setGameFinalized(true);
@@ -111,8 +111,8 @@ public class ServerClientThread extends Thread {
         for (Action action : ((AbstractGame)this.game).getKnownActions().keySet()) {
             helpMessage.append(action.getActionName() + "\n");
         }
-        helpMessage.append(Action.help().getActionName() + "\n");
-        helpMessage.append(Action.exit().getActionName() + "\n");
+        helpMessage.append(new Action("Help").getActionName() + "\n");
+        helpMessage.append(new Action("Exit").getActionName() + "\n");
 
         this.response = new Response(helpMessage.toString());
     }

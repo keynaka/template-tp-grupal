@@ -110,7 +110,7 @@ public class CommandInterpreterTests {
     public void unknownAction() {
         String gameCommand = "anything else";
         Command command = interpreter.getCommand(gameCommand);
-        assertEquals(command.getAction(), Action.unknow());
+        assertEquals(command.getAction(), new Action("Unknow Action"));
     }
 
     @Test

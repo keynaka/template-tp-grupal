@@ -47,12 +47,15 @@ public class TreasureHunt extends AbstractGame {
     }
 
     @Override
+    @SuppressWarnings("CPD-START")
     protected void registerKnownActions() {
         this.knownActions.put(new Action("Look Around"), (itemName, args) -> this.lookAround());
         this.knownActions.put(new Action("Open"), (itemName, args) -> this.open(itemName));
         this.knownActions.put(new Action("Pick"), (itemName, args) -> this.pick(itemName));
         this.knownActions.put(new Action("Drop"), (itemName, args) -> this.drop(itemName));
     }
+
+    @SuppressWarnings("CPD-END")
 
     private void buildRoomOne() {
         Stage stage = new Stage();

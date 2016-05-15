@@ -51,7 +51,7 @@ public class CommandInterpreter {
 
         for (AbstractGame game : this.games) {
             command = this.bindActions(gameCommand, game);
-            if (command.getAction() != Action.unknow()) {
+            if (command.getAction() != new Action("Unknow Action")) {
                 break;
             }
         }
