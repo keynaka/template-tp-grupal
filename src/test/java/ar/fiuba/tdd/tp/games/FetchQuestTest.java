@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 public class FetchQuestTest {
 
     private FetchQuest target = new FetchQuest();
-
+/*
     @Test
     public void testHappyPath() {
 
@@ -39,4 +39,5 @@ public class FetchQuestTest {
         assertFalse(this.target.isFinished());
 
     }
+    */
 }

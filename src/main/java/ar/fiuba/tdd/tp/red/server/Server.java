@@ -1,7 +1,5 @@
 package ar.fiuba.tdd.tp.red.server;
 
-import ar.fiuba.tdd.tp.games.creation.GamesCreator;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -114,6 +112,6 @@ public class Server {
         if (gameStr == null) {
             return false;
         }
-        return GamesCreator.existGame(gameStr);
+        return true;
     }
 }

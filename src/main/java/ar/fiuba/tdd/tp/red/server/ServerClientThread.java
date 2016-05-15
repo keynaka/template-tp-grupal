@@ -3,7 +3,7 @@ package ar.fiuba.tdd.tp.red.server;
 import ar.fiuba.tdd.tp.games.AbstractGame;
 import ar.fiuba.tdd.tp.games.Action;
 import ar.fiuba.tdd.tp.games.Game;
-import ar.fiuba.tdd.tp.games.creation.GamesCreator;
+import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -29,7 +29,7 @@ public class ServerClientThread extends Thread {
             this.server = server;
             this.in = new ObjectInputStream(clientSocket.getInputStream());
             this.out = new ObjectOutputStream(clientSocket.getOutputStream());
-            this.game = GamesCreator.getGameByName(nameGame);
+            this.game = new FetchQuest(); //TODO dejo harcodeado el juego
             this.interpreter = new CommandInterpreter();
         } catch (Exception e) {
             e.printStackTrace();

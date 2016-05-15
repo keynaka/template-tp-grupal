@@ -2,7 +2,6 @@ package ar.fiuba.tdd.tp.red.server;
 
 import ar.fiuba.tdd.tp.games.AbstractGame;
 import ar.fiuba.tdd.tp.games.Action;
-import ar.fiuba.tdd.tp.games.creation.GamesCreator;
 
 import java.util.ArrayList;
 
@@ -15,8 +14,9 @@ public class CommandInterpreter {
 
     public CommandInterpreter() {
 
-        this.games = GamesCreator.getAllGames();
+        this.games = new ArrayList<>();
         startGames();
+
     }
         /*
         this.games = new ArrayList<AbstractGame>();

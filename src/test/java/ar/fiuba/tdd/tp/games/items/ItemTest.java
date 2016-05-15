@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 public class ItemTest {
 
     private Item target;
-
+/*
     @Test
     public void testExamineNotSupportedAction() {
         this.target = new Item("item", "it's a test item.");
@@ -25,4 +25,5 @@ public class ItemTest {
         this.target.getSupportedActions().put(new Action("Pick"), "pick item1");
         assertEquals("You can pick: pick item1.", this.target.examine());
     }
+    */
 }

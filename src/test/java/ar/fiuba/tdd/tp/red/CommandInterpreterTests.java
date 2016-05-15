@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 public class CommandInterpreterTests {
 
     private CommandInterpreter interpreter = new CommandInterpreter();
-
+/*
     @Test
     public void pickStickActionIsPick() {
         String gameCommand = "pick stick";
@@ -165,5 +165,5 @@ public class CommandInterpreterTests {
         assertEquals(command.getItemName(), "north-shore");
         assertEquals(command.getArgument(), "");
     }
-
+*/
 }
