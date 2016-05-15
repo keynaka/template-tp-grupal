@@ -22,19 +22,19 @@ public class OpenDoorTest {
         assertEquals("Welcome to OpenDoor!", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.LOOK_AROUND, ""));
+        response = this.target.play(new Command(new Action("Look Around"), ""));
         assertEquals("Items in the room: door, key.", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.OPEN, "door"));
+        response = this.target.play(new Command(new Action("Open"), "door"));
         assertEquals("Ey! Where do you go?! Room 2 is locked.", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.PICK, "key"));
+        response = this.target.play(new Command(new Action("Pick"), "key"));
         assertEquals("There you go!", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.OPEN, "door"));
+        response = this.target.play(new Command(new Action("Open"), "door"));
         assertEquals("You enter room 2. You won the game!", response);
         assertTrue(this.target.isFinished());
     }
@@ -44,7 +44,7 @@ public class OpenDoorTest {
 
         this.target.start();
 
-        String response = this.target.play(new Command(Action.UNKNOWN_ACTION, ""));
+        String response = this.target.play(new Command(Action.unknow(), ""));
         assertEquals("Unknown command.", response);
         assertFalse(this.target.isFinished());
 

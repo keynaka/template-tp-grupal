@@ -23,8 +23,8 @@ public class OpenDoor2 extends AbstractOpenDoor {
     @Override
     protected void registerKnownActions() {
         super.registerKnownActions();
-        this.knownActions.put(Action.OPEN, (itemName, args) -> this.openAction(itemName));
-        this.knownActions.put(Action.EXAMINE, (itemName, args) -> this.examineItem(itemName));
+        this.knownActions.put(new Action("Open"), (itemName, args) -> this.openAction(itemName));
+        this.knownActions.put(new Action("Examine"), (itemName, args) -> this.examineItem(itemName));
     }
 
     private String openAction(String itemName) {

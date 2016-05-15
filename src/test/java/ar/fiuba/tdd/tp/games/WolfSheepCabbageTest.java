@@ -14,44 +14,50 @@ import static org.junit.Assert.assertTrue;
 public class WolfSheepCabbageTest {
     private WolfSheepCabbage target = new WolfSheepCabbage();
 
+    private Action take = new Action("Take");
+    private Action cross = new Action("Cross");
+    private Action leave = new Action("Leave");
+    private Action lookAround = new Action("Look Around");
+
+
     @Test
     public void testHappyPath() {
 
         this.target.start();
 
-        assertEquals("Ok", this.target.play(new Command(Action.TAKE, "sheep")));
+        assertEquals("Ok", this.target.play(new Command(take, "sheep")));
 
-        assertEquals("You have crossed", this.target.play(new Command(Action.CROSS, "north-shore")));
+        assertEquals("You have crossed", this.target.play(new Command(cross, "north-shore")));
 
-        assertEquals("Ok", this.target.play(new Command(Action.LEAVE, "sheep")));
+        assertEquals("Ok", this.target.play(new Command(leave, "sheep")));
 
-        assertEquals("You have crossed", this.target.play(new Command(Action.CROSS, "south-shore")));
+        assertEquals("You have crossed", this.target.play(new Command(cross, "south-shore")));
 
-        assertEquals("Ok", this.target.play(new Command(Action.TAKE, "cabbage")));
+        assertEquals("Ok", this.target.play(new Command(take, "cabbage")));
 
-        assertEquals("You have crossed", this.target.play(new Command(Action.CROSS, "north-shore")));
+        assertEquals("You have crossed", this.target.play(new Command(cross, "north-shore")));
 
-        assertEquals("Ok", this.target.play(new Command(Action.LEAVE, "cabbage")));
+        assertEquals("Ok", this.target.play(new Command(leave, "cabbage")));
 
-        assertEquals("Ok", this.target.play(new Command(Action.TAKE, "sheep")));
+        assertEquals("Ok", this.target.play(new Command(take, "sheep")));
 
-        assertEquals("You have crossed", this.target.play(new Command(Action.CROSS, "south-shore")));
+        assertEquals("You have crossed", this.target.play(new Command(cross, "south-shore")));
 
-        assertEquals("Ok", this.target.play(new Command(Action.LEAVE, "sheep")));
+        assertEquals("Ok", this.target.play(new Command(leave, "sheep")));
 
-        assertEquals("Ok", this.target.play(new Command(Action.TAKE, "wolf")));
+        assertEquals("Ok", this.target.play(new Command(take, "wolf")));
 
-        assertEquals("You have crossed", this.target.play(new Command(Action.CROSS, "north-shore")));
+        assertEquals("You have crossed", this.target.play(new Command(cross, "north-shore")));
 
-        assertEquals("Ok", this.target.play(new Command(Action.LEAVE, "wolf")));
+        assertEquals("Ok", this.target.play(new Command(leave, "wolf")));
 
-        assertEquals("You have crossed", this.target.play(new Command(Action.CROSS, "south-shore")));
+        assertEquals("You have crossed", this.target.play(new Command(cross, "south-shore")));
 
-        assertEquals("Ok", this.target.play(new Command(Action.TAKE, "sheep")));
+        assertEquals("Ok", this.target.play(new Command(take, "sheep")));
 
-        assertEquals("You have crossed", this.target.play(new Command(Action.CROSS, "north-shore")));
+        assertEquals("You have crossed", this.target.play(new Command(cross, "north-shore")));
 
-        assertEquals("You won the game!", this.target.play(new Command(Action.LEAVE, "sheep")));
+        assertEquals("You won the game!", this.target.play(new Command(leave, "sheep")));
         assertTrue(this.target.isFinished());
     }
 
@@ -60,23 +66,23 @@ public class WolfSheepCabbageTest {
 
         this.target.start();
 
-        String response = this.target.play(new Command(Action.TAKE, ""));
+        String response = this.target.play(new Command(take, ""));
         assertEquals("The shore doesn't have that object", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.TAKE, "apple"));
+        response = this.target.play(new Command(take, "apple"));
         assertEquals("The shore doesn't have that object", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.TAKE, "wolf"));
+        response = this.target.play(new Command(take, "wolf"));
         assertEquals("Ok", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.TAKE, "wolf"));
+        response = this.target.play(new Command(take, "wolf"));
         assertEquals("You can't do that. The boat is full", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.LOOK_AROUND, ""));
+        response = this.target.play(new Command(lookAround, ""));
         assertEquals("You are at: SouthShore and have Sheep Cabbage ", response);
         assertFalse(this.target.isFinished());
     }
@@ -86,29 +92,29 @@ public class WolfSheepCabbageTest {
 
         this.target.start();
 
-        String response = this.target.play(new Command(Action.CROSS, "east-shore"));
+        String response = this.target.play(new Command(cross, "east-shore"));
         assertEquals("Unknown location", response);
 
-        response = this.target.play(new Command(Action.CROSS, "south-shore"));
+        response = this.target.play(new Command(cross, "south-shore"));
         assertEquals("You are at south-shore!", response);
 
-        response = this.target.play(new Command(Action.CROSS, "north-shore"));
+        response = this.target.play(new Command(cross, "north-shore"));
         assertEquals("You can't do that. The Wolf will eat the Sheep", response);
 
-        response = this.target.play(new Command(Action.TAKE, "sheep"));
-        response = this.target.play(new Command(Action.CROSS, "north-shore"));
+        response = this.target.play(new Command(take, "sheep"));
+        response = this.target.play(new Command(cross, "north-shore"));
         assertEquals("You have crossed", response);
 
-        response = this.target.play(new Command(Action.LEAVE, "sheep"));
-        response = this.target.play(new Command(Action.CROSS, "south-shore"));
+        response = this.target.play(new Command(leave, "sheep"));
+        response = this.target.play(new Command(cross, "south-shore"));
         assertEquals("You have crossed", response);
 
-        response = this.target.play(new Command(Action.TAKE, "cabbage"));
-        response = this.target.play(new Command(Action.CROSS, "north-shore"));
+        response = this.target.play(new Command(take, "cabbage"));
+        response = this.target.play(new Command(cross, "north-shore"));
         assertEquals("You have crossed", response);
 
-        response = this.target.play(new Command(Action.LEAVE, "cabbage"));
-        response = this.target.play(new Command(Action.CROSS, "south-shore"));
+        response = this.target.play(new Command(leave, "cabbage"));
+        response = this.target.play(new Command(cross, "south-shore"));
         assertEquals("You can't do that. The Sheep will eat the Cabbage", response);
     }
 
@@ -117,28 +123,28 @@ public class WolfSheepCabbageTest {
 
         this.target.start();
 
-        String response = this.target.play(new Command(Action.LEAVE, "wolf"));
+        String response = this.target.play(new Command(leave, "wolf"));
         assertEquals("You can't do that. The boat is empty", response);
 
-        response = this.target.play(new Command(Action.LEAVE, ""));
+        response = this.target.play(new Command(leave, ""));
         assertEquals("You can't do that. The boat is empty", response);
 
-        response = this.target.play(new Command(Action.TAKE, "sheep"));
+        response = this.target.play(new Command(take, "sheep"));
         assertEquals("Ok", response);
 
-        response = this.target.play(new Command(Action.CROSS, "north-shore"));
+        response = this.target.play(new Command(cross, "north-shore"));
         assertEquals("You have crossed", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.LEAVE, "wolf"));
+        response = this.target.play(new Command(leave, "wolf"));
         assertEquals("The boat doesn't have that object", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.LEAVE, "sheep"));
+        response = this.target.play(new Command(leave, "sheep"));
         assertEquals("Ok", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.LOOK_AROUND, ""));
+        response = this.target.play(new Command(lookAround, ""));
         assertEquals("You are at: NorthShore and have Sheep ", response);
     }
 }

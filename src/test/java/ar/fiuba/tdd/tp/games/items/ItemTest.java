@@ -22,7 +22,7 @@ public class ItemTest {
     @Test
     public void testExamineWithSupportedAction() {
         this.target = new Item("item1", "it's a test item.");
-        this.target.getSupportedActions().put(Action.PICK, "pick item1");
+        this.target.getSupportedActions().put(new Action("Pick"), "pick item1");
         assertEquals("You can pick: pick item1.", this.target.examine());
     }
 }

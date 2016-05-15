@@ -36,22 +36,22 @@ public class HanoiTowers extends AbstractGame {
 
     @Override
     protected void registerKnownActions() {
-        this.knownActions.put(Action.SET_DISKS, (itemName, args) -> this.setNumberDisks(itemName));
+        this.knownActions.put(new Action("Set disks"), (itemName, args) -> this.setNumberDisks(itemName));
         this.registerMoveTop();
         this.registerExamine();
         registerMoreActions();
     }
 
     private void registerExamine() {
-        this.knownActions.put(Action.EXAMINE, (itemName, arg) -> this.examine(itemName));
+        this.knownActions.put(new Action("Examine"), (itemName, arg) -> this.examine(itemName));
     }
 
     private void registerMoveTop() {
-        this.knownActions.put(Action.MOVE_TOP, (itemName, args) -> this.moveTop(itemName, args));
+        this.knownActions.put(new Action("Move top"), (itemName, args) -> this.moveTop(itemName, args));
     }
 
     private void registerMoreActions() {
-        this.knownActions.put(Action.TOP_SIZE, (itemName, args) -> this.getTopSize(itemName));
+        this.knownActions.put(new Action("Top size"), (itemName, args) -> this.getTopSize(itemName));
     }
 
     private String topSize(String input) {

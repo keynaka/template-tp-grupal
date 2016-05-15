@@ -18,19 +18,19 @@ public class OpenDoor2Test {
 
         String response =  this.testStart();
 
-        response = this.target.play(new Command(Action.OPEN, "box"));
+        response = this.target.play(new Command(new Action("Open"), "box"));
         assertEquals("The box is opened!", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.LOOK_AROUND, ""));
+        response = this.target.play(new Command(new Action("Look Around"), ""));
         assertEquals("Items in the room: door, box, key.", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.PICK, "key"));
+        response = this.target.play(new Command(new Action("Pick"), "key"));
         assertEquals("There you go!", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.OPEN, "door"));
+        response = this.target.play(new Command(new Action("Open"), "door"));
         assertEquals("You enter room 2. You won the game!", response);
         assertTrue(this.target.isFinished());
     }
@@ -47,7 +47,7 @@ public class OpenDoor2Test {
 
         String response =  this.testStart();
 
-        response = this.target.play(new Command(Action.LOOK_AROUND, ""));
+        response = this.target.play(new Command(new Action("Look Around"), ""));
         assertEquals("Items in the room: door, box.", response);
         assertFalse(this.target.isFinished());
     }
@@ -56,19 +56,19 @@ public class OpenDoor2Test {
     public void testOpenBox() {
         String response =  this.testStart();
 
-        response = this.target.play(new Command(Action.OPEN, "door"));
+        response = this.target.play(new Command(new Action("Open"), "door"));
         assertEquals("Ey! Where do you go?! Room 2 is locked.", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.EXAMINE, "box"));
+        response = this.target.play(new Command(new Action("Examine"), "box"));
         assertEquals("You can open/close the box.", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.OPEN, "box"));
+        response = this.target.play(new Command(new Action("Open"), "box"));
         assertEquals("The box is opened!", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.LOOK_AROUND, ""));
+        response = this.target.play(new Command(new Action("Look Around"), ""));
         assertEquals("Items in the room: door, box, key.", response);
         assertFalse(this.target.isFinished());
     }
@@ -78,7 +78,7 @@ public class OpenDoor2Test {
 
         this.target.start();
 
-        String response = this.target.play(new Command(Action.UNKNOWN_ACTION, ""));
+        String response = this.target.play(new Command(Action.unknow(), ""));
         assertEquals("Unknown command.", response);
         assertFalse(this.target.isFinished());
 

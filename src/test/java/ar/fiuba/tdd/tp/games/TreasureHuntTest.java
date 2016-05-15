@@ -18,29 +18,29 @@ public class TreasureHuntTest {
 
         this.target.start();
 
-        String response = this.target.play(new Command(Action.LOOK_AROUND, ""));
+        String response = this.target.play(new Command(new Action("Look Around"), ""));
         assertEquals("Items in the room: door, Box1, Trunk1, Closet1.", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.PICK, "Box1"));
+        response = this.target.play(new Command(new Action("Pick"), "Box1"));
         assertEquals("You cant pick up a container", response);
 
-        response = this.target.play(new Command(Action.OPEN, "Box1"));
+        response = this.target.play(new Command(new Action("Open"), "Box1"));
         assertEquals("The container is opened!", response);
 
-        response = this.target.play(new Command(Action.LOOK_AROUND, ""));
+        response = this.target.play(new Command(new Action("Look Around"), ""));
         assertEquals("Items in the room: door, Box1, Trunk1, Closet1.", response);
 
-        response = this.target.play(new Command(Action.OPEN, "Trunk1"));
+        response = this.target.play(new Command(new Action("Open"), "Trunk1"));
         assertEquals("The container is opened!", response);
 
-        response = this.target.play(new Command(Action.OPEN, "Box2"));
+        response = this.target.play(new Command(new Action("Open"), "Box2"));
         assertEquals("The container is opened!", response);
 
-        response = this.target.play(new Command(Action.OPEN, "Closet1"));
+        response = this.target.play(new Command(new Action("Open"), "Closet1"));
         assertEquals("The container is opened!", response);
 
-        response = this.target.play(new Command(Action.LOOK_AROUND, ""));
+        response = this.target.play(new Command(new Action("Look Around"), ""));
         assertEquals("Items in the room: door, Key1, Poison1, Antidote1, Box2, Box1, Trunk1, Closet1.", response);
 
     }

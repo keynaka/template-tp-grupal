@@ -48,10 +48,10 @@ public class TreasureHunt extends AbstractGame {
 
     @Override
     protected void registerKnownActions() {
-        this.knownActions.put(Action.LOOK_AROUND, (itemName, args) -> this.lookAround());
-        this.knownActions.put(Action.OPEN, (itemName, args) -> this.open(itemName));
-        this.knownActions.put(Action.PICK, (itemName, args) -> this.pick(itemName));
-        this.knownActions.put(Action.DROP, (itemName, args) -> this.drop(itemName));
+        this.knownActions.put(new Action("Look Around"), (itemName, args) -> this.lookAround());
+        this.knownActions.put(new Action("Open"), (itemName, args) -> this.open(itemName));
+        this.knownActions.put(new Action("Pick"), (itemName, args) -> this.pick(itemName));
+        this.knownActions.put(new Action("Drop"), (itemName, args) -> this.drop(itemName));
     }
 
     private void buildRoomOne() {

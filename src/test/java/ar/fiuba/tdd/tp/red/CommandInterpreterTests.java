@@ -18,7 +18,7 @@ public class CommandInterpreterTests {
     public void pickStickActionIsPick() {
         String gameCommand = "pick stick";
         Command command = interpreter.getCommand(gameCommand);
-        assertEquals(command.getAction(), Action.PICK);
+        assertEquals(command.getAction(), new Action("Pick"));
     }
 
     @Test
@@ -33,7 +33,7 @@ public class CommandInterpreterTests {
     public void lookAroundActionIsLookAround() {
         String gameCommand = "look around";
         Command command = interpreter.getCommand(gameCommand);
-        assertEquals(command.getAction(), Action.LOOK_AROUND);
+        assertEquals(command.getAction(), new Action("Look Around"));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class CommandInterpreterTests {
     public void openActionIsOpen() {
         String gameCommand = "open door";
         Command command = interpreter.getCommand(gameCommand);
-        assertEquals(command.getAction(), Action.OPEN);
+        assertEquals(command.getAction(), new Action("Open"));
         assertEquals(command.getArgument(), "");
     }
 
@@ -64,7 +64,7 @@ public class CommandInterpreterTests {
     public void examineActionIsExamine() {
         String gameCommand = "examine box";
         Command command = interpreter.getCommand(gameCommand);
-        assertEquals(command.getAction(), Action.EXAMINE);
+        assertEquals(command.getAction(),new Action("Examine"));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class CommandInterpreterTests {
     public void diskNumberActionIsSetDisks() {
         String gameCommand = "play with 2";
         Command command = interpreter.getCommand(gameCommand);
-        assertEquals(command.getAction(), Action.SET_DISKS);
+        assertEquals(command.getAction(), new Action("Set disks"));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class CommandInterpreterTests {
     public void moveTopActionIsMove() {
         String gameCommand = "move top";
         Command command = interpreter.getCommand(gameCommand);
-        assertEquals(command.getAction(), Action.MOVE_TOP);
+        assertEquals(command.getAction(), new Action("Move Top"));
         assertEquals(command.getArgument(), "");
     }
 
@@ -110,7 +110,7 @@ public class CommandInterpreterTests {
     public void unknownAction() {
         String gameCommand = "anything else";
         Command command = interpreter.getCommand(gameCommand);
-        assertEquals(command.getAction(), Action.UNKNOWN_ACTION);
+        assertEquals(command.getAction(), Action.unknow());
     }
 
     @Test
@@ -125,7 +125,7 @@ public class CommandInterpreterTests {
     public void takeActionIsTake() {
         String gameCommand = "take wolf";
         Command command = interpreter.getCommand(gameCommand);
-        assertEquals(command.getAction(), Action.TAKE);
+        assertEquals(command.getAction(), new Action("Take"));
     }
 
     @Test
@@ -140,7 +140,7 @@ public class CommandInterpreterTests {
     public void leaveActionIsLeave() {
         String gameCommand = "leave sheep";
         Command command = interpreter.getCommand(gameCommand);
-        assertEquals(command.getAction(), Action.LEAVE);
+        assertEquals(command.getAction(),new Action("Leave"));
     }
 
     @Test
@@ -155,7 +155,7 @@ public class CommandInterpreterTests {
     public void crossActionIsCross() {
         String gameCommand = "cross north-shore";
         Command command = interpreter.getCommand(gameCommand);
-        assertEquals(command.getAction(), Action.CROSS);
+        assertEquals(command.getAction(), new Action("Cross"));
     }
 
     @Test

@@ -27,7 +27,7 @@ public class FetchQuest extends AbstractGameWithStage {
     @Override
     protected void registerKnownActions() {
         super.registerKnownActions();
-        this.knownActions.put(Action.PICK, (itemName, args) -> this.pickAction());
+        this.knownActions.put(new Action("Pick"), (itemName, args) -> this.pickAction());
     }
 
     private String pickAction() {

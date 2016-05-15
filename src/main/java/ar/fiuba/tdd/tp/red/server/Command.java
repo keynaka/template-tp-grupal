@@ -13,7 +13,7 @@ public class Command implements Serializable {
     private String argument;
 
     public Command() {
-        this(Action.UNKNOWN_ACTION, "", "");
+        this(Action.unknow(), "", "");
     }
 
     public Command(Action action) {
@@ -61,10 +61,10 @@ public class Command implements Serializable {
                 return systemAction;
             }
         }
-        return Action.UNKNOWN_ACTION;
+        return Action.unknow();
     }
 
     public static Action[] getSystemActions() {
-        return new Action[]{Action._EXIT, Action._HELP};
+        return new Action[]{Action.exit(), Action.help()};
     }
 }

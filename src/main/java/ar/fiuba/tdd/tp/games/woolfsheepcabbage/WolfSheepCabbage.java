@@ -35,17 +35,17 @@ public class WolfSheepCabbage extends AbstractGame {
     @Override
     protected void registerKnownActions() {
         this.registerLookAround();
-        this.knownActions.put(Action.CROSS, (itemName, args) -> this.cross(itemName));
+        this.knownActions.put(new Action("Cross"), (itemName, args) -> this.cross(itemName));
         this.registerMoreActions();
     }
 
     private void registerLookAround() {
-        this.knownActions.put(Action.LOOK_AROUND, (itemName, args) -> this.lookAround());
+        this.knownActions.put(new Action("Look Around"), (itemName, args) -> this.lookAround());
     }
 
     private void registerMoreActions() {
-        this.knownActions.put(Action.TAKE, (itemName, args) -> this.take(itemName));
-        this.knownActions.put(Action.LEAVE, (itemName, args) -> this.leave(itemName));
+        this.knownActions.put(new Action("Take"), (itemName, args) -> this.take(itemName));
+        this.knownActions.put(new Action("Leave"), (itemName, args) -> this.leave(itemName));
     }
 
     @Override

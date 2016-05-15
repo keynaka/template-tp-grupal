@@ -20,11 +20,11 @@ public class FetchQuestTest {
 
         assertEquals("Welcome to Fetch Quest!", this.target.start());
 
-        String response = this.target.play(new Command(Action.LOOK_AROUND, ""));
+        String response = this.target.play(new Command(new Action("Look Around"), ""));
         assertEquals("Items in the room: stick.", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.PICK, "stick"));
+        response = this.target.play(new Command(new Action("Pick"), "stick"));
         assertEquals("You won the game!", response);
         assertTrue(this.target.isFinished());
     }
@@ -34,7 +34,7 @@ public class FetchQuestTest {
 
         this.target.start();
 
-        String response = this.target.play(new Command(Action.UNKNOWN_ACTION, ""));
+        String response = this.target.play(new Command(Action.unknow(), ""));
         assertEquals("Unknown command.", response);
         assertFalse(this.target.isFinished());
 
