@@ -2,13 +2,14 @@ package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
+import ar.fiuba.tdd.tp.games.objects.GameObject;
 
 import java.util.*;
 
 /**
  * Created by swandelow on 4/21/16.
  */
-public class Stage {
+public class Stage extends GameObject {
 
     private static final int DEFAULT_STAGE_SIZE = 20;
 

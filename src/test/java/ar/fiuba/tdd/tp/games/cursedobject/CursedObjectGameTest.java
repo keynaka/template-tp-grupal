@@ -95,7 +95,7 @@ public class CursedObjectGameTest {
         assertEquals("You can open: open door2.", response);
 
         response = this.target.play(new Command(Action.EXAMINE, "thief"));
-        assertEquals("You can talk: “Hello”, “Bye”.", response);
+        assertEquals("You can talk: \"Hello\", \"Bye\".", response);
     }
 
 }

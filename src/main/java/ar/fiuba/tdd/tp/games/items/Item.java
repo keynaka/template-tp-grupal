@@ -5,6 +5,7 @@ import ar.fiuba.tdd.tp.games.ConcreteGame;
 import ar.fiuba.tdd.tp.games.Examinable;
 import ar.fiuba.tdd.tp.games.State;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
+import ar.fiuba.tdd.tp.games.objects.GameObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.Map;
 /**
  * Created by swandelow on 4/21/16.
  */
-public class Item implements Examinable {
+public class Item  extends GameObject implements Examinable {
 
     private static final String EXAMINE_MSG = "You can %s: %s.";
 

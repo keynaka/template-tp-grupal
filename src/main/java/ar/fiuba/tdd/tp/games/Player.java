@@ -2,11 +2,12 @@ package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.objects.GameObject;
 
 /**
  * Created by swandelow on 4/21/16.
  */
-public class Player {
+public class Player extends GameObject {
 
     private Inventory inventory;
     private String currentStage;

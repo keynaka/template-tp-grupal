@@ -101,7 +101,7 @@ public class CursedObjectGameBuilder implements GameBuilder {
 
     private Stage buildRoom2() {
         Thief thief = new Thief();
-        thief.registerActionAndHelp(Action.TALK, "“Hello”, “Bye”");
+        thief.registerActionAndHelp(Action.TALK, "\"Hello\", \"Bye\"");
         Stage room2 = buildStage("room2", thief, this.buildCursedDoor2());
         return room2;
     }
