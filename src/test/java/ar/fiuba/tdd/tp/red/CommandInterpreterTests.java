@@ -1,8 +1,15 @@
 package ar.fiuba.tdd.tp.red;
 
 import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.Game;
+import ar.fiuba.tdd.tp.games.creation.GamesList;
+import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
+import ar.fiuba.tdd.tp.games.opendoor.OpenDoorNew;
+import ar.fiuba.tdd.tp.games.treasurehunt.TreasureHunt;
+import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbage;
 import ar.fiuba.tdd.tp.red.server.Command;
 import ar.fiuba.tdd.tp.red.server.CommandInterpreter;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -13,6 +20,13 @@ import static org.junit.Assert.assertEquals;
 public class CommandInterpreterTests {
 
     private CommandInterpreter interpreter = new CommandInterpreter();
+
+    @BeforeClass
+    public static void setUp() {
+        GamesList.setGame(new OpenDoorNew());
+        GamesList.setGame(new HanoiTowers());
+        GamesList.setGame(new WolfSheepCabbage());
+    }
 
     @Test
     public void pickStickActionIsPick() {

@@ -9,7 +9,7 @@ import ar.fiuba.tdd.tp.games.*;
 public class OpenDoorNew extends AbstractOpenDoorNew {
 
     public OpenDoorNew() {
-        super("OpenDoor", "You enter room 2. You won the game!");
+        super("Open Door", "You enter room 2. You won the game!");
     }
 
     @Override

@@ -2,7 +2,12 @@ package ar.fiuba.tdd.tp.red.server;
 
 import ar.fiuba.tdd.tp.games.AbstractGame;
 import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.Game;
 import ar.fiuba.tdd.tp.games.creation.GamesCreator;
+import ar.fiuba.tdd.tp.games.creation.GamesList;
+import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
+import ar.fiuba.tdd.tp.games.treasurehunt.TreasureHunt;
+import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbage;
 
 import java.util.ArrayList;
 
@@ -18,6 +23,7 @@ public class CommandInterpreter {
         this.games = GamesCreator.getAllGames();
         startGames();
     }
+
         /*
         this.games = new ArrayList<AbstractGame>();
 

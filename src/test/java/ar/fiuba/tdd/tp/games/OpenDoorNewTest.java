@@ -18,7 +18,7 @@ public class OpenDoorNewTest {
     public void testHappyPath() {
 
         String response = this.target.start();
-        assertEquals("Welcome to OpenDoor!", response);
+        assertEquals("Welcome to Open Door!", response);
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(Action.LOOK_AROUND, ""));
