@@ -2,23 +2,21 @@ package ar.fiuba.tdd.tp.games.creation;
 
 import ar.fiuba.tdd.tp.games.AbstractGame;
 import ar.fiuba.tdd.tp.games.Game;
-import ar.fiuba.tdd.tp.games.cursedobject.CursedObjectGame;
-import ar.fiuba.tdd.tp.games.fetchquest.FetchQuest;
+import ar.fiuba.tdd.tp.games.cursedobject.CursedObjectGameBuilder;
+import ar.fiuba.tdd.tp.games.fetchquest.FetchQuestBuilder;
 import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowers;
-import ar.fiuba.tdd.tp.games.opendoor.OpenDoor;
-import ar.fiuba.tdd.tp.games.opendoor.OpenDoor2;
 import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbage;
 
 import java.util.ArrayList;
 
 public enum GameEnum {
 
-    FETCH_QUEST("Fetch Quest", new FetchQuest()),
-    OPEN_DOOR("Open Door", new OpenDoor()),
-    OPEN_DOOR_2("Open Door 2", new OpenDoor2()),
+    FETCH_QUEST("Fetch Quest", new FetchQuestBuilder().build()),
+    //OPEN_DOOR("Open Door", new OpenDoor()),
+    //OPEN_DOOR_2("Open Door 2", new OpenDoor2()),
     WOLF("Wolf", new WolfSheepCabbage()),
     HANOI_TOWERS("Hanoi Towers", new HanoiTowers()),
-    CURSED_OBJECT("Cursed Object", new CursedObjectGame());
+    CURSED_OBJECT("Cursed Object", new CursedObjectGameBuilder().build());
 
     GameEnum(String name, Game game) {
         this.gameName = name;
@@ -50,7 +48,7 @@ public enum GameEnum {
         ArrayList<AbstractGame> listGames = new ArrayList<AbstractGame>();
 
         for (GameEnum gameEnum : GameEnum.values()) {
-            listGames.add((AbstractGame)gameEnum.getGame());
+            listGames.add((AbstractGame) gameEnum.getGame());
         }
 
         return listGames;

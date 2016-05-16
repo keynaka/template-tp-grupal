@@ -1,6 +1,6 @@
-package ar.fiuba.tdd.tp.games.opendoor;
+package ar.fiuba.tdd.tp.games;
 
-import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.opendoor.OpenDoor2New;
 import ar.fiuba.tdd.tp.red.server.Command;
 import org.junit.Test;
 
@@ -9,9 +9,9 @@ import static org.junit.Assert.*;
 /**
  * Created by swandelow on 4/22/16.
  */
-public class OpenDoor2Test {
-/*
-    private OpenDoor2 target = new OpenDoor2();
+public class OpenDoor2NewTest {
+
+    private OpenDoor2New target = new OpenDoor2New();
 
     @Test
     public void testHappyPath() {
@@ -82,5 +82,5 @@ public class OpenDoor2Test {
         assertEquals("Unknown command.", response);
         assertFalse(this.target.isFinished());
 
-    }*/
+    }
 }

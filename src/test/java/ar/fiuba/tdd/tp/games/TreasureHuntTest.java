@@ -11,7 +11,7 @@ import static org.junit.Assert.assertFalse;
  * Created by Fede on 26/04/2016.
  */
 public class TreasureHuntTest {
-    private TreasureHunt target = new TreasureHunt();
+    /*private TreasureHunt target = new TreasureHunt();
 
     @Test
     public void testRoomOne() {
@@ -43,5 +43,5 @@ public class TreasureHuntTest {
         response = this.target.play(new Command(Action.LOOK_AROUND, ""));
         assertEquals("Items in the room: Antidote1, Box1, Box2, Closet1, door, Key1, Poison1, Trunk1.", response);
 
-    }
+    }*/
 }

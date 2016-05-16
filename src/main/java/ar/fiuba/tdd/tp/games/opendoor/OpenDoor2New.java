@@ -1,38 +1,46 @@
 package ar.fiuba.tdd.tp.games.opendoor;
 
-import ar.fiuba.tdd.tp.games.*;
+import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.State;
 import ar.fiuba.tdd.tp.games.items.Item;
-import ar.fiuba.tdd.tp.games.items.containers.Box;
+import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 
 import java.util.Collection;
 import java.util.Optional;
 
 /**
- * Created by swandelow on 4/22/16.
+ * Created by Fede on 07/05/2016.
  */
-public class OpenDoor2 /*extends AbstractOpenDoor*/ {
-/*
-    private Box box;
+public class OpenDoor2New extends AbstractOpenDoorNew {
 
-    public OpenDoor2() {
+    private ItemContainer box;
+
+    public OpenDoor2New() {
         super("OpenDoor2", "You enter room 2. You won the game!");
     }
 
     @Override
     protected void registerKnownActions() {
         super.registerKnownActions();
-        this.knownActions.put(Action.OPEN, (itemName, args) -> this.openAction(itemName));
+        this.addKnownActions();
+
+    }
+
+    private void addKnownActions() {
+        this.knownActions.put(Action.OPEN, (itemName, args) -> openAction(itemName));
         this.knownActions.put(Action.EXAMINE, (itemName, args) -> this.examineItem(itemName));
+
     }
 
     private String openAction(String itemName) {
         Item item = this.room.getItem(itemName);
         String result;
         if (this.door.equals(item)) {
-            return this.openDoor();
+            return this.openAction();
         }
         if (this.box.equals(item)) {
-            this.box.open();
+            this.box.getEstados().remove(State.CLOSED);
+            this.box.getEstados().add(State.OPEN);
             Collection<Item> extractedItems = this.box.extractAll();
             for (Item extractedItem : extractedItems) {
                 this.room.addItem(extractedItem);
@@ -45,7 +53,7 @@ public class OpenDoor2 /*extends AbstractOpenDoor*/ {
     @Override
     protected void buildRoom() {
         super.buildRoom();
-        this.box = Box.createWithItemsAndClosed(1, this.key);
+        this.box = new ItemContainer("box", "You can open/close the box.", 1);
         this.box.addItem(this.key);
         this.room.addItem(this.box);
     }
@@ -54,10 +62,4 @@ public class OpenDoor2 /*extends AbstractOpenDoor*/ {
         Optional<Item> item = Optional.ofNullable(this.room.getItem(itemName));
         return item.isPresent() ? item.get().getDescription() : "Item not found.";
     }
-
-//    private void addKnownActions() {
-//        this.knownActions.put(Action.OPEN, (itemName) -> this.openAction(itemName));
-//        this.knownActions.put(Action.EXAMINE, (itemName) -> this.examineItem(itemName));
-//    }*/
 }
-
