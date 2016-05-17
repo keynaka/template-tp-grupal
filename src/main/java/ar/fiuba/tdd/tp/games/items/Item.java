@@ -22,7 +22,6 @@ public class Item  extends GameObject implements Examinable {
     protected String name;
     protected String description;
     protected Map<Action, String> supportedActions;
-    private Map<String, Behavior> behaviors;
 
     protected List<State> estados;
 
@@ -31,7 +30,6 @@ public class Item  extends GameObject implements Examinable {
         this.description = description;
         this.supportedActions = new HashMap<>();
         this.estados = new ArrayList<State>();
-        this.behaviors = new HashMap<>();
     }
 
     public String getName() {
@@ -88,15 +86,6 @@ public class Item  extends GameObject implements Examinable {
 
     public List<State> getEstados() {
         return estados;
-    }
-
-    public void addBehavior(Behavior behavior) {
-        this.behaviors.put(behavior.getActionName(), behavior);
-    }
-
-    public String execute(ConcreteGame game, Action action) {
-        Behavior behavior = this.behaviors.get(action.getActionName());
-        return behavior.execute(game);
     }
 
 }
