@@ -23,13 +23,10 @@ public class Item  extends GameObject implements Examinable {
     protected String description;
     protected Map<Action, String> supportedActions;
 
-    protected List<State> estados;
-
     public Item(String name, String description) {
         this.name = name;
         this.description = description;
         this.supportedActions = new HashMap<>();
-        this.estados = new ArrayList<State>();
     }
 
     public String getName() {
@@ -83,9 +80,5 @@ public class Item  extends GameObject implements Examinable {
         }
     }
 
-
-    public List<State> getEstados() {
-        return estados;
-    }
 
 }
