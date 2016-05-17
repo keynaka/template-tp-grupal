@@ -1,47 +1,37 @@
 package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.treasurehunt.TreasureHunt;
+import ar.fiuba.tdd.tp.games.treasurehunt.TreasureHuntBuilder;
 import ar.fiuba.tdd.tp.red.server.Command;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-/**
- * Created by Fede on 26/04/2016.
- */
 public class TreasureHuntTest {
-    /*private TreasureHunt target = new TreasureHunt();
+    private Game target = new TreasureHuntBuilder().build();
 
     @Test
-    public void testRoomOne() {
+    public void testHappyPath() {
+
+        String response = this.target.play(new Command(Action.LOOK_AROUND));
+        assertEquals("Items in the room1: key1.", response);
+        assertFalse(this.target.isFinished());
+        response = this.target.play(new Command(Action.PICK, "key1"));
+        assertTrue(this.target.isFinished());
+        response = this.target.play(new Command(Action.LOOK_AROUND));
+        assertEquals("You won the game!", response);
+    }
+
+    @Test
+    public void testInvalidCommand() {
 
         this.target.start();
 
-        String response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("Items in the room: Box1, Closet1, door, Trunk1.", response);
+        String response = this.target.play(new Command(Action.UNKNOWN_ACTION, ""));
+        assertEquals("Unknown command.", response);
         assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(Action.PICK, "Box1"));
-        assertEquals("You cant pick up a container", response);
-
-        response = this.target.play(new Command(Action.OPEN, "Box1"));
-        assertEquals("The container is opened!", response);
-
-        response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("Items in the room: Box1, Closet1, door, Trunk1.", response);
-
-        response = this.target.play(new Command(Action.OPEN, "Trunk1"));
-        assertEquals("The container is opened!", response);
-
-        response = this.target.play(new Command(Action.OPEN, "Box2"));
-        assertEquals("The container is opened!", response);
-
-        response = this.target.play(new Command(Action.OPEN, "Closet1"));
-        assertEquals("The container is opened!", response);
-
-        response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("Items in the room: Antidote1, Box1, Box2, Closet1, door, Key1, Poison1, Trunk1.", response);
-
-    }*/
+    }
 }
