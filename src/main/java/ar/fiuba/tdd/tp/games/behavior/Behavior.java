@@ -14,13 +14,19 @@ public class Behavior {
     private String resultMessage;
     private Predicate<ConcreteGame> executionCondition;
     private BehaviorAction behaviorAction;
+    private BehaviorView view;
 
     public String execute(ConcreteGame game) {
         if (executionCondition.test(game)) {
             this.behaviorAction.execute(game);
-            return this.resultMessage;
+            //return this.resultMessage;
+            return this.view.print(game);
         }
         throw new GameException("Unsuccessful execution. Execution condition not met.");
+    }
+
+    public void setView(BehaviorView view) {
+        this.view = view;
     }
 
     public String getActionName() {

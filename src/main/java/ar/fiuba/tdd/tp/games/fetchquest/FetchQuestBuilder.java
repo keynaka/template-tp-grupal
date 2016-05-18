@@ -2,6 +2,7 @@ package ar.fiuba.tdd.tp.games.fetchquest;
 
 import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
+import ar.fiuba.tdd.tp.games.behavior.BehaviorView;
 import ar.fiuba.tdd.tp.games.items.Item;
 
 import java.util.function.Predicate;
@@ -70,8 +71,13 @@ public class FetchQuestBuilder implements GameBuilder {
         behavior.setResultMessage("There you go.");
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-                this.pickBehavior(game);
-            });
+            this.pickBehavior(game);
+        });
+
+
+        BehaviorView view = new BehaviorView();
+        view.setAction((game) -> "There you go.");
+        behavior.setView(view);
 
         Item stick = new Item("stick", "it's a stick.");
         stick.addBehavior(behavior);
