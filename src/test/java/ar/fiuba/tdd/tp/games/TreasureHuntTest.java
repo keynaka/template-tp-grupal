@@ -16,12 +16,14 @@ public class TreasureHuntTest {
     public void testHappyPath() {
 
         String response = this.target.play(new Command(Action.LOOK_AROUND));
-        assertEquals("Items in the room1: key1.", response);
+        assertEquals("Items in the room1: door1, key1.", response);
         assertFalse(this.target.isFinished());
-        response = this.target.play(new Command(Action.PICK, "key1"));
-        assertTrue(this.target.isFinished());
+        this.target.play(new Command(Action.PICK, "key1"));
+        response = this.target.play(new Command(Action.OPEN, "door1"));
+        assertEquals("Open door.", response);
+/*        assertTrue(this.target.isFinished());
         response = this.target.play(new Command(Action.LOOK_AROUND));
-        assertEquals("You won the game!", response);
+        assertEquals("You won the game!", response);*/
     }
 
     @Test
