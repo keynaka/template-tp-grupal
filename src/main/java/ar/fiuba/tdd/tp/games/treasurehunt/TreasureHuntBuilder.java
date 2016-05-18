@@ -85,7 +85,7 @@ public class TreasureHuntBuilder implements GameBuilder{
 
     private Predicate<ConcreteGame> buildWinningCondition() {
         return (concreteGame) -> {
-            return concreteGame.getPlayer().hasItem("key3");
+            return concreteGame.getPlayer().hasItem("treasure");
         };
     }
 
@@ -185,9 +185,11 @@ public class TreasureHuntBuilder implements GameBuilder{
     }
 
     private Stage buildRoom3() {
-        Stage stage = new Stage("room3");
-        stage.addItem(this.buildBox());
-        return stage;
+        Item box = (this.buildBox());
+        box.registerActionAndHelp(Action.OPEN, "open box");
+        Item door = this.buildDoor3();
+        Stage room = buildStage("room3", door, box);
+        return room;
     }
 
 
@@ -201,6 +203,35 @@ public class TreasureHuntBuilder implements GameBuilder{
         box.addItem(this.buildKey3());
         box.addBehavior(behavior);
         return box;
+    }
+
+    private Item buildDoor3() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("open");
+        behavior.setResultMessage("Door3 opened.");
+        behavior.setExecutionCondition((game) -> game.getPlayer().hasItem("key3"));
+        behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior("room4"); });
+        Item door = new Item("door3", "it's a door3.");
+        door.addBehavior(behavior);
+        return door;
+    }
+
+    private Stage buildRoom4() {
+        Stage stage = new Stage("room4");
+        stage.addItem(this.buildTreasure());
+        return stage;
+    }
+
+    private Item buildTreasure() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("pick");
+        behavior.setResultMessage("There you go.");
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior("treasure"); });
+        Item treasure = new Item("treasure", "it's a treasure.");
+        treasure.addBehavior(behavior);
+        treasure.addBehavior(this.buildDropKeyBehavior());
+        return treasure;
     }
 
 
