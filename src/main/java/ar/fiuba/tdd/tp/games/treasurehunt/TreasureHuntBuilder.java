@@ -25,6 +25,7 @@ public class TreasureHuntBuilder implements GameBuilder{
         treasureHunt.setPlayer(this.buildPlayer());
         treasureHunt.addStage(this.buildRoom1());
         treasureHunt.addStage(this.buildRoom2());
+        treasureHunt.addStage(this.buildRoom3());
         treasureHunt.setWinningCondition(this.buildWinningCondition());
         registerKnownActions();
         return treasureHunt;
@@ -46,6 +47,12 @@ public class TreasureHuntBuilder implements GameBuilder{
         return item.execute(treasureHunt, Action.PICK);
     }
 
+    private void pickBehavior(String itemName) {
+        Stage currentStage = treasureHunt.getCurrentStage();
+        Item item = currentStage.pickItem(itemName);
+        treasureHunt.getPlayer().addToInventory(item);
+    }
+
     private String openHandler(String itemName) {
         Stage currentStage = treasureHunt.getCurrentStage();
         return treasureHunt.getPlayer().openFromStage(currentStage, itemName);
@@ -53,7 +60,7 @@ public class TreasureHuntBuilder implements GameBuilder{
 
     private Predicate<ConcreteGame> buildWinningCondition() {
         return (concreteGame) -> {
-            return concreteGame.getPlayer().hasItem("key2");
+            return concreteGame.getPlayer().hasItem("key3");
         };
     }
 
@@ -63,19 +70,18 @@ public class TreasureHuntBuilder implements GameBuilder{
         return player;
     }
 
-    //Seteo de items y piezas
+    private Stage buildStage(String stageName, Item... itemsToAdd) {
+        Stage stage = new Stage(stageName);
+        stage.addItems(itemsToAdd);
+        return stage;
+    }
+
     private Stage buildRoom1() {
         Item item = this.buildKey1();
         item.registerActionAndHelp(Action.PICK, "pick key1");
         Door door = this.buildDoor1();
         Stage room1 = buildStage("room1", door, item);
         return room1;
-    }
-
-    private Stage buildStage(String stageName, Item... itemsToAdd) {
-        Stage stage = new Stage(stageName);
-        stage.addItems(itemsToAdd);
-        return stage;
     }
 
     private Item buildKey1() {
@@ -87,12 +93,6 @@ public class TreasureHuntBuilder implements GameBuilder{
         Item stick = new Item("key1", "it's a key1.");
         stick.addBehavior(behavior);
         return stick;
-    }
-
-    private void pickBehavior(String itemName) {
-        Stage currentStage = treasureHunt.getCurrentStage();
-        Item item = currentStage.pickItem(itemName);
-        treasureHunt.getPlayer().addToInventory(item);
     }
 
     private Door buildDoor1() {
@@ -114,8 +114,34 @@ public class TreasureHuntBuilder implements GameBuilder{
     }
 
     private Stage buildRoom2() {
-        Stage stage = new Stage("room2");
-        stage.addItem(this.buildKey2());
+        Item item = this.buildKey2();
+        item.registerActionAndHelp(Action.PICK, "pick key2");
+        Door door = this.buildDoor2();
+        Stage room1 = buildStage("room2", door, item);
+        return room1;
+    }
+
+    private Door buildDoor2() {
+        Door door = this.buildDoor("door2", "room3");
+        door.setOpeningCondition((player) -> player.hasItem("key2"));
+        door.registerActionAndHelp(Action.OPEN, "open door2");
+        return door;
+    }
+
+    private Item buildKey3() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("pick");
+        behavior.setResultMessage("There you go.");
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior("key3"); });
+        Item stick = new Item("key3", "it's a key3.");
+        stick.addBehavior(behavior);
+        return stick;
+    }
+
+    private Stage buildRoom3() {
+        Stage stage = new Stage("room3");
+        stage.addItem(this.buildKey3());
         return stage;
     }
 
