@@ -42,4 +42,8 @@ public class Behavior {
     public void setBehaviorAction(BehaviorAction behaviorAction) {
         this.behaviorAction = behaviorAction;
     }
+
+    public String getResultMessage() {
+        return this.resultMessage;
+    }
 }
