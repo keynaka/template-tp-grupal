@@ -20,13 +20,14 @@ public class TreasureHuntTest {
         assertFalse(this.target.isFinished());
         this.target.play(new Command(Action.PICK, "key1"));
         response = this.target.play(new Command(Action.OPEN, "door1"));
-        assertEquals("Open door.", response);
+        assertEquals("Door1 opened.", response);
         this.target.play(new Command(Action.PICK, "key2"));
-        response = this.target.play(new Command(Action.OPEN, "door2"));
-        this.target.play(new Command(Action.PICK, "key3"));
-/*        assertTrue(this.target.isFinished());
+        this.target.play(new Command(Action.OPEN, "door2"));
+        this.target.play(new Command(Action.DROP, "key1"));
+        response = this.target.play(new Command(Action.PICK, "key3"));
+        assertTrue(this.target.isFinished());
         response = this.target.play(new Command(Action.LOOK_AROUND));
-        assertEquals("You won the game!", response);*/
+        assertEquals("You won the game!", response);
     }
 
     @Test
