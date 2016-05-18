@@ -5,7 +5,9 @@ import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.cursedobject.CursedDoor;
 import ar.fiuba.tdd.tp.games.items.Door;
 import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 
+import java.util.Iterator;
 import java.util.function.Predicate;
 
 /**
@@ -63,13 +65,22 @@ public class TreasureHuntBuilder implements GameBuilder{
         Stage currentStage = treasureHunt.getCurrentStage();
         Item item = currentStage.getItem(itemName);
         return item.execute(treasureHunt, Action.OPEN);
-
-/*        Stage currentStage = treasureHunt.getCurrentStage();
-        return treasureHunt.getPlayer().openFromStage(currentStage, itemName);*/
     }
 
     private void openBehavior(String nextStage) {
         treasureHunt.getPlayer().setCurrentStage(nextStage);
+    }
+
+    private void openBehavior2(String container) {
+        Stage currentStage = treasureHunt.getCurrentStage();
+
+        Item item = currentStage.pickItem(container);
+        ItemContainer itemContainer = (ItemContainer) item;
+
+        Iterator<Item> it = itemContainer.getAllItems().iterator();
+        while (it.hasNext()) {
+            currentStage.addItem(it.next());
+        }
     }
 
     private Predicate<ConcreteGame> buildWinningCondition() {
@@ -175,9 +186,23 @@ public class TreasureHuntBuilder implements GameBuilder{
 
     private Stage buildRoom3() {
         Stage stage = new Stage("room3");
-        stage.addItem(this.buildKey3());
+        stage.addItem(this.buildBox());
         return stage;
     }
+
+
+    private Item buildBox() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("open");
+        behavior.setResultMessage("Box opened.");
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior2("box"); });
+        ItemContainer box = new ItemContainer("box", "it's a box.",1);
+        box.addItem(this.buildKey3());
+        box.addBehavior(behavior);
+        return box;
+    }
+
 
     @SuppressWarnings("CPD-END")
 
@@ -186,19 +211,5 @@ public class TreasureHuntBuilder implements GameBuilder{
         door.setNextStageName(nextStageName);
         return door;
     }
-
-    /*
-    private Item buildKey2() {
-        Behavior behavior = new Behavior();
-        behavior.setActionName("pick");
-        behavior.setResultMessage("There you go.");
-        behavior.setExecutionCondition((game) -> true);
-        behavior.setBehaviorAction((treasureHunt) -> {
-            this.pickBehavior();
-        });
-        Item stick = new Item("key2", "it's a key.");
-        stick.addBehavior(behavior);
-        return stick;
-    }*/
 }
 
