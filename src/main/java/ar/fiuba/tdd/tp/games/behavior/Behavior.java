@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 public class Behavior {
 
     private String actionName;
-    private String resultMessage;
+    //private String resultMessage;
     private Predicate<ConcreteGame> executionCondition;
     private BehaviorAction behaviorAction;
     private BehaviorView view;
@@ -29,18 +29,18 @@ public class Behavior {
         this.view = view;
     }
 
-    public String getActionName() {
-        return actionName;
-    }
-
     public void setActionName(String actionName) {
         this.actionName = actionName;
     }
 
-    public void setResultMessage(String resultMessage) {
-        this.resultMessage = resultMessage;
+    public String getActionName() {
+        return actionName;
     }
 
+ /*   public void setResultMessage(String resultMessage) {
+        this.resultMessage = resultMessage;
+    }
+*/
     public void setExecutionCondition(Predicate<ConcreteGame> executionCondition) {
         this.executionCondition = executionCondition;
     }

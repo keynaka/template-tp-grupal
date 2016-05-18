@@ -34,7 +34,9 @@ public class FetchQuestBuilder implements GameBuilder {
     }
 
     private String lookAroundHandler(ConcreteGame game) {
-        return game.getCurrentStage().lookAround();
+        //return game.getCurrentStage().lookAround();
+        Stage currentStage = game.getCurrentStage();
+        return currentStage.execute(game, Action.LOOK_AROUND);
     }
 
     private String pickHandler(ConcreteGame game, String itemName) {
@@ -60,6 +62,10 @@ public class FetchQuestBuilder implements GameBuilder {
     }
 
     private Stage buildRoom1() {
+        Behavior roomBehavior = new Behavior();
+        roomBehavior.setActionName("look around");
+        roomBehavior.setExecutionCondition((game) -> true);
+        //BehaviorView roomBehaviorView = new BehaviorView();
         Stage stage = new Stage("room");
         stage.addItem(this.buildStick());
         return stage;
@@ -68,7 +74,7 @@ public class FetchQuestBuilder implements GameBuilder {
     private Item buildStick() {
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
-        behavior.setResultMessage("There you go.");
+        //behavior.setResultMessage("There you go.");
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
             this.pickBehavior(game);
