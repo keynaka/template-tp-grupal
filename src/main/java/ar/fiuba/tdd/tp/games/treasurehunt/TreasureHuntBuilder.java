@@ -83,15 +83,15 @@ public class TreasureHuntBuilder implements GameBuilder{
         behavior.setActionName("pick");
         behavior.setResultMessage("There you go.");
         behavior.setExecutionCondition((game) -> true);
-        behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior(); });
+        behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior("key1"); });
         Item stick = new Item("key1", "it's a key1.");
         stick.addBehavior(behavior);
         return stick;
     }
 
-    private void pickBehavior() {
+    private void pickBehavior(String itemName) {
         Stage currentStage = treasureHunt.getCurrentStage();
-        Item item = currentStage.pickItem("key1");
+        Item item = currentStage.pickItem(itemName);
         treasureHunt.getPlayer().addToInventory(item);
     }
 
@@ -107,7 +107,7 @@ public class TreasureHuntBuilder implements GameBuilder{
         behavior.setActionName("pick");
         behavior.setResultMessage("There you go.");
         behavior.setExecutionCondition((game) -> true);
-        behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior(); });
+        behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior("key2"); });
         Item stick = new Item("key2", "it's a key2.");
         stick.addBehavior(behavior);
         return stick;

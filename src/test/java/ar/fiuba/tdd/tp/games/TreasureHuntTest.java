@@ -21,6 +21,7 @@ public class TreasureHuntTest {
         this.target.play(new Command(Action.PICK, "key1"));
         response = this.target.play(new Command(Action.OPEN, "door1"));
         assertEquals("Open door.", response);
+        this.target.play(new Command(Action.PICK, "key2"));
 /*        assertTrue(this.target.isFinished());
         response = this.target.play(new Command(Action.LOOK_AROUND));
         assertEquals("You won the game!", response);*/
