@@ -3,12 +3,6 @@ package ar.fiuba.tdd.tp.red.server;
 import ar.fiuba.tdd.tp.games.AbstractGame;
 import ar.fiuba.tdd.tp.games.Action;
 import ar.fiuba.tdd.tp.games.creation.GamesCreator;
-<<<<<<< HEAD
-import ar.fiuba.tdd.tp.games.creation.GamesList;
-import ar.fiuba.tdd.tp.games.treasurehunt.TreasureHunt;
-import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbage;
-=======
->>>>>>> develop
 
 import java.util.ArrayList;
 
