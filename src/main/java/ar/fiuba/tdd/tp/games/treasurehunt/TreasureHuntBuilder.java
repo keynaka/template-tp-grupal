@@ -2,6 +2,7 @@ package ar.fiuba.tdd.tp.games.treasurehunt;
 
 import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
+import ar.fiuba.tdd.tp.games.behavior.BehaviorView;
 import ar.fiuba.tdd.tp.games.cursedobject.CursedDoor;
 import ar.fiuba.tdd.tp.games.items.Door;
 import ar.fiuba.tdd.tp.games.items.Item;
@@ -128,7 +129,9 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Item buildKey1() {
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
-        behavior.setResultMessage("There you go.");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "There you go.");
+        behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior("key1"); });
         Item key = new Item("key1", "it's a key1.");
@@ -140,7 +143,10 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Behavior buildDropKeyBehavior() {
         Behavior behavior = new Behavior();
         behavior.setActionName("drop");
-        behavior.setResultMessage("key dropped");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "key dropped");
+        behavior.setView(keyView);
+        //behavior.setResultMessage("key dropped");
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((treasureHunt) -> { });
         return behavior;
@@ -149,7 +155,9 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Item buildDoor1() {
         Behavior behavior = new Behavior();
         behavior.setActionName("open");
-        behavior.setResultMessage("Door1 opened.");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "Door1 opened.");
+        behavior.setView(keyView);
         behavior.setExecutionCondition((game) ->  game.getPlayer().hasItem("key1"));
         behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior("room2"); });
         Item door = new Item("door1", "it's a door1.");
@@ -160,7 +168,9 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Item buildKey2() {
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
-        behavior.setResultMessage("There you go.");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "There you go.");
+        behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior("key2"); });
         Item key = new Item("key2", "it's a key2.");
@@ -180,7 +190,9 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Item buildDoor2() {
         Behavior behavior = new Behavior();
         behavior.setActionName("open");
-        behavior.setResultMessage("Door2 opened.");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "Door2 opened.");
+        behavior.setView(keyView);
         behavior.setExecutionCondition((game) ->  game.getPlayer().hasItem("key2"));
         behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior("room3"); });
         Item door = new Item("door2", "it's a door2.");
@@ -191,7 +203,9 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Item buildKey3() {
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
-        behavior.setResultMessage("There you go.");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "There you go.");
+        behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior("key3"); });
         Item key = new Item("key3", "it's a key3.");
@@ -211,7 +225,9 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Item buildBox() {
         Behavior behavior = new Behavior();
         behavior.setActionName("open");
-        behavior.setResultMessage("Box opened.");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "Box opened.");
+        behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior2("box"); });
         ItemContainer box = new ItemContainer("box", "it's a box.",1);
@@ -223,7 +239,9 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Item buildDoor3() {
         Behavior behavior = new Behavior();
         behavior.setActionName("open");
-        behavior.setResultMessage("Door3 opened.");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "Door3 opened.");
+        behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> game.getPlayer().hasItem("key3"));
         behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior("room4"); });
         Item door = new Item("door3", "it's a door3.");
@@ -234,7 +252,9 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Item buildKey4() {
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
-        behavior.setResultMessage("There you go.");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "There you go.");
+        behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior("key4"); });
         Item key = new Item("key4", "it's a key4.");
@@ -246,7 +266,9 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Item buildPoison() {
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
-        behavior.setResultMessage("You are cursed.");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "You are cursed.");
+        behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior2("poison"); });
         Item poison = new Item("poison", "it's a poison.");
@@ -258,7 +280,9 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Item buildAntidoto() {
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
-        behavior.setResultMessage("You are cured.");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "You are cured.");
+        behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior3("antidoto"); });
         Item antidoto = new Item("antidoto", "it's a antidoto.");
@@ -270,7 +294,9 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Item buildArmario() {
         Behavior behavior = new Behavior();
         behavior.setActionName("open");
-        behavior.setResultMessage("Armario opened.");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "Armario opened.");
+        behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior2("armario"); });
         ItemContainer armario = new ItemContainer("armario", "it's a armario.",5);
@@ -297,7 +323,9 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Item buildDoor4() {
         Behavior behavior = new Behavior();
         behavior.setActionName("open");
-        behavior.setResultMessage("Door4 opened.");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "Door4 opened.");
+        behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> this.doorConditionAndPlayerState("key4"));
         behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior("room5"); });
         Item door = new Item("door4", "it's a door4.");
@@ -308,7 +336,9 @@ public class TreasureHuntBuilder implements GameBuilder{
     private Item buildTreasure() {
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
-        behavior.setResultMessage("There you go.");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "There you go.");
+        behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior("treasure"); });
         Item treasure = new Item("treasure", "it's a treasure.");
