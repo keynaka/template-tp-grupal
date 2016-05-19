@@ -46,19 +46,10 @@ public class Stage extends GameObject {
         return this.itemContainer.extract(itemName);
     }
 
-    public String lookAround() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Items in the %s: ", this.getName()));
+    public Iterator lookAround() {
+
         Iterator<Item> it = itemContainer.getAllItems().iterator();
-        while (it.hasNext()) {
-            sb.append(it.next().getName());
-            if (it.hasNext()) {
-                sb.append(", ");
-            } else {
-                sb.append(".");
-            }
-        }
-        return sb.toString();
+        return it;
     }
 
     public Item getItem(String itemName) {

@@ -5,6 +5,7 @@ import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.behavior.BehaviorView;
 import ar.fiuba.tdd.tp.games.items.Item;
 
+import java.util.Iterator;
 import java.util.function.Predicate;
 
 /**
@@ -40,10 +41,6 @@ public class FetchQuestBuilder implements GameBuilder {
     }
 
     private String pickHandler(ConcreteGame game, String itemName) {
-//        Stage currentStage = game.getCurrentStage();
-//        Item item = currentStage.pickItem(itemName);
-//        game.getPlayer().addToInventory(item);
-//        return "There you go.";
         Stage currentStage = game.getCurrentStage();
         Item item = currentStage.getItem(itemName);
         return item.execute(game, Action.PICK);
@@ -63,18 +60,25 @@ public class FetchQuestBuilder implements GameBuilder {
 
     private Stage buildRoom1() {
         Behavior roomBehavior = new Behavior();
-        roomBehavior.setActionName("look around");
         roomBehavior.setExecutionCondition((game) -> true);
-        //BehaviorView roomBehaviorView = new BehaviorView();
+        roomBehavior.setActionName("look around");
+        roomBehavior.setBehaviorAction((game) -> {
+           this.lookAroundBehavior(game);
+        });
         Stage stage = new Stage("room");
         stage.addItem(this.buildStick());
+        BehaviorView roomBehaviorView = new BehaviorView();
+        roomBehaviorView.setAction((game) -> {
+          return this.actionViewBehavior(game);
+        });
+        roomBehavior.setView(roomBehaviorView);
+        stage.addBehavior(roomBehavior);
         return stage;
     }
 
     private Item buildStick() {
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
-        //behavior.setResultMessage("There you go.");
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
             this.pickBehavior(game);
@@ -94,5 +98,28 @@ public class FetchQuestBuilder implements GameBuilder {
         Stage currentStage = game.getCurrentStage();
         Item item = currentStage.pickItem("stick");
         game.getPlayer().addToInventory(item);
+    }
+
+    private void lookAroundBehavior(ConcreteGame game) {
+        game.getCurrentStage().lookAround();
+    }
+
+    private String stageObjectsToString(Stage stage) {
+        StringBuilder sb = new StringBuilder();
+        Iterator<Item> iterator = stage.lookAround();
+        while (iterator.hasNext()) {
+            sb.append(iterator.next().getName());
+            if (iterator.hasNext()) {
+                sb.append(", ");
+            } else {
+                sb.append(".");
+            }
+        }
+        return sb.toString();
+    }
+
+    private String actionViewBehavior(ConcreteGame game) {
+        Stage currentStage = game.getCurrentStage();
+        return "Items in the room: " + this.stageObjectsToString(currentStage);
     }
 }
