@@ -45,6 +45,7 @@ public class Door extends Item implements Openable {
     @Override
     public String open(Player player) {
         if (this.getOpeningCondition().test(player)) {
+            player.setCurrentStage(this.getNextStageName());
             return this.open();
         }
         return this.getOpeningErrorMessage();

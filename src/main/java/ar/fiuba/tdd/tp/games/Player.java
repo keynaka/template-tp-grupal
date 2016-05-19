@@ -12,10 +12,12 @@ public class Player extends GameObject {
     private Inventory inventory;
     private String currentStage;
     private CharacterState state;
+    private String state2;
 
     public Player() {
         this.inventory = new Inventory();
         this.state = CharacterState.HEALTHY;
+        this.state2 = "healthy";
     }
 
     public Inventory getInventory() {
@@ -40,6 +42,14 @@ public class Player extends GameObject {
 
     public CharacterState getState() {
         return state;
+    }
+
+    public String getState2() {
+        return state2;
+    }
+
+    public void modifyState2(String state) {
+        this.state2 = state;
     }
 
     public void modifyState(CharacterState state) {
