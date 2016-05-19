@@ -2,6 +2,7 @@ package ar.fiuba.tdd.tp.games.hanoitowers;
 
 import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
+import ar.fiuba.tdd.tp.games.behavior.BehaviorView;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
 
@@ -170,7 +171,9 @@ public class HanoiTowersBuilder implements GameBuilder {
     private Behavior buildMoveTopBehavior(String towerId) {
         Behavior behavior = new Behavior();
         behavior.setActionName("move top");
-        behavior.setResultMessage("Moved!");
+        BehaviorView view = new BehaviorView();
+        view.setAction((game) -> "Moved!");
+        behavior.setView(view);
         behavior.setExecutionCondition((game) -> this.buildMoveTopCondition(towerId));
         behavior.setBehaviorAction((game) -> {
                 this.moveTopBehavior(game, towerId);
@@ -239,12 +242,21 @@ public class HanoiTowersBuilder implements GameBuilder {
     private Behavior buildCheckTopBehavior(String towerId) {
         Behavior behavior = new Behavior();
         behavior.setActionName("check top");
-        behavior.setResultMessage("Top size is"); // TODO: TOP SIZE COMO DEVOLVERLO ?
+        BehaviorView view = new BehaviorView();
+        view.setAction((game) -> this.getTopSize(game, towerId));
+        behavior.setView(view);
         behavior.setExecutionCondition((game) -> this.buildCheckTopCondition(towerId));
         behavior.setBehaviorAction((game) -> {
                 this.checkTopBehavior(game, towerId);
             });
         return behavior;
+    }
+
+    private String getTopSize(ConcreteGame game, String towerId) {
+        Stage currentStage = game.getCurrentStage();
+        Stacker stacker = (Stacker) currentStage.getItem(towerId);
+        String message = "Top size is %s.";
+        return String.format(message,stacker.checkTop().getDescription());
     }
 
     private boolean buildCheckTopCondition(String towerId) {

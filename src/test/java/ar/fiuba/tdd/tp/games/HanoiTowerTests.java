@@ -28,7 +28,7 @@ public class HanoiTowerTests {
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(Action.TOP_SIZE, "tower1"));
-        assertEquals("Top size is", response);
+        assertEquals("Top size is 1.", response);
         assertFalse(this.target.isFinished());
 
         moveDisks();

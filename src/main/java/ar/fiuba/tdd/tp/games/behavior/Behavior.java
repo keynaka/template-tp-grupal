@@ -11,30 +11,36 @@ import java.util.function.Predicate;
 public class Behavior {
 
     private String actionName;
-    private String resultMessage;
+    //private String resultMessage;
     private Predicate<ConcreteGame> executionCondition;
     private BehaviorAction behaviorAction;
+    private BehaviorView view;
 
     public String execute(ConcreteGame game) {
         if (executionCondition.test(game)) {
             this.behaviorAction.execute(game);
-            return this.resultMessage;
+            //return this.resultMessage;
+            return this.view.print(game);
         }
         throw new GameException("Unsuccessful execution. Execution condition not met.");
     }
 
-    public String getActionName() {
-        return actionName;
+    public void setView(BehaviorView view) {
+        this.view = view;
     }
 
     public void setActionName(String actionName) {
         this.actionName = actionName;
     }
 
-    public void setResultMessage(String resultMessage) {
-        this.resultMessage = resultMessage;
+    public String getActionName() {
+        return actionName;
     }
 
+ /*   public void setResultMessage(String resultMessage) {
+        this.resultMessage = resultMessage;
+    }
+*/
     public void setExecutionCondition(Predicate<ConcreteGame> executionCondition) {
         this.executionCondition = executionCondition;
     }
