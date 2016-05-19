@@ -29,6 +29,7 @@ public class TreasureHuntBuilder implements GameBuilder{
         treasureHunt.addStage(this.buildRoom2());
         treasureHunt.addStage(this.buildRoom3());
         treasureHunt.addStage(this.buildRoom4());
+        treasureHunt.addStage(this.buildRoom5());
         treasureHunt.setWinningCondition(this.buildWinningCondition());
         registerKnownActions();
         return treasureHunt;
@@ -75,7 +76,7 @@ public class TreasureHuntBuilder implements GameBuilder{
     private void openBehavior2(String container) {
         Stage currentStage = treasureHunt.getCurrentStage();
 
-        Item item = currentStage.pickItem(container);
+        Item item = currentStage.getItem(container);
         ItemContainer itemContainer = (ItemContainer) item;
 
         Iterator<Item> it = itemContainer.getAllItems().iterator();
@@ -193,7 +194,6 @@ public class TreasureHuntBuilder implements GameBuilder{
         return room;
     }
 
-
     private Item buildBox() {
         Behavior behavior = new Behavior();
         behavior.setActionName("open");
@@ -217,10 +217,47 @@ public class TreasureHuntBuilder implements GameBuilder{
         return door;
     }
 
+    private Item buildKey4() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("pick");
+        behavior.setResultMessage("There you go.");
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior("key4"); });
+        Item key = new Item("key4", "it's a key4.");
+        key.addBehavior(behavior);
+        key.addBehavior(this.buildDropKeyBehavior());
+        return key;
+    }
+
+    private Item buildArmario() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("open");
+        behavior.setResultMessage("Armario opened.");
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior2("armario"); });
+        ItemContainer box = new ItemContainer("armario", "it's a armario.",1);
+        box.addItem(this.buildKey4());
+        box.addBehavior(behavior);
+        return box;
+    }
+
     private Stage buildRoom4() {
-        Stage stage = new Stage("room4");
-        stage.addItem(this.buildTreasure());
-        return stage;
+        Item armario = (this.buildArmario());
+        armario.registerActionAndHelp(Action.OPEN, "open armario");
+        Item door = this.buildDoor4();
+        Stage room = buildStage("room4", door, armario);
+        return room;
+    }
+
+    private Item buildDoor4() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("open");
+        behavior.setResultMessage("Door4 opened.");
+        behavior.setExecutionCondition((game) -> game.getPlayer().hasItem("key4"));
+        behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior("room5"); });
+        Item door = new Item("door4", "it's a door4.");
+        door.addBehavior(behavior);
+        return door;
     }
 
     private Item buildTreasure() {
@@ -235,6 +272,11 @@ public class TreasureHuntBuilder implements GameBuilder{
         return treasure;
     }
 
+    private Stage buildRoom5() {
+        Stage stage = new Stage("room5");
+        stage.addItem(this.buildTreasure());
+        return stage;
+    }
 
     @SuppressWarnings("CPD-END")
 
