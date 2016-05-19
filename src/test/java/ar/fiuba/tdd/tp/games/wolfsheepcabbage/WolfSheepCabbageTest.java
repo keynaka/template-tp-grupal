@@ -1,16 +1,20 @@
-package ar.fiuba.tdd.tp.games;
+package ar.fiuba.tdd.tp.games.wolfsheepcabbage;
 
-import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbage;
+import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.Game;
+import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbageBuilder;
 import ar.fiuba.tdd.tp.red.server.Command;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Created by Fede on 07/05/2016.
+ * Created by Fede on 17/05/2016.
  */
 public class WolfSheepCabbageTest {
-    private WolfSheepCabbage target = new WolfSheepCabbage();
+    private Game target = new WolfSheepCabbageBuilder().build();
 
     @Test
     public void testHappyPath() {
@@ -75,7 +79,7 @@ public class WolfSheepCabbageTest {
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("Items in the SouthShore: Cabbage, Sheep.", response);
+        assertEquals("Items in the SouthShore: cabbage, sheep.", response);
         assertFalse(this.target.isFinished());
     }
 
@@ -91,7 +95,7 @@ public class WolfSheepCabbageTest {
         assertEquals("You are at south-shore!", response);
 
         response = this.target.play(new Command(Action.CROSS, "north-shore"));
-        assertEquals("You can't do that. The Sheep will eat the Cabbage", response);
+        assertEquals("You can't do that. The sheep will eat the cabbage", response);
 
         response = this.target.play(new Command(Action.TAKE, "sheep"));
         response = this.target.play(new Command(Action.CROSS, "north-shore"));
@@ -107,7 +111,7 @@ public class WolfSheepCabbageTest {
 
         response = this.target.play(new Command(Action.LEAVE, "cabbage"));
         response = this.target.play(new Command(Action.CROSS, "south-shore"));
-        assertEquals("You can't do that. The Sheep will eat the Cabbage", response);
+        assertEquals("You can't do that. The sheep will eat the cabbage", response);
     }
 
     @Test
@@ -137,6 +141,7 @@ public class WolfSheepCabbageTest {
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(Action.LOOK_AROUND, ""));
-        assertEquals("Items in the NorthShore: Sheep.", response);
+        assertEquals("Items in the NorthShore: sheep.", response);
     }
 }
+
