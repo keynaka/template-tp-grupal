@@ -63,10 +63,18 @@ public class TreasureHuntBuilder implements GameBuilder{
         treasureHunt.getPlayer().addToInventory(item);
     }
 
-    private void pickBehavior2(String poison) {
+    private void pickBehavior2(String item) {
         Stage currentStage = treasureHunt.getCurrentStage();
-        currentStage.pickItem(poison);
-        treasureHunt.getPlayer().modifyState(CharacterState.CURSED);
+        currentStage.pickItem(item);
+
+        treasureHunt.getPlayer().modifyState2("poisoned");
+    }
+
+    private void pickBehavior3(String item) {
+        Stage currentStage = treasureHunt.getCurrentStage();
+        currentStage.pickItem(item);
+
+        treasureHunt.getPlayer().modifyState2("healthy");
     }
 
     private String openHandler(String itemName) {
@@ -247,17 +255,30 @@ public class TreasureHuntBuilder implements GameBuilder{
         return poison;
     }
 
+    private Item buildAntidoto() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("pick");
+        behavior.setResultMessage("You are cured.");
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior3("antidoto"); });
+        Item antidoto = new Item("antidoto", "it's a antidoto.");
+        antidoto.addBehavior(behavior);
+        antidoto.addBehavior(this.buildDropKeyBehavior());
+        return antidoto;
+    }
+
     private Item buildArmario() {
         Behavior behavior = new Behavior();
         behavior.setActionName("open");
         behavior.setResultMessage("Armario opened.");
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior2("armario"); });
-        ItemContainer box = new ItemContainer("armario", "it's a armario.",5);
-        box.addItem(this.buildKey4());
-        box.addItem(this.buildPoison());
-        box.addBehavior(behavior);
-        return box;
+        ItemContainer armario = new ItemContainer("armario", "it's a armario.",5);
+        armario.addItem(this.buildKey4());
+        armario.addItem(this.buildPoison());
+        armario.addItem(this.buildAntidoto());
+        armario.addBehavior(behavior);
+        return armario;
     }
 
     private Stage buildRoom4() {
@@ -270,8 +291,7 @@ public class TreasureHuntBuilder implements GameBuilder{
 
     private boolean doorConditionAndPlayerState(String key) {
         Player player = treasureHunt.getPlayer();
-        return (player.hasItem(key));
-
+        return (player.hasItem(key) && player.getState2() == "healthy");
     }
 
     private Item buildDoor4() {
