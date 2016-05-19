@@ -3,6 +3,7 @@ package ar.fiuba.tdd.tp.games;
 /**
  * Created by swandelow on 4/25/16.
  */
+/*
 public abstract class AbstractGameWithStage extends AbstractGame {
 
     protected Stage stage;
@@ -18,7 +19,8 @@ public abstract class AbstractGameWithStage extends AbstractGame {
 
     @Override
     protected void registerKnownActions() {
-        this.knownActions.put(Action.LOOK_AROUND, (itemName, args) -> this.stage.lookAround());
+        //this.knownActions.put(Action.LOOK_AROUND, (itemName, args) -> this.stage.lookAround());
     }
 
 }
+*/

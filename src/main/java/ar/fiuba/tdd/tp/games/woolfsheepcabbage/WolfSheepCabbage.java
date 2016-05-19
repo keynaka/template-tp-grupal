@@ -5,6 +5,8 @@ import ar.fiuba.tdd.tp.games.Action;
 import ar.fiuba.tdd.tp.games.Stage;
 import ar.fiuba.tdd.tp.games.items.Item;
 
+import java.util.Iterator;
+
 /**
  * Created by Fede on 07/05/2016.
  */
@@ -36,7 +38,8 @@ public class WolfSheepCabbage extends AbstractGame {
     }
 
     private void registerLookAround() {
-        this.knownActions.put(Action.LOOK_AROUND, (itemName, args) -> this.lookAround());
+       // this.knownActions.put(Action.LOOK_AROUND, (itemName, args) -> this.lookAround());
+
     }
 
     private void registerMoreActions() {
@@ -66,7 +69,7 @@ public class WolfSheepCabbage extends AbstractGame {
         return this.getActualShore().getItemContainer().contains(transportableToFind.getName());
     }
 
-    private String lookAround() {
+    private Iterator lookAround() {
         if (this.boatAtSouth) {
             return southShore.lookAround();
         } else {

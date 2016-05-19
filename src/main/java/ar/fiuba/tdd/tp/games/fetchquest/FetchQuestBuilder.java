@@ -35,7 +35,6 @@ public class FetchQuestBuilder implements GameBuilder {
     }
 
     private String lookAroundHandler(ConcreteGame game) {
-        //return game.getCurrentStage().lookAround();
         Stage currentStage = game.getCurrentStage();
         return currentStage.execute(game, Action.LOOK_AROUND);
     }

@@ -4,6 +4,7 @@ import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.items.Door;
 import ar.fiuba.tdd.tp.games.items.Item;
 
+import java.util.Iterator;
 import java.util.function.Predicate;
 
 /**
@@ -39,10 +40,10 @@ public class CursedObjectGameBuilder implements GameBuilder {
     }
 
     private void registerLookAround(ConcreteGame game) {
-        game.registerKnownAction(Action.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler(game));
+        //game.registerKnownAction(Action.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler(game));
     }
 
-    private String lookAroundHandler(ConcreteGame game) {
+    private Iterator lookAroundHandler(ConcreteGame game) {
         return game.getCurrentStage().lookAround();
     }
 
