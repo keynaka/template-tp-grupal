@@ -14,17 +14,11 @@ public class TreasureHuntTest {
 
     @Test
     public void testHappyPath() {
-
         this.room1();
-
         this.room2();
-
         this.room3();
-
         this.room4();
-
         this.room5();
-
     }
 
     public void room1() {
