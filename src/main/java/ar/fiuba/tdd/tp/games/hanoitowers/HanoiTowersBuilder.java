@@ -247,7 +247,7 @@ public class HanoiTowersBuilder implements GameBuilder {
         behavior.setView(view);
         behavior.setExecutionCondition((game) -> this.buildCheckTopCondition(towerId));
         behavior.setBehaviorAction((game) -> {
-                this.checkTopBehavior(game, towerId);
+                this.checkTopBehavior();
             });
         return behavior;
     }
@@ -264,12 +264,7 @@ public class HanoiTowersBuilder implements GameBuilder {
         return diskAreSetted() && !tower.isEmpty();
     }
 
-    private int checkTopBehavior(ConcreteGame game, String towerId) {
-
-        Stage currentStage = game.getCurrentStage();
-        Stacker stacker = (Stacker) currentStage.getItem(towerId);
-        int size = Integer.parseInt(stacker.checkTop().getDescription());
-        return size; // TODO sacar , para evitar warning de findbugs
+    private void checkTopBehavior() {
     }
 
     private Predicate<ConcreteGame> buildWinningCondition() {
