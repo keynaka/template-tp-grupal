@@ -63,6 +63,12 @@ public class TreasureHuntBuilder implements GameBuilder{
         treasureHunt.getPlayer().addToInventory(item);
     }
 
+    private void pickBehavior2(String poison) {
+        Stage currentStage = treasureHunt.getCurrentStage();
+        currentStage.pickItem(poison);
+        treasureHunt.getPlayer().modifyState(CharacterState.CURSED);
+    }
+
     private String openHandler(String itemName) {
         Stage currentStage = treasureHunt.getCurrentStage();
         Item item = currentStage.getItem(itemName);
@@ -229,14 +235,27 @@ public class TreasureHuntBuilder implements GameBuilder{
         return key;
     }
 
+    private Item buildPoison() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("pick");
+        behavior.setResultMessage("You are cursed.");
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior2("poison"); });
+        Item poison = new Item("poison", "it's a poison.");
+        poison.addBehavior(behavior);
+        poison.addBehavior(this.buildDropKeyBehavior());
+        return poison;
+    }
+
     private Item buildArmario() {
         Behavior behavior = new Behavior();
         behavior.setActionName("open");
         behavior.setResultMessage("Armario opened.");
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior2("armario"); });
-        ItemContainer box = new ItemContainer("armario", "it's a armario.",1);
+        ItemContainer box = new ItemContainer("armario", "it's a armario.",5);
         box.addItem(this.buildKey4());
+        box.addItem(this.buildPoison());
         box.addBehavior(behavior);
         return box;
     }
@@ -249,11 +268,17 @@ public class TreasureHuntBuilder implements GameBuilder{
         return room;
     }
 
+    private boolean doorConditionAndPlayerState(String key) {
+        Player player = treasureHunt.getPlayer();
+        return (player.hasItem(key));
+
+    }
+
     private Item buildDoor4() {
         Behavior behavior = new Behavior();
         behavior.setActionName("open");
         behavior.setResultMessage("Door4 opened.");
-        behavior.setExecutionCondition((game) -> game.getPlayer().hasItem("key4"));
+        behavior.setExecutionCondition((game) -> this.doorConditionAndPlayerState("key4"));
         behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior("room5"); });
         Item door = new Item("door4", "it's a door4.");
         door.addBehavior(behavior);
