@@ -37,13 +37,9 @@ public class TreasureHuntTest {
 
         this.target.play(new Command(Action.DROP, "key2"));
         this.target.play(new Command(Action.DROP, "key3"));
-       // response = this.target.play(new Command(Action.PICK, "treasure"));
-        //TODO: Analizar por que no se puede hacer el pick de treasure
-//        assertEquals("You won the game!", response);
+        response = this.target.play(new Command(Action.PICK, "treasure"));
+        assertEquals("You won the game!", response);
 
-/*        assertTrue(this.target.isFinished());
-        response = this.target.play(new Command(Action.LOOK_AROUND));
-        assertEquals("You won the game!", response);*/
     }
 
     @Test

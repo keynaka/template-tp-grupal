@@ -28,6 +28,7 @@ public class TreasureHuntBuilder implements GameBuilder{
         treasureHunt.addStage(this.buildRoom1());
         treasureHunt.addStage(this.buildRoom2());
         treasureHunt.addStage(this.buildRoom3());
+        treasureHunt.addStage(this.buildRoom4());
         treasureHunt.setWinningCondition(this.buildWinningCondition());
         registerKnownActions();
         return treasureHunt;
