@@ -2,10 +2,10 @@ package ar.fiuba.tdd.tp.games.opendoor;
 
 import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
-import ar.fiuba.tdd.tp.games.exceptions.GameException;
+import ar.fiuba.tdd.tp.games.behavior.BehaviorView;
 import ar.fiuba.tdd.tp.games.items.Item;
-import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 
+import java.util.Iterator;
 import java.util.function.Predicate;
 
 /**
@@ -40,6 +40,18 @@ public class OpenDoorBuilder implements GameBuilder {
         Stage stage = new Stage("room");
         stage.addItem(this.buildKey());
         stage.addItem(this.buildDoor());
+        Behavior roomB = new Behavior();
+        roomB.setActionName("look around");
+        roomB.setExecutionCondition((game) -> true);
+        roomB.setBehaviorAction((game) -> {
+            this.lookAroundAction();
+        });
+        BehaviorView stageView = new BehaviorView();
+        stageView.setAction((game) -> {
+            return this.stageViewBehavior();
+        });
+        roomB.setView(stageView);
+        stage.addBehavior(roomB);
         return stage;
     }
 
@@ -48,11 +60,14 @@ public class OpenDoorBuilder implements GameBuilder {
     private Item buildKey() {
         Behavior pick = new Behavior();
         pick.setActionName("pick");
-        pick.setResultMessage("There you go!");
         pick.setExecutionCondition((game) -> true);
         pick.setBehaviorAction((game) -> {
                 this.pickBehavior();
             });
+
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "There you go!");
+        pick.setView(keyView);
 
         Item key = new Item("key", "pick key.");
         key.addBehavior(pick);
@@ -62,7 +77,6 @@ public class OpenDoorBuilder implements GameBuilder {
     private Item buildDoor() {
         Behavior open = new Behavior();
         open.setActionName("open");
-        open.setResultMessage("You enter room 2. You won the game!");
         open.setExecutionCondition((game) -> this.testOpenDoor());
         open.setBehaviorAction((game) -> {
                 this.openBehavior();
@@ -70,6 +84,11 @@ public class OpenDoorBuilder implements GameBuilder {
         Item door = new Item("door", "It's a door.");
         door.addBehavior(open);
         door.addState("door", "closed");
+        BehaviorView doorView = new BehaviorView();
+        doorView.setAction((game) -> {
+            return this.openDoorBehaviorView();
+            });
+        open.setView(doorView);
         return door;
     }
 
@@ -100,7 +119,6 @@ public class OpenDoorBuilder implements GameBuilder {
     }
 
 
-
     private void registerKnownActions() {
         openDoor.registerKnownAction(Action.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler());
         openDoor.registerKnownAction(Action.PICK, (itemName, args) -> this.pickHandler(itemName));
@@ -108,7 +126,8 @@ public class OpenDoorBuilder implements GameBuilder {
     }
 
     private String lookAroundHandler() {
-        return openDoor.getCurrentStage().lookAround();
+        Stage gameCurrentStage = openDoor.getCurrentStage();
+        return gameCurrentStage.execute(openDoor, Action.LOOK_AROUND);
     }
 
     private String pickHandler(String itemName) {
@@ -120,15 +139,48 @@ public class OpenDoorBuilder implements GameBuilder {
     private String openHandler(String itemName) {
         Stage currentStage = openDoor.getCurrentStage();
         Item item = currentStage.getItem(itemName);
-        String resultMessage;
+/*        String resultMessage;
         try {
             item.execute(openDoor, Action.OPEN);
             resultMessage = item.getBehavior("open").getResultMessage();
         } catch (GameException e) {
             resultMessage = "Ey! Where do you go?! Room 2 is locked.";
-        }
-
-        return resultMessage;
+        }*/
+        return item.execute(openDoor, Action.OPEN);
     }
+
+    private String openDoorBehaviorView() {
+        Stage stage = openDoor.getCurrentStage();
+        Item currentDoor = stage.getItem("door");
+        if (currentDoor.getState("door").equals("opened")){
+            return "You enter room 2. You won the game!";
+        }
+        return "Ey! Where do you go?! Room 2 is locked.";
+    }
+
+    private void lookAroundAction() {
+        openDoor.getCurrentStage().lookAround();
+    }
+
+    @SuppressWarnings("CPD-START")
+    private String roomObjects() {
+        Iterator<Item> it = openDoor.getCurrentStage().lookAround();
+        StringBuilder builder = new StringBuilder();
+        while (it.hasNext()) {
+            builder.append(it.next().getName());
+            if (it.hasNext()) {
+                builder.append(", ");
+            } else {
+                builder.append(".");
+            }
+        }
+        return builder.toString();
+    }
+    @SuppressWarnings("CPD-END")
+
+    private String stageViewBehavior() {
+        return "Items in the room: " + this.roomObjects();
+    }
+
 
 }
