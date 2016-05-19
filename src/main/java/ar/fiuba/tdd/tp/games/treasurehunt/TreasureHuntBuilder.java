@@ -242,6 +242,20 @@ public class TreasureHuntBuilder implements GameBuilder{
         return antidoto;
     }
 
+    private Item buildBox2() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("open");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "Box2 opened.");
+        behavior.setView(keyView);
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior2("box2"); });
+        ItemContainer box = new ItemContainer("box2", "it's a box2.",1);
+        box.addItem(this.buildAntidoto2());
+        box.addBehavior(behavior);
+        return box;
+    }
+
     private Item buildBaul() {
         Behavior behavior = new Behavior();
         behavior.setActionName("open");
@@ -252,7 +266,7 @@ public class TreasureHuntBuilder implements GameBuilder{
         behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior2("baul"); });
         ItemContainer baul = new ItemContainer("baul", "it's a baul.",5);
         baul.addItem(this.buildPoison2());
-        baul.addItem(this.buildAntidoto2());
+        baul.addItem(this.buildBox2());
         baul.addBehavior(behavior);
         return baul;
     }

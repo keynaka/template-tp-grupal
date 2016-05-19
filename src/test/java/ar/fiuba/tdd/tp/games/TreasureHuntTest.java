@@ -44,7 +44,11 @@ public class TreasureHuntTest {
 
         response = this.target.play(new Command(Action.OPEN, "baul"));
         response = this.target.play(new Command(Action.LOOK_AROUND));
-        assertEquals("Items in the room3: antidoto, baul, box, door3, poison.", response);
+        assertEquals("Items in the room3: baul, box, box2, door3, poison.", response);
+
+        response = this.target.play(new Command(Action.OPEN, "box2"));
+        response = this.target.play(new Command(Action.LOOK_AROUND));
+        assertEquals("Items in the room3: antidoto, baul, box, box2, door3, poison.", response);
 
         response = this.target.play(new Command(Action.OPEN, "box"));
         assertEquals("Box opened.", response);
