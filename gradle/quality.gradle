@@ -22,7 +22,7 @@ cpd {
 cpdCheck {
     ignoreIdentifiers = true
     ignoreLiterals = true
-    source = sourceSets.main.allJava
+    source = sourceSets.main.java
 }
 
 jacoco {

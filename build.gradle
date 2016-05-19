@@ -40,9 +40,4 @@ subprojects {
         }
     }
 
-    check.dependsOn(":cpdCheck")
-    check.dependsOn(":server:cpdCheck")
-    check.dependsOn(":client:cpdCheck")
-    check.dependsOn(":engine:cpdCheck")
-
 }
