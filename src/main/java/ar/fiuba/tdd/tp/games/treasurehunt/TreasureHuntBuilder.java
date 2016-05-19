@@ -214,11 +214,56 @@ public class TreasureHuntBuilder implements GameBuilder{
         return key;
     }
 
+    private Item buildPoison2() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("pick");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "You are cursed.");
+        behavior.setView(keyView);
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior2("poison"); });
+        Item poison = new Item("poison", "it's a poison.");
+        poison.addBehavior(behavior);
+        poison.addBehavior(this.buildDropKeyBehavior());
+        return poison;
+    }
+
+    private Item buildAntidoto2() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("pick");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "You are cured.");
+        behavior.setView(keyView);
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((treasureHunt) -> { this.pickBehavior3("antidoto"); });
+        Item antidoto = new Item("antidoto", "it's a antidoto.");
+        antidoto.addBehavior(behavior);
+        antidoto.addBehavior(this.buildDropKeyBehavior());
+        return antidoto;
+    }
+
+    private Item buildBaul() {
+        Behavior behavior = new Behavior();
+        behavior.setActionName("open");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "Baul opened.");
+        behavior.setView(keyView);
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((treasureHunt) -> { this.openBehavior2("baul"); });
+        ItemContainer baul = new ItemContainer("baul", "it's a baul.",5);
+        baul.addItem(this.buildPoison2());
+        baul.addItem(this.buildAntidoto2());
+        baul.addBehavior(behavior);
+        return baul;
+    }
+
     private Stage buildRoom3() {
         Item box = (this.buildBox());
         box.registerActionAndHelp(Action.OPEN, "open box");
+        Item baul = (this.buildBaul());
+        box.registerActionAndHelp(Action.OPEN, "open baul");
         Item door = this.buildDoor3();
-        Stage room = buildStage("room3", door, box);
+        Stage room = buildStage("room3", door, box, baul);
         return room;
     }
 
