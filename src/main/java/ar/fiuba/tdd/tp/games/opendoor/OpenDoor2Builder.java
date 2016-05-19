@@ -39,8 +39,9 @@ public class OpenDoor2Builder implements GameBuilder {
 
     private Stage buildRoom() {
         Stage stage = new Stage("room");
-        stage.addItem(this.buildKey());
+        /*stage.addItem(this.buildKey());*/
         stage.addItem(this.buildDoor());
+        stage.addItem(this.buildBox());
         Behavior roomB = new Behavior();
         roomB.setActionName("look around");
         roomB.setExecutionCondition((game) -> true);
@@ -77,7 +78,7 @@ public class OpenDoor2Builder implements GameBuilder {
     private Item buildKey() {
         Behavior pick = new Behavior();
         pick.setActionName("pick");
-        pick.setExecutionCondition((game) -> true);
+        pick.setExecutionCondition((game) -> this.testOpenBox());
         pick.setBehaviorAction((game) -> {
             this.pickBehavior();
         });
@@ -89,6 +90,36 @@ public class OpenDoor2Builder implements GameBuilder {
         Item key = new Item("key", "pick key.");
         key.addBehavior(pick);
         return key;
+    }
+
+    private Item buildBox() {
+        Behavior openBox = new Behavior();
+        openBox.setActionName("open");
+        openBox.setExecutionCondition((game) -> this.testCloseBox());
+        openBox.setBehaviorAction((game) -> {
+            this.openBoxBehavior();
+        });
+
+        Behavior examine = new Behavior();
+        examine.setActionName("examine");
+        examine.setExecutionCondition((game) -> true);
+        examine.setBehaviorAction((game) -> {
+            this.examineBoxBehavior();
+        });
+        BehaviorView examineView = new BehaviorView();
+        examineView.setAction((game) -> "You can open/close the box.");
+        examine.setView(examineView);
+
+        Item box = new Item("box", "It's closed a box.");
+        box.addState("box", "closed");
+        BehaviorView boxView = new BehaviorView();
+        boxView.setAction((game) -> {
+            return this.openBoxBehaviorView();
+        });
+        openBox.setView(boxView);
+        box.addBehavior(openBox);
+        box.addBehavior(examine);
+        return box;
     }
 
     private Predicate<ConcreteGame> buildWinningCondition() {
@@ -105,11 +136,18 @@ public class OpenDoor2Builder implements GameBuilder {
         openDoor2.registerKnownAction(Action.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler());
         openDoor2.registerKnownAction(Action.PICK, (itemName, args) -> this.pickHandler(itemName));
         openDoor2.registerKnownAction(Action.OPEN, (itemName, args) -> this.openHandler(itemName));
+        openDoor2.registerKnownAction(Action.EXAMINE, (itemName, args) -> this.examineHandler(itemName));
     }
 
     private String lookAroundHandler() {
         Stage gameCurrentStage = openDoor2.getCurrentStage();
         return gameCurrentStage.execute(openDoor2, Action.LOOK_AROUND);
+    }
+
+    private String examineHandler(String itemName) {
+        Stage currentStage = openDoor2.getCurrentStage();
+        Item item = currentStage.getItem(itemName);
+        return item.execute(openDoor2, Action.EXAMINE);
     }
 
     private String pickHandler(String itemName) {
@@ -131,10 +169,17 @@ public class OpenDoor2Builder implements GameBuilder {
         openDoor2.getCurrentStage().lookAround();
     }
 
+    private void examineBoxBehavior() {
+        openDoor2.getCurrentStage().getItem("box").examine();
+    }
+
     private void pickBehavior() {
         Stage currentStage = openDoor2.getCurrentStage();
         Item item = currentStage.pickItem("key");
-        openDoor2.getPlayer().addToInventory(item);
+        Item box = currentStage.getItem("box");
+        if (box.getState("box").equals("opened")) {
+            openDoor2.getPlayer().addToInventory(item);
+        }
     }
 
     private boolean testOpenDoor() {
@@ -165,10 +210,37 @@ public class OpenDoor2Builder implements GameBuilder {
         door.addState("door", "opened");
     }
 
+    private void openBoxBehavior() {
+        Stage stage = openDoor2.getCurrentStage();
+        Item box = stage.getItem("box");
+        if (box.getState("box").equals("closed")){
+            box.addState("box", "opened");
+            stage.addItem(this.buildKey());
+        }
+    }
+
     @SuppressWarnings("CPD-END")
 
     private String openHandler(String itemName){
         Item item = openDoor2.getCurrentStage().getItem(itemName);
-        return item.toString();
+        return item.execute(openDoor2, Action.OPEN);
     }
+
+    private boolean testOpenBox() {
+        return (openDoor2.getCurrentStage().getItem("box").getState("box").equals("opened"));
+    }
+
+    private boolean testCloseBox() {
+        return (openDoor2.getCurrentStage().getItem("box").getState("box").equals("closed"));
+    }
+
+    private String openBoxBehaviorView() {
+        Stage stage = openDoor2.getCurrentStage();
+        Item box = stage.getItem("box");
+        if (box.getState("box").equals("opened")){
+            return "The box is opened!";
+        }
+        return "Open the box first.";
+    }
+
 }
