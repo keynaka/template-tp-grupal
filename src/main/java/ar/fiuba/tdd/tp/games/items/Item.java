@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by swandelow on 4/21/16.
  */
-public class Item  extends GameObject implements Examinable {
+public class Item extends GameObject implements Examinable {
 
     private static final String EXAMINE_MSG = "You can %s: %s.";
 
@@ -27,6 +27,7 @@ public class Item  extends GameObject implements Examinable {
         this.name = name;
         this.description = description;
         this.supportedActions = new HashMap<>();
+        this.behaviorMap = new HashMap<>();
     }
 
     public String getName() {
@@ -79,6 +80,5 @@ public class Item  extends GameObject implements Examinable {
             return sb.toString();
         }
     }
-
 
 }
