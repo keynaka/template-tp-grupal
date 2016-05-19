@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.games.opendoor;
 
 import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.Game;
 import ar.fiuba.tdd.tp.red.server.Command;
 import org.junit.Test;
 
@@ -13,15 +14,16 @@ import static org.junit.Assert.assertTrue;
  */
 public class OpenDoorTest {
 
-    /*private OpenDoor target = new OpenDoor();
+    private Game target = new OpenDoorBuilder().build();
 
     @Test
     public void testHappyPath() {
 
         String response = this.target.start();
+        /*
         assertEquals("Welcome to OpenDoor!", response);
         assertFalse(this.target.isFinished());
-
+        */
         response = this.target.play(new Command(Action.LOOK_AROUND, ""));
         assertEquals("Items in the room: door, key.", response);
         assertFalse(this.target.isFinished());
@@ -48,5 +50,5 @@ public class OpenDoorTest {
         assertEquals("Unknown command.", response);
         assertFalse(this.target.isFinished());
 
-    }*/
+    }
 }
