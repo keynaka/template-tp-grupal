@@ -1,10 +1,12 @@
 package ar.fiuba.tdd.tp.games;
 
+import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 import ar.fiuba.tdd.tp.games.objects.GameObject;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * Created by swandelow on 4/21/16.
@@ -16,6 +18,8 @@ public class Stage extends GameObject {
     private String name;
 
     private ItemContainer itemContainer;
+    private List<String> consecutiveStages = new ArrayList<>();
+    private Predicate<Player> entranceCondition = (player) -> true;
 
     public Stage() {
         this.name = "room";
@@ -68,5 +72,29 @@ public class Stage extends GameObject {
     public ItemContainer getItemContainer() {
         return itemContainer;
     }
+
+    public void addConsecutiveStage(String stageName) {
+        this.consecutiveStages.add(stageName);
+    }
+
+    public String getConsecutiveStage(String stageName) {
+        Optional<String> consecutiveStageName = this.consecutiveStages.stream()
+                .filter(cs -> cs.equalsIgnoreCase(stageName)).findFirst();
+        if (consecutiveStageName.isPresent()) {
+            return consecutiveStageName.get();
+        }
+        throw new GameException("Stage not found");
+    }
+
+    public void setEntranceCondition(Predicate<Player> entranceCondition) {
+        this.entranceCondition = entranceCondition;
+    }
+
+    public void enter(Player player) {
+        if(this.entranceCondition.test(player)) {
+            player.setCurrentStage(this.getName());
+        }
+    }
+
 
 }

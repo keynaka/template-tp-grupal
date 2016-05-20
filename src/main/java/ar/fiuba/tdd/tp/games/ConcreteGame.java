@@ -92,6 +92,10 @@ public class ConcreteGame extends AbstractGame {
         return this.stages.get(currentStageName);
     }
 
+    public Stage getStage(String stageName) {
+        return this.stages.get(stageName);
+    }
+
 
     @Override
     public boolean isFinished() {

@@ -3,6 +3,7 @@ package ar.fiuba.tdd.tp.games.escape;
 import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.behavior.BehaviorView;
+import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 
@@ -53,9 +54,22 @@ public class EscapeBuilder implements GameBuilder {
     //----------------------------Handlers && Behaviors----------------------------------//
     private void registerKnownActions() {
         escape.registerKnownAction(Action.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler());
+        escape.registerKnownAction(Action.GOTO, (itemName, args) -> this.gotoHandler(itemName));
         escape.registerKnownAction(Action.PICK, (itemName, args) -> this.pickHandler(itemName));
         escape.registerKnownAction(Action.OPEN, (itemName, args) -> this.openHandler(itemName));
         escape.registerKnownAction(Action.MOVE, (itemName, args) -> this.moveHandler(itemName));
+    }
+
+    private String gotoHandler(String stageName) {
+        String nextStageName;
+        try {
+            nextStageName = escape.getCurrentStage().getConsecutiveStage(stageName);
+            Stage nextStage = escape.getStage(nextStageName);
+            nextStage.enter(escape.getPlayer());
+            return String.format("You have entered to %s.", nextStage.getName());
+        } catch (GameException e) {
+            return "Invalid stage.";
+        }
     }
 
     private String pickHandler(String itemName) {
@@ -75,23 +89,12 @@ public class EscapeBuilder implements GameBuilder {
         return currentStage.getItem(itemName).execute(escape, Action.OPEN);
     }
 
-    private void behaviorDoor(Item door) {
-        String stage1 = door.getState("stage1");
-        String stage2 = door.getState("stage2");
-        Player player = escape.getPlayer();
-        if (player.getCurrentStage().equalsIgnoreCase(stage1)) {
-            player.setCurrentStage(stage2);
-        } else if (player.getCurrentStage().equalsIgnoreCase(stage2)) {
-            player.setCurrentStage(stage1);
-        }
-    }
-
     //----------------------------Fin Handlers && Behaviors----------------------------------//
 
     //----------------------------Room1----------------------------------//
     private Stage buildRoom1() {
-        Stage room1 = new Stage("room1");
-        room1.addItem(this.buildDoor1());
+        Stage room1 = new Stage("Salon1");
+        room1.addConsecutiveStage("Pasillo");
         room1.addItem(new Item("table", "it's a table."));
         room1.addItem(new Item("cup", "it's a cup2."));
         room1.addItem(new Item("cup2", "it's a cup2."));
@@ -101,24 +104,6 @@ public class EscapeBuilder implements GameBuilder {
         room1.addItem(this.buildTrainPicture());
         room1.addItem(this.buildBoatPicture());
         return room1;
-    }
-
-    private Item buildDoor1() {
-        Item door = new Item("door1", "it's a door1.");
-        door.addState("stage1", "hall");
-        door.addState("stage2", "room1");
-
-        Behavior behavior = new Behavior();
-        behavior.setActionName("open");
-        BehaviorView keyView = new BehaviorView();
-        keyView.setAction((game) -> "Door1 opened.");
-        behavior.setView(keyView);
-        behavior.setExecutionCondition((game) -> true);
-        behavior.setBehaviorAction((game) -> {
-                this.behaviorDoor(door);
-            });
-        door.addBehavior(behavior);
-        return door;
     }
 
     private Item buildLiquor() {
@@ -152,6 +137,7 @@ public class EscapeBuilder implements GameBuilder {
     }
 
     private Item buildBoatPicture() {
+        Item boatPicture = new Item("CuadroBarco", "it's a picture of a boat.");
         Behavior behavior = new Behavior();
         behavior.setActionName("move");
         BehaviorView keyView = new BehaviorView();
@@ -159,9 +145,8 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-                this.movePicture();
-            });
-        Item boatPicture = new Item("boatPicture", "it's a picture of a boat.");
+            this.movePicture();
+        });
         boatPicture.addBehavior(behavior);
         return boatPicture;
     }
@@ -172,7 +157,7 @@ public class EscapeBuilder implements GameBuilder {
     }
 
     private Item buildSecurityBox() {
-        ItemContainer securityBox = new ItemContainer("securityBox", "'it's a security box.", 1);
+        ItemContainer securityBox = new ItemContainer("CajaFuerte", "'it's a security box.", 1);
         Item idCard = this.buildIdCard();
         securityBox.addItem(idCard);
 
@@ -182,7 +167,7 @@ public class EscapeBuilder implements GameBuilder {
         behaviorView.setAction((game) -> "Security box opened.");
         behavior.setView(behaviorView);
         behavior.setFailMessage("you can't open the box without key.");
-        behavior.setExecutionCondition((game) -> game.getPlayer().hasItem("key"));
+        behavior.setExecutionCondition((game) -> game.getPlayer().hasItem("Llave"));
         behavior.setBehaviorAction((game) -> {
                 Item extractedItem = securityBox.extract(idCard.getName());
                 game.getCurrentStage().addItem(extractedItem);
@@ -192,7 +177,7 @@ public class EscapeBuilder implements GameBuilder {
     }
 
     private Item buildIdCard() {
-        Item idCard = new Item("idCard", "it's an id card.");
+        Item idCard = new Item("Credencial", "it's an id card.");
         idCard.addState("picture", "stranger");
 
         Behavior behavior = new Behavior();
@@ -212,29 +197,10 @@ public class EscapeBuilder implements GameBuilder {
 
     //----------------------------Room2----------------------------------//
     private Stage buildRoom2() {
-        Stage room2 = new Stage("room2");
-        room2.addItem(this.buildDoor2());
+        Stage room2 = new Stage("Salon2");
         room2.addItem(this.buildHammer());
         room2.addItem(this.buildScrewdriver());
         return room2;
-    }
-
-    private Item buildDoor2() {
-        Item door = new Item("door2", "it's a door2.");
-        door.addState("stage1", "hall");
-        door.addState("stage2", "room2");
-
-        Behavior behavior = new Behavior();
-        behavior.setActionName("open");
-        BehaviorView keyView = new BehaviorView();
-        keyView.setAction((game) -> "Door2 opened.");
-        behavior.setView(keyView);
-        behavior.setExecutionCondition((game) -> true);
-        behavior.setBehaviorAction((game) -> {
-                this.behaviorDoor(door);
-            });
-        door.addBehavior(behavior);
-        return door;
     }
 
     private Item buildHammer() {
@@ -274,32 +240,13 @@ public class EscapeBuilder implements GameBuilder {
 
     //----------------------------Room3----------------------------------//
     private Stage buildRoom3() {
-        Stage room3 = new Stage("room3");
-        room3.addItem(this.buildDoor3());
+        Stage room3 = new Stage("Salon3");
         room3.addItem(this.buildKey());
         return room3;
     }
 
-    private Item buildDoor3() {
-        Item door = new Item("door3", "it's a door3.");
-        door.addState("stage1", "hall");
-        door.addState("stage2", "room3");
-
-        Behavior behavior = new Behavior();
-        behavior.setActionName("open");
-        BehaviorView keyView = new BehaviorView();
-        keyView.setAction((game) -> "Door3 opened.");
-        behavior.setView(keyView);
-        behavior.setExecutionCondition((game) -> true);
-        behavior.setBehaviorAction((game) -> {
-                this.behaviorDoor(door);
-            });
-        door.addBehavior(behavior);
-        return door;
-    }
-
     private Item buildKey() {
-        Item key = new Item("key", "it's a key.");
+        Item key = new Item("Llave", "it's a Llave.");
 
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
@@ -318,7 +265,7 @@ public class EscapeBuilder implements GameBuilder {
 
     //----------------------------Library----------------------------------//
     private Stage buildLibraryHall() {
-        Stage libraryHall = new Stage("libraryHall");
+        Stage libraryHall = new Stage("BibliotecaAcceso");
         libraryHall.addItem(this.buildLibrarian());
         return libraryHall;
     }
@@ -367,10 +314,11 @@ public class EscapeBuilder implements GameBuilder {
 
     @SuppressWarnings("CPD-END")
     private Stage buildHall() {
-        Stage hall = new Stage("hall");
-        hall.addItem(this.buildDoor1());
-        hall.addItem(this.buildDoor2());
-        hall.addItem(this.buildDoor3());
+        Stage hall = new Stage("Pasillo");
+        hall.addConsecutiveStage("Salon1");
+        hall.addConsecutiveStage("Salon2");
+        hall.addConsecutiveStage("Salon3");
+        hall.addConsecutiveStage("BibliotecaAcceso");
         return hall;
     }
 }

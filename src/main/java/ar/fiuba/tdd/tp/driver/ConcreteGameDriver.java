@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.driver;
 
 import ar.fiuba.tdd.tp.games.Game;
+import ar.fiuba.tdd.tp.games.escape.EscapeBuilder;
 import ar.fiuba.tdd.tp.games.fetchquest.FetchQuestBuilder;
 import ar.fiuba.tdd.tp.red.server.CommandInterpreter;
 
@@ -17,9 +18,9 @@ public class ConcreteGameDriver implements GameDriver {
         if (gameName.equals("FetchQuest")) {
             target = new FetchQuestBuilder().build();
         }
-        /*if (gameName.equals("escape")){
+        if (gameName.equalsIgnoreCase("escape")) {
             target = new EscapeBuilder().build();
-        }*/
+        }
     }
 
     @Override
@@ -29,11 +30,6 @@ public class ConcreteGameDriver implements GameDriver {
 
     @Override
     public GameState getCurrentState() {
-        //TODO agregar caso Lost
-        if (this.target.isFinished()) {
-            return GameState.Won;
-        } else {
-            return GameState.InProgress;
-        }
+        return target.getGameState();
     }
 }
