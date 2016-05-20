@@ -19,10 +19,8 @@ public class Behavior {
     public String execute(ConcreteGame game) {
         if (executionCondition.test(game)) {
             this.behaviorAction.execute(game);
-            //return this.resultMessage;
-            return this.view.print(game);
         }
-        throw new GameException("Unsuccessful execution. Execution condition not met.");
+        return this.view.print(game);
     }
 
     public void setView(BehaviorView view) {

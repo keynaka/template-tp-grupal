@@ -81,20 +81,20 @@ public class HanoiTowerTests {
         assertFalse(this.target.isFinished());
     }
 
-    @Test(expected = GameException.class)
+/*    @Test(expected = GameException.class)
     public void tryToMoveTopWhenOriginTowerIsEmpty() {
         String response = this.target.start();
         this.target.play(new Command(Action.SET_DISKS, "2"));
         this.target.play(new Command(Action.MOVE_TOP, "tower2", "tower3"));
-    }
+    }*/
 
-    @Test(expected = GameException.class)
+/*    @Test(expected = GameException.class)
     public void tryToMoveBiggerDiskOverSmallerDisk() {
         String response = this.target.start();
         this.target.play(new Command(Action.SET_DISKS, "2"));
         response = this.target.play(new Command(Action.MOVE_TOP, "tower1", "tower2"));
         response = this.target.play(new Command(Action.MOVE_TOP, "tower1", "tower2"));
-    }
+    }*/
 
 
     @Test

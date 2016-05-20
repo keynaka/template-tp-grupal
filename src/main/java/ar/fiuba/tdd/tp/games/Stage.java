@@ -61,6 +61,12 @@ public class Stage extends GameObject {
         return sb.toString();
     }
 
+    public Iterator lookAroundIt() {
+
+        Iterator<Item> it = itemContainer.getAllItems().iterator();
+        return it;
+    }
+
     public Item getItem(String itemName) {
         return this.itemContainer.getItem(itemName);
     }
