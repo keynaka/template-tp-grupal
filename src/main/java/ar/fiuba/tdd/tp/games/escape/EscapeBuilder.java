@@ -22,6 +22,7 @@ public class EscapeBuilder implements GameBuilder {
         escape = new ConcreteGame();
         escape.setName("Escape");
         escape.setWinningCondition(this.buildWinningCondition());
+        escape.setLoosingCondition(this.buildLoosingCondition());
         escape.setPlayer(this.buildPlayer());
         escape.addStage(this.buildHall());
         escape.addStage(this.buildRoom1());
@@ -34,6 +35,7 @@ public class EscapeBuilder implements GameBuilder {
 
     private Player buildPlayer() {
         Player player = new Player();
+        player.addState("lifeStatus", "alive");
         player.setCurrentStage("hall");
         player.addToInventory(new Item("picture", "picture"));
         player.addToInventory(new Item("pen", "pen"));
@@ -42,6 +44,10 @@ public class EscapeBuilder implements GameBuilder {
 
     private Predicate<ConcreteGame> buildWinningCondition() {
         return (game) -> game.getPlayer().getCurrentStage().equalsIgnoreCase("FinalRoom");
+    }
+
+    private Predicate<ConcreteGame> buildLoosingCondition() {
+        return (game) -> game.getPlayer().getState("lifeStatus").equalsIgnoreCase("dead");
     }
 
     //----------------------------Handlers && Behaviors----------------------------------//
@@ -140,7 +146,8 @@ public class EscapeBuilder implements GameBuilder {
         keyView.setAction((game) -> "There you go!");
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
-        behavior.setBehaviorAction((game) -> { });
+        behavior.setBehaviorAction((game) -> {
+        });
         trainPicture.addBehavior(behavior);
         return trainPicture;
     }
@@ -312,7 +319,7 @@ public class EscapeBuilder implements GameBuilder {
 
     //----------------------------Library----------------------------------//
     private Stage buildLibraryHall() {
-        Stage libraryHall = new Stage("library");
+        Stage libraryHall = new Stage("libraryHall");
         libraryHall.addItem(this.buildLibrarian());
         return libraryHall;
     }
@@ -324,7 +331,7 @@ public class EscapeBuilder implements GameBuilder {
 
     //TODO: para que despues hagan addItem(this.buildBook("book1")), etc.
     private Item buildBook(String aBook) {
-        Item book = new Item(aBook, "it's a "+aBook+".");
+        Item book = new Item(aBook, "it's a " + aBook + ".");
 
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");

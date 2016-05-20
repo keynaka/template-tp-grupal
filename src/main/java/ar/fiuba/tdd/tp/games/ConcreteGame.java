@@ -1,5 +1,7 @@
 package ar.fiuba.tdd.tp.games;
 
+import ar.fiuba.tdd.tp.driver.GameState;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -9,7 +11,8 @@ import java.util.function.Predicate;
  */
 public class ConcreteGame extends AbstractGame {
 
-    private static final String DEFAULT_END_GAME_MSG = "You won the game!";
+    private static final String DEFAULT_WON_GAME_MSG = "You won the game!";
+    private static final String DEFAULT_LOST_GAME_MSG = "You lost the game!";
 
     private String name;
     private String gameDescription;
@@ -17,11 +20,14 @@ public class ConcreteGame extends AbstractGame {
     private Player player;
     private Map<String, Stage> stages;
     private Predicate<ConcreteGame> winningCondition;
+    private Predicate<ConcreteGame> loosingCondition = (game) -> false;
+    private GameState gameState;
 
     public ConcreteGame() {
         super("", "");
         this.knownActions = new HashMap<>();
         this.stages = new HashMap<>();
+        this.gameState = GameState.Ready;
     }
 
     public ConcreteGame(String name, String endGameMessage) {
@@ -34,6 +40,7 @@ public class ConcreteGame extends AbstractGame {
     public String getName() {
         return this.name;
     }
+
 
     public void setName(String name) {
         this.name = name;
@@ -49,7 +56,7 @@ public class ConcreteGame extends AbstractGame {
     }
 
     public String getEndGameMessage() {
-        return this.endGameMessage != null ? this.endGameMessage : DEFAULT_END_GAME_MSG;
+        return this.endGameMessage != null ? this.endGameMessage : DEFAULT_WON_GAME_MSG;
     }
 
     public void setEndGameMessage(String endGameMessage) {
@@ -68,6 +75,10 @@ public class ConcreteGame extends AbstractGame {
         this.winningCondition = winningCondition;
     }
 
+    public void setLoosingCondition(Predicate<ConcreteGame> loosingCondition) {
+        this.loosingCondition = loosingCondition;
+    }
+
     public void registerKnownAction(Action action, ActionFunction actionFuntion) {
         this.knownActions.put(action, actionFuntion);
     }
@@ -81,12 +92,31 @@ public class ConcreteGame extends AbstractGame {
         return this.stages.get(currentStageName);
     }
 
-    // TODO Estos métodos probablemente ya no sean necesarios en el futuro.
+
     @Override
     public boolean isFinished() {
-        return this.winningCondition.test(this);
+        return GameState.Won.equals(this.gameState) || GameState.Lost.equals(this.gameState);
     }
 
+    @Override
+    public GameState getGameState() {
+        return super.getGameState();
+    }
+
+    @Override
+    protected void updateGameState() {
+        if (this.winningCondition.test(this)) {
+            this.gameState = GameState.Won;
+            this.endGameMessage = DEFAULT_WON_GAME_MSG;
+        } else if (this.loosingCondition.test(this)) {
+            this.gameState = GameState.Lost;
+            this.endGameMessage = DEFAULT_LOST_GAME_MSG;
+        } else {
+            this.gameState = GameState.InProgress;
+        }
+    }
+
+    // TODO Estos métodos probablemente ya no sean necesarios en el futuro.
     @Override
     public String start() {
         // no hagas nada por ahora

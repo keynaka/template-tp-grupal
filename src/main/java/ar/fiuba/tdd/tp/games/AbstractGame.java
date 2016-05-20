@@ -1,5 +1,6 @@
 package ar.fiuba.tdd.tp.games;
 
+import ar.fiuba.tdd.tp.driver.GameState;
 import ar.fiuba.tdd.tp.red.server.Command;
 
 import java.util.HashMap;
@@ -38,10 +39,22 @@ public abstract class AbstractGame implements Game {
         Optional<ActionFunction> actionMethod = Optional.ofNullable(this.knownActions.get(command.getAction()));
         result = actionMethod.isPresent() ? actionMethod.get().execute(command.getItemName(),command.getArgument()) : "Unknown command.";
 
+        this.updateGameState();
+
         if (this.isFinished()) {
             result = this.getEndGameMessage();
         }
         return result;
+    }
+
+    @Override
+    public GameState getGameState() {
+        // FIXME: arreglar esto!!
+        return GameState.InProgress;
+    }
+
+    protected void updateGameState() {
+        // FIXME: se deja vacio para no romper otros juegos.
     }
 
     protected String getEndGameMessage() {

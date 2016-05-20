@@ -20,6 +20,10 @@ public enum Action {
     _HELP("help"),
     _EXIT("exit"),
     MOVE("move"),
+    GOTO("goto"),
+    PUT("put"),
+    SHOW("show"),
+    USE("use"),
     UNKNOWN_ACTION("");
 
     private String actionName;
