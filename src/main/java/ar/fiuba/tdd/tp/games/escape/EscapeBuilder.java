@@ -26,6 +26,7 @@ public class EscapeBuilder implements GameBuilder {
         escape.addStage(this.buildHall());
         escape.addStage(this.buildRoom1());
         escape.addStage(this.buildRoom3());
+        escape.addStage(this.buildLibraryHall());
         registerKnownActions();
         return escape;
     }
@@ -222,6 +223,17 @@ public class EscapeBuilder implements GameBuilder {
         });
         key.addBehavior(behavior);
         return key;
+    }
+
+    private Stage buildLibraryHall() {
+        Stage libraryHall = new Stage("library");
+        libraryHall.addItem(this.buildLibrarian());
+        return libraryHall;
+    }
+
+    private Item buildLibrarian() {
+        Item librarian = new Item("librarian", "bla");
+        return librarian;
     }
 
     private Item buildDoor3() {
