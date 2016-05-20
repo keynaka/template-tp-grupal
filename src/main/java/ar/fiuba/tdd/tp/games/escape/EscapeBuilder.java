@@ -115,8 +115,8 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-            this.behaviorDoor(door);
-        });
+                this.behaviorDoor(door);
+            });
         door.addBehavior(behavior);
         return door;
     }
@@ -131,29 +131,27 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-            Item pickedItem = game.getCurrentStage().pickItem(liquor.getName());
-            game.getPlayer().addToInventory(pickedItem);
-        });
+                Item pickedItem = game.getCurrentStage().pickItem(liquor.getName());
+                game.getPlayer().addToInventory(pickedItem);
+            });
         liquor.addBehavior(behavior);
         return liquor;
     }
 
     private Item buildTrainPicture() {
-        Item trainPicture = new Item("trainPicture", "it's a picture of a train.");
         Behavior behavior = new Behavior();
         behavior.setActionName("move");
         BehaviorView keyView = new BehaviorView();
         keyView.setAction((game) -> "There you go!");
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
-        behavior.setBehaviorAction((game) -> {
-        });
+        behavior.setBehaviorAction((game) -> { });
+        Item trainPicture = new Item("trainPicture", "it's a picture of a train.");
         trainPicture.addBehavior(behavior);
         return trainPicture;
     }
 
     private Item buildBoatPicture() {
-        Item boatPicture = new Item("boatPicture", "it's a picture of a boat.");
         Behavior behavior = new Behavior();
         behavior.setActionName("move");
         BehaviorView keyView = new BehaviorView();
@@ -161,8 +159,9 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-            this.movePicture();
-        });
+                this.movePicture();
+            });
+        Item boatPicture = new Item("boatPicture", "it's a picture of a boat.");
         boatPicture.addBehavior(behavior);
         return boatPicture;
     }
@@ -185,9 +184,9 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setFailMessage("you can't open the box without key.");
         behavior.setExecutionCondition((game) -> game.getPlayer().hasItem("key"));
         behavior.setBehaviorAction((game) -> {
-            Item extractedItem = securityBox.extract(idCard.getName());
-            game.getCurrentStage().addItem(extractedItem);
-        });
+                Item extractedItem = securityBox.extract(idCard.getName());
+                game.getCurrentStage().addItem(extractedItem);
+            });
         securityBox.addBehavior(behavior);
         return securityBox;
     }
@@ -203,9 +202,9 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(idCardView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-            Item pickedItem = game.getCurrentStage().pickItem(idCard.getName());
-            game.getPlayer().addToInventory(pickedItem);
-        });
+                Item pickedItem = game.getCurrentStage().pickItem(idCard.getName());
+                game.getPlayer().addToInventory(pickedItem);
+            });
         idCard.addBehavior(behavior);
         return idCard;
     }
@@ -232,8 +231,8 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-            this.behaviorDoor(door);
-        });
+                this.behaviorDoor(door);
+            });
         door.addBehavior(behavior);
         return door;
     }
@@ -248,9 +247,9 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-            Item pickedItem = game.getCurrentStage().pickItem(hammer.getName());
-            game.getPlayer().addToInventory(pickedItem);
-        });
+                Item pickedItem = game.getCurrentStage().pickItem(hammer.getName());
+                game.getPlayer().addToInventory(pickedItem);
+            });
         hammer.addBehavior(behavior);
         return hammer;
     }
@@ -265,9 +264,9 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-            Item pickedItem = game.getCurrentStage().pickItem(screwdriver.getName());
-            game.getPlayer().addToInventory(pickedItem);
-        });
+                Item pickedItem = game.getCurrentStage().pickItem(screwdriver.getName());
+                game.getPlayer().addToInventory(pickedItem);
+            });
         screwdriver.addBehavior(behavior);
         return screwdriver;
     }
@@ -293,8 +292,8 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-            this.behaviorDoor(door);
-        });
+                this.behaviorDoor(door);
+            });
         door.addBehavior(behavior);
         return door;
     }
@@ -309,9 +308,9 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-            Item pickedItem = game.getCurrentStage().pickItem(key.getName());
-            game.getPlayer().addToInventory(pickedItem);
-        });
+                Item pickedItem = game.getCurrentStage().pickItem(key.getName());
+                game.getPlayer().addToInventory(pickedItem);
+            });
         key.addBehavior(behavior);
         return key;
     }
@@ -330,8 +329,8 @@ public class EscapeBuilder implements GameBuilder {
     }
 
     //TODO: para que despues hagan addItem(this.buildBook("book1")), etc.
-    private Item buildBook(String aBook) {
-        Item book = new Item(aBook, "it's a " + aBook + ".");
+    private Item buildBook(String book) {
+        Item bookItem = new Item(book, "it's a " + book + ".");
 
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
@@ -340,16 +339,15 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-            Item pickedItem = game.getCurrentStage().pickItem(book.getName());
-            game.getPlayer().addToInventory(pickedItem);
-        });
-        book.addBehavior(behavior);
-        return book;
+                Item pickedItem = game.getCurrentStage().pickItem(bookItem.getName());
+                game.getPlayer().addToInventory(pickedItem);
+            });
+        bookItem.addBehavior(behavior);
+        return bookItem;
     }
 
     //TODO: para el oldBook que tiene un behavior diferente al de los demas libros
     private Item buildOldBook() {
-        Item book = new Item("oldBook", "it's an old book.");
 
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
@@ -358,8 +356,9 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-            //TODO: Habria que hacer que se abra el camino al sotano
-        });
+                //TODO: Habria que hacer que se abra el camino al sotano
+            });
+        Item book = new Item("oldBook", "it's an old book.");
         book.addBehavior(behavior);
         return book;
     }
