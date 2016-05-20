@@ -16,9 +16,9 @@ public class EscapeTest {
     @Test
     public void testPassFromHallToRoom1() {
         target = new EscapeBuilder().build();
-        assertEquals("Items in the hall: door1, door3.", target.play(new Command(Action.LOOK_AROUND)));
+        assertEquals("Items in the hall: door1, door2, door3.", target.play(new Command(Action.LOOK_AROUND)));
         assertEquals("Door1 opened.", target.play(new Command(Action.OPEN, "door1")));
-        assertEquals("Items in the room1: boatPicture, chair1, chair2, door1, liquor, table, trainPicture.", target.play(new Command(Action.LOOK_AROUND)));
+        assertEquals("Items in the room1: boatPicture, chair1, chair2, cup, cup2, door1, liquor, table, trainPicture.", target.play(new Command(Action.LOOK_AROUND)));
     }
 
     @Test
@@ -26,7 +26,23 @@ public class EscapeTest {
         target = new EscapeBuilder().build();
         assertEquals("Door1 opened.", target.play(new Command(Action.OPEN, "door1")));
         assertEquals("There you go!", target.play(new Command(Action.MOVE, "boatPicture")));
-        assertEquals("Items in the room1: boatPicture, chair1, chair2, door1, liquor, securityBox, table, trainPicture.", target.play(new Command(Action.LOOK_AROUND)));
+        assertEquals("Items in the room1: boatPicture, chair1, chair2, cup, cup2, door1, liquor, securityBox, table, trainPicture.", target.play(new Command(Action.LOOK_AROUND)));
+    }
+
+    @Test
+    public void testMoveTrainPictureNothingHappens() {
+        target = new EscapeBuilder().build();
+        assertEquals("Door1 opened.", target.play(new Command(Action.OPEN, "door1")));
+        assertEquals("There you go!", target.play(new Command(Action.MOVE, "trainPicture")));
+        assertEquals("Items in the room1: boatPicture, chair1, chair2, cup, cup2, door1, liquor, table, trainPicture.", target.play(new Command(Action.LOOK_AROUND)));
+    }
+
+    @Test
+    public void testPickLiquor() {
+        target = new EscapeBuilder().build();
+        assertEquals("Door1 opened.", target.play(new Command(Action.OPEN, "door1")));
+        assertEquals("There you go!", target.play(new Command(Action.PICK, "liquor")));
+        assertEquals("Items in the room1: boatPicture, chair1, chair2, cup, cup2, door1, table, trainPicture.", target.play(new Command(Action.LOOK_AROUND)));
     }
 
     @Test
@@ -55,5 +71,14 @@ public class EscapeTest {
         assertEquals("Door1 opened.", target.play(new Command(Action.OPEN, "door1")));
         assertEquals("There you go!", target.play(new Command(Action.MOVE, "boatPicture")));
         assertEquals("Security box opened.", target.play(new Command(Action.OPEN, "securityBox")));
+    }
+
+    @Test
+    public void testPassToRoom2AndPickHammerAndScrewdriver() {
+        target = new EscapeBuilder().build();
+        assertEquals("Door2 opened.", target.play(new Command(Action.OPEN, "door2")));
+        assertEquals("Items in the room2: door2, hammer, screwdriver.", target.play(new Command(Action.LOOK_AROUND)));
+        assertEquals("There you go!", target.play(new Command(Action.PICK, "hammer")));
+        assertEquals("There you go!", target.play(new Command(Action.PICK, "screwdriver")));
     }
 }
