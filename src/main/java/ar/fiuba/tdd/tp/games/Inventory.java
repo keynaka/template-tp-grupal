@@ -14,7 +14,7 @@ public class Inventory {
     private ItemContainer items;
 
     public Inventory() {
-        this.items = new ItemContainer("inventory", "it's the inventory", 2);
+        this.items = new ItemContainer("inventory", "it's the inventory", 4);
     }
 
     public boolean contains(String itemName) {

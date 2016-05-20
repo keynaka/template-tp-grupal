@@ -16,4 +16,5 @@ public class BehaviorView {
         return this.action.print(game);
     }
 
+
 }

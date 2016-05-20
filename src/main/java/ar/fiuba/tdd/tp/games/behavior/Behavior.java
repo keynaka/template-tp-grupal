@@ -10,11 +10,14 @@ import java.util.function.Predicate;
  */
 public class Behavior {
 
+    private static final String DEFAULT_FAIL_MSG = "Unsuccessful execution. Execution condition not met.";
+
     private String actionName;
     //private String resultMessage;
     private Predicate<ConcreteGame> executionCondition;
     private BehaviorAction behaviorAction;
     private BehaviorView view;
+    private String failMessage;
 
     public String execute(ConcreteGame game) {
         if (executionCondition.test(game)) {
@@ -22,7 +25,8 @@ public class Behavior {
             //return this.resultMessage;
             return this.view.print(game);
         }
-        throw new GameException("Unsuccessful execution. Execution condition not met.");
+//        throw new GameException("Unsuccessful execution. Execution condition not met.");
+        return this.getFailMessage();
     }
 
     public void setView(BehaviorView view) {
@@ -47,5 +51,13 @@ public class Behavior {
 
     public void setBehaviorAction(BehaviorAction behaviorAction) {
         this.behaviorAction = behaviorAction;
+    }
+
+    public void setFailMessage(String failMessage) {
+        this.failMessage = failMessage;
+    }
+
+    public String getFailMessage() {
+        return this.failMessage != null ? this.failMessage : DEFAULT_FAIL_MSG;
     }
 }

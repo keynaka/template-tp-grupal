@@ -19,6 +19,7 @@ public enum Action {
     TALK("talk"),
     _HELP("help"),
     _EXIT("exit"),
+    MOVE("move"),
     UNKNOWN_ACTION("");
 
     private String actionName;
