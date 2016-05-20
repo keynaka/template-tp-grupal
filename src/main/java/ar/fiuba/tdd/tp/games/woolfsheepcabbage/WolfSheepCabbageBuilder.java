@@ -55,7 +55,7 @@ public class WolfSheepCabbageBuilder implements GameBuilder {
         return new Stage("NorthShore");
     }
 
-    private Stage buildSouthShore(){
+    private Stage buildSouthShore() {
         Stage stage = new Stage("SouthShore");
         stage.addItems(this.buildWolf(), this.buildSheep(), this.buildCabbage());
         return stage;
@@ -134,7 +134,7 @@ public class WolfSheepCabbageBuilder implements GameBuilder {
     }
 
     private String takeTransportable(ConcreteGame game, String itemName) {
-        if (!game.getCurrentStage().getItemContainer().contains(itemName)){
+        if (!game.getCurrentStage().getItemContainer().contains(itemName)) {
             return "The shore doesn't have that object";
         }
 
@@ -154,11 +154,11 @@ public class WolfSheepCabbageBuilder implements GameBuilder {
 
     private String leaveTransportable(ConcreteGame game, String itemName) {
 
-        if (!game.getPlayer().getInventory().contains(itemName)){
+        if (!game.getPlayer().getInventory().contains(itemName)) {
             return "The boat doesn't have that object";
         }
 
-        game.getCurrentStage().addItem(new Item (itemName, itemName));
+        game.getCurrentStage().addItem(new Item(itemName, itemName));
         game.getPlayer().getInventory().dropItem(itemName);
 
         return "Ok";
@@ -177,7 +177,7 @@ public class WolfSheepCabbageBuilder implements GameBuilder {
         return new Item("cabbage", "Its a Cabbage");
     }
 
-    private boolean isBoatAtSouth(ConcreteGame game){
+    private boolean isBoatAtSouth(ConcreteGame game) {
         return game.getCurrentStage().getName().equals("SouthShore");
     }
 }

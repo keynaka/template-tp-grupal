@@ -19,23 +19,23 @@ public class CommandInterpreter {
         startGames();
     }
 
-        /*
-        this.games = new ArrayList<AbstractGame>();
+    /*
+    this.games = new ArrayList<AbstractGame>();
 
-        this.addGame(new FetchQuest());
-        this.addGame(new OpenDoor());
-        this.addGame(new OpenDoor2());
-        this.addGame(new HanoiTowers());
-        this.addGame(new WolfSheepCabbage());
-        this.addGame(new TreasureHunt());
-        this.addGame(new CursedObjectGame());
+    this.addGame(new FetchQuest());
+    this.addGame(new OpenDoor());
+    this.addGame(new OpenDoor2());
+    this.addGame(new HanoiTowers());
+    this.addGame(new WolfSheepCabbage());
+    this.addGame(new TreasureHunt());
+    this.addGame(new CursedObjectGame());
 
 
-    public void addGame(AbstractGame game) {
-        game.start();
-        this.games.add(game);
-    }
-    */
+public void addGame(AbstractGame game) {
+    game.start();
+    this.games.add(game);
+}
+*/
     private void startGames() {
         for (AbstractGame game : this.games) {
             game.start();
@@ -57,6 +57,22 @@ public class CommandInterpreter {
             }
         }
         return command;
+    }
+
+    public Command getCommandForDriver(String gameCommand) {
+
+        if ((Action.getActionByValue(gameCommand) != null)) {
+            return new Command(Action.getActionByValue(gameCommand));
+        }
+
+        String[] commandWords = gameCommand.split(" ");
+        if (commandWords.length == 1) {
+            return new Command(Action.getActionByValue(commandWords[0]));
+        } else if (commandWords.length == 2) {
+            return new Command(Action.getActionByValue(commandWords[0]), commandWords[1]);
+        } else {
+            return new Command(Action.getActionByValue(commandWords[0]), commandWords[1], commandWords[2]);
+        }
     }
 
     private Command bindActions(String gameCommand, AbstractGame game) {
