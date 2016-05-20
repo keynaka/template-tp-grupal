@@ -200,6 +200,7 @@ public class EscapeBuilder implements GameBuilder {
         Stage room2 = new Stage("Salon2");
         room2.addItem(this.buildHammer());
         room2.addItem(this.buildScrewdriver());
+        room2.addConsecutiveStage("Pasillo");
         return room2;
     }
 
@@ -242,6 +243,7 @@ public class EscapeBuilder implements GameBuilder {
     private Stage buildRoom3() {
         Stage room3 = new Stage("Salon3");
         room3.addItem(this.buildKey());
+        room3.addConsecutiveStage("Pasillo");
         return room3;
     }
 
@@ -267,6 +269,7 @@ public class EscapeBuilder implements GameBuilder {
     private Stage buildLibraryHall() {
         Stage libraryHall = new Stage("BibliotecaAcceso");
         libraryHall.addItem(this.buildLibrarian());
+        libraryHall.addConsecutiveStage("Pasillo");
         return libraryHall;
     }
 
