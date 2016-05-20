@@ -16,7 +16,7 @@ public class EscapeTest {
     @Test
     public void testPassFromHallToRoom1() {
         target = new EscapeBuilder().build();
-        assertEquals("Items in the hall: door1.", target.play(new Command(Action.LOOK_AROUND)));
+        assertEquals("Items in the hall: door1, door3.", target.play(new Command(Action.LOOK_AROUND)));
         assertEquals("Door1 opened.", target.play(new Command(Action.OPEN, "door1")));
         assertEquals("Items in the room1: boatPicture, chair1, chair2, door1, liquor, table, trainPicture.", target.play(new Command(Action.LOOK_AROUND)));
     }
@@ -35,5 +35,25 @@ public class EscapeTest {
         assertEquals("Door1 opened.", target.play(new Command(Action.OPEN, "door1")));
         assertEquals("There you go!", target.play(new Command(Action.MOVE, "boatPicture")));
         assertEquals("you can't open the box without key.", target.play(new Command(Action.OPEN, "securityBox")));
+    }
+
+    @Test
+    public void testPassToRoom3AndPickKey() {
+        target = new EscapeBuilder().build();
+        assertEquals("Door3 opened.", target.play(new Command(Action.OPEN, "door3")));
+        assertEquals("Items in the room3: door3, key.", target.play(new Command(Action.LOOK_AROUND)));
+        assertEquals("There you go!", target.play(new Command(Action.PICK, "key")));
+    }
+
+    @Test
+    public void testOpenSecurityBoxAndPickIdCard() {
+        target = new EscapeBuilder().build();
+        assertEquals("Door3 opened.", target.play(new Command(Action.OPEN, "door3")));
+        assertEquals("Items in the room3: door3, key.", target.play(new Command(Action.LOOK_AROUND)));
+        assertEquals("There you go!", target.play(new Command(Action.PICK, "key")));
+        assertEquals("Door3 opened.", target.play(new Command(Action.OPEN, "door3")));
+        assertEquals("Door1 opened.", target.play(new Command(Action.OPEN, "door1")));
+        assertEquals("There you go!", target.play(new Command(Action.MOVE, "boatPicture")));
+        assertEquals("Security box opened.", target.play(new Command(Action.OPEN, "securityBox")));
     }
 }

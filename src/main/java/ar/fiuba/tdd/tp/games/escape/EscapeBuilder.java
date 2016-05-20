@@ -25,6 +25,7 @@ public class EscapeBuilder implements GameBuilder {
         escape.setPlayer(this.buildPlayer());
         escape.addStage(this.buildHall());
         escape.addStage(this.buildRoom1());
+        escape.addStage(this.buildRoom3());
         registerKnownActions();
         return escape;
     }
@@ -65,7 +66,6 @@ public class EscapeBuilder implements GameBuilder {
         return player;
     }
 
-
     private Item buildKey1() {
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
@@ -81,6 +81,7 @@ public class EscapeBuilder implements GameBuilder {
         key.addBehavior(this.buildDropKeyBehavior());
         return key;
     }
+
 
     private void pickBehavior(String itemName) {
         Stage currentStage = escape.getCurrentStage();
@@ -168,8 +169,9 @@ public class EscapeBuilder implements GameBuilder {
 
         Behavior behavior = new Behavior();
         behavior.setActionName("open");
-        BehaviorView keyView = new BehaviorView();
-        keyView.setAction((game) -> "Security box opened.");
+        BehaviorView behaviorView = new BehaviorView();
+        behaviorView.setAction((game) -> "Security box opened.");
+        behavior.setView(behaviorView);
         behavior.setFailMessage("you can't open the box without key.");
         behavior.setExecutionCondition((game) -> game.getPlayer().hasItem("key"));
         behavior.setBehaviorAction((game) -> {
@@ -186,21 +188,65 @@ public class EscapeBuilder implements GameBuilder {
 
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
-        BehaviorView keyView = new BehaviorView();
-        keyView.setAction((game) -> "There you go!");
+        BehaviorView idCardView = new BehaviorView();
+        idCardView.setAction((game) -> "There you go!");
+        behavior.setView(idCardView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
             Item pickedItem = game.getCurrentStage().pickItem(idCard.getName());
             game.getPlayer().addToInventory(pickedItem);
         });
+        idCard.addBehavior(behavior);
         return idCard;
     }
 
+    private Stage buildRoom3() {
+        Stage room3 = new Stage("room3");
+        room3.addItem(this.buildDoor3());
+        room3.addItem(this.buildKey());
+        return room3;
+    }
+
+    private Item buildKey() {
+        Item key = new Item("key", "it's a key.");
+
+        Behavior behavior = new Behavior();
+        behavior.setActionName("pick");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "There you go!");
+        behavior.setView(keyView);
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((game) -> {
+            Item pickedItem = game.getCurrentStage().pickItem(key.getName());
+            game.getPlayer().addToInventory(pickedItem);
+        });
+        key.addBehavior(behavior);
+        return key;
+    }
+
+    private Item buildDoor3() {
+        Item door = new Item("door3", "it's a door3.");
+        door.addState("stage1", "hall");
+        door.addState("stage2", "room3");
+
+        Behavior behavior = new Behavior();
+        behavior.setActionName("open");
+        BehaviorView keyView = new BehaviorView();
+        keyView.setAction((game) -> "Door3 opened.");
+        behavior.setView(keyView);
+        behavior.setExecutionCondition((game) -> true);
+        behavior.setBehaviorAction((game) -> {
+            this.behaviorDoor(door);
+        });
+        door.addBehavior(behavior);
+        return door;
+    }
 
     @SuppressWarnings("CPD-END")
     private Stage buildHall() {
         Stage hall = new Stage("hall");
         hall.addItem(this.buildDoor1());
+        hall.addItem(this.buildDoor3());
         return hall;
     }
 }
