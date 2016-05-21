@@ -24,6 +24,7 @@ public enum Action {
     PUT("put"),
     SHOW("show"),
     USE("use"),
+    BREAK("break"),
     UNKNOWN_ACTION("");
 
     private String actionName;

@@ -3,7 +3,6 @@ package ar.fiuba.tdd.tp.games;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -35,5 +34,9 @@ public class Inventory {
 
     public int size() {
         return this.items.getSize();
+    }
+
+    public Item getItem(String itemName) {
+        return this.items.getItem(itemName);
     }
 }

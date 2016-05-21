@@ -104,7 +104,7 @@ public class ConcreteGame extends AbstractGame {
 
     @Override
     public GameState getGameState() {
-        return super.getGameState();
+        return this.gameState;
     }
 
     @Override

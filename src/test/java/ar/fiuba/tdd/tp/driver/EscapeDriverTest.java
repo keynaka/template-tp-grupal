@@ -2,6 +2,7 @@ package ar.fiuba.tdd.tp.driver;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -13,7 +14,7 @@ public class EscapeDriverTest {
     public void lostUsingStairs() {
         GameDriver driver = new ConcreteGameDriver();
         driver.initGame("escape");
-        /*driver.sendCommand("goto BibliotecaAcceso");
+        driver.sendCommand("goto BibliotecaAcceso");
         driver.sendCommand("goto Pasillo");
         driver.sendCommand("goto Salon3");
         driver.sendCommand("pick Llave");
@@ -27,10 +28,10 @@ public class EscapeDriverTest {
         driver.sendCommand("goto BibliotecaAcceso");
         driver.sendCommand("show Credencial Bibliotecario");
         driver.sendCommand("goto Biblioteca");
-        driver.sendCommand("move LibroViejo");
-        driver.sendCommand("goto Sotano");
-        driver.sendCommand("use Escalera");
-        assertTrue(GameState.Lost == driver.getCurrentState());*/
+        assertEquals("There you go!", driver.sendCommand("move LibroViejo"));
+        assertEquals("You have entered to Sotano.", driver.sendCommand("goto Sotano"));
+        assertEquals("You lost the game!", driver.sendCommand("use Escalera"));
+        assertTrue(GameState.Lost == driver.getCurrentState());
     }
 
     @Test
@@ -82,7 +83,7 @@ public class EscapeDriverTest {
         driver.sendCommand("goto Sotano");
         driver.sendCommand("use Baranda");
         driver.sendCommand("break Ventana Martillo");
-        driver.sendCommand("goto Sotano");
+        driver.sendCommand("goto Afuera");
         assertTrue(GameState.Won == driver.getCurrentState());*/
     }
 }
