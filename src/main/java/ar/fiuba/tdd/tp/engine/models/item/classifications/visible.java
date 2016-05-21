@@ -8,6 +8,7 @@ public class Visible extends ItemClassificationAction implements ISingleActionIt
         itemType = ItemClassificationType.VISIBLE;
         state = isVisible;
     }
+
     public boolean doAction() {
         return this.state;
     }

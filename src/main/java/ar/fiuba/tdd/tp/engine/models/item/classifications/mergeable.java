@@ -5,6 +5,7 @@ package ar.fiuba.tdd.tp.engine.models.item.classifications;
  */
 public class Mergeable extends ItemClassificationAction implements IPairActionItem {
     protected int pairIdItem = -1;
+
     public Mergeable(boolean isMergeable) {
         itemType = ItemClassificationType.MERGEABLE;
         state = isMergeable;

@@ -6,9 +6,11 @@ package ar.fiuba.tdd.tp.engine.models.item.classifications;
 public abstract class ItemClassificationAction {
     protected boolean state;
     protected String itemType;
+
     public boolean getState() {
         return state;
     }
+
     public String getItemType() {
         return itemType;
     }

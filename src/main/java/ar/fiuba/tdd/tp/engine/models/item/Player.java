@@ -28,9 +28,16 @@ public class Player {
     public boolean itemsBagIsFull() {
         return (maxItems != -1 && maxItems == itemsBag.size());
     }
+
     public void addItem(Item item) {
         if (!this.hasItem(item) && !itemsBagIsFull()) {
             itemsBag.add(item);
+        }
+    }
+
+    public void dropItem(Item item) {
+        if (this.hasItem(item)) {
+            this.itemsBag.remove(item);
         }
     }
 }

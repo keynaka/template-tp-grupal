@@ -16,17 +16,13 @@ public class Stage {
         name = stageName;
     }
 
-    /**
-     * Used only to build the Stage
-     */
-    public void _addAdjacentStage(Stage stage) {
+    // Used only to build the Stage
+    public void addAdjacentStage(Stage stage) {
         adjacentStages.add(stage);
     }
 
-    /**
-     * Used only to build the Stage
-     */
-    public void _addCharacter(Character character) {
+    // Used only to build the Stage
+    public void addCharacter(Character character) {
         characters.add(character);
     }
 
