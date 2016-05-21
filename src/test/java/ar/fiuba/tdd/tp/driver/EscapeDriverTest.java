@@ -2,7 +2,7 @@ package ar.fiuba.tdd.tp.driver;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by Fede on 19/05/2016.
@@ -13,8 +13,9 @@ public class EscapeDriverTest {
     public void lostUsingStairs() {
         GameDriver driver = new ConcreteGameDriver();
         driver.initGame("escape");
-        /*driver.sendCommand("goto BibliotecaAcceso");
-        driver.sendCommand("goto Pasillo");
+        String response = driver.sendCommand("goto BibliotecaAcceso");
+        assertEquals(response,"You have entered to BibliotecaAcceso.");
+        /*driver.sendCommand("goto Pasillo");
         driver.sendCommand("goto Salon3");
         driver.sendCommand("pick Llave");
         driver.sendCommand("goto Pasillo");

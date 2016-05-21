@@ -37,7 +37,7 @@ public class EscapeBuilder implements GameBuilder {
     private Player buildPlayer() {
         Player player = new Player();
         player.addState("lifeStatus", "alive");
-        player.setCurrentStage("hall");
+        player.setCurrentStage("Pasillo");
         player.addToInventory(new Item("picture", "picture"));
         player.addToInventory(new Item("pen", "pen"));
         return player;
