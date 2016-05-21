@@ -43,7 +43,7 @@ public class EscapeBuilder implements GameBuilder {
         player.addState("lifeStatus", "alive");
         player.setCurrentStage("Pasillo");
         player.addToInventory(new Item("Foto", "picture"));
-        player.addToInventory(new Item("pen", "pen"));
+        player.addToInventory(new Item("Lapicera", "pen"));
         return player;
     }
 
@@ -73,6 +73,12 @@ public class EscapeBuilder implements GameBuilder {
         escape.registerKnownAction(Action.BREAK, (itemName, arguments) -> this.breakHandler(itemName));
         escape.registerKnownAction(Action.SHOW, (itemName, arguments) -> this.showHandler(itemName, arguments[0]));
         escape.registerKnownAction(Action.PUT, (itemName, arguments) -> this.putHandler(itemName, arguments[0]));
+        escape.registerKnownAction(Action.DROP, (itemName, arguments) -> this.dropHandler(itemName));
+    }
+
+    private String dropHandler(String itemName) {
+        escape.getPlayer().getInventory().dropItem(itemName);
+        return String.format("You have dropped %s", itemName);
     }
 
     private String putHandler(String itemName, String argument) {
@@ -149,9 +155,9 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-                Item pickedItem = game.getCurrentStage().pickItem(liquor.getName());
-                game.getPlayer().addToInventory(pickedItem);
-            });
+            Item pickedItem = game.getCurrentStage().pickItem(liquor.getName());
+            game.getPlayer().addToInventory(pickedItem);
+        });
         liquor.addBehavior(behavior);
         return liquor;
     }
@@ -163,7 +169,8 @@ public class EscapeBuilder implements GameBuilder {
         keyView.setAction((game) -> "There you go!");
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
-        behavior.setBehaviorAction((game) -> { });
+        behavior.setBehaviorAction((game) -> {
+        });
         Item trainPicture = new Item("trainPicture", "it's a picture of a train.");
         trainPicture.addBehavior(behavior);
         return trainPicture;
@@ -202,9 +209,9 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setFailMessage("you can't open the box without key.");
         behavior.setExecutionCondition((game) -> game.getPlayer().hasItem("Llave"));
         behavior.setBehaviorAction((game) -> {
-                Item extractedItem = securityBox.extract(idCard.getName());
-                game.getCurrentStage().addItem(extractedItem);
-            });
+            Item extractedItem = securityBox.extract(idCard.getName());
+            game.getCurrentStage().addItem(extractedItem);
+        });
         securityBox.addBehavior(behavior);
         return securityBox;
     }
@@ -220,9 +227,9 @@ public class EscapeBuilder implements GameBuilder {
         pickBehavior.setView(idCardView);
         pickBehavior.setExecutionCondition((game) -> true);
         pickBehavior.setBehaviorAction((game) -> {
-                Item pickedItem = game.getCurrentStage().pickItem(idCard.getName());
-                game.getPlayer().addToInventory(pickedItem);
-            });
+            Item pickedItem = game.getCurrentStage().pickItem(idCard.getName());
+            game.getPlayer().addToInventory(pickedItem);
+        });
         idCard.addBehavior(pickBehavior);
 
         Behavior showBehavior = new Behavior();
@@ -231,7 +238,7 @@ public class EscapeBuilder implements GameBuilder {
         showBehavior.setExecutionCondition((game) -> true);
         showBehavior.setBehaviorAction((game) -> {
             Item credencial = game.getPlayer().getInventory().getItem("Credencial");
-            if(credencial.getState("picture").equalsIgnoreCase("player")) {
+            if (credencial.getState("picture").equalsIgnoreCase("player")) {
                 escape.getStage("Biblioteca").addState("entranceStatus", "opened");
             }
         });
@@ -260,7 +267,7 @@ public class EscapeBuilder implements GameBuilder {
     }
 
     private Item buildHammer() {
-        Item hammer = new Item("hammer", "it's a hammer.");
+        Item hammer = new Item("Martillo", "it's a hammer.");
 
         Behavior behavior = new Behavior();
         behavior.setActionName("pick");
@@ -269,9 +276,9 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-                Item pickedItem = game.getCurrentStage().pickItem(hammer.getName());
-                game.getPlayer().addToInventory(pickedItem);
-            });
+            Item pickedItem = game.getCurrentStage().pickItem(hammer.getName());
+            game.getPlayer().addToInventory(pickedItem);
+        });
         hammer.addBehavior(behavior);
         return hammer;
     }
@@ -286,9 +293,9 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-                Item pickedItem = game.getCurrentStage().pickItem(screwdriver.getName());
-                game.getPlayer().addToInventory(pickedItem);
-            });
+            Item pickedItem = game.getCurrentStage().pickItem(screwdriver.getName());
+            game.getPlayer().addToInventory(pickedItem);
+        });
         screwdriver.addBehavior(behavior);
         return screwdriver;
     }
@@ -312,9 +319,9 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-                Item pickedItem = game.getCurrentStage().pickItem(key.getName());
-                game.getPlayer().addToInventory(pickedItem);
-            });
+            Item pickedItem = game.getCurrentStage().pickItem(key.getName());
+            game.getPlayer().addToInventory(pickedItem);
+        });
         key.addBehavior(behavior);
         return key;
     }
@@ -355,9 +362,9 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-                Item pickedItem = game.getCurrentStage().pickItem(bookItem.getName());
-                game.getPlayer().addToInventory(pickedItem);
-            });
+            Item pickedItem = game.getCurrentStage().pickItem(bookItem.getName());
+            game.getPlayer().addToInventory(pickedItem);
+        });
         bookItem.addBehavior(behavior);
         return bookItem;
     }
@@ -372,13 +379,12 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-                escape.getStage("Sotano").addState("entranceStatus", "opened");
-            });
+            escape.getStage("Sotano").addState("entranceStatus", "opened");
+        });
         Item book = new Item("LibroViejo", "it's an old book.");
         book.addBehavior(behavior);
         return book;
     }
-
 
 
     //----------------------------FinLibrary----------------------------------//
@@ -414,7 +420,7 @@ public class EscapeBuilder implements GameBuilder {
         view.setAction((Game) -> "There you go!");
         use.setView(view);
         use.setBehaviorAction(game -> game.getPlayer().setCurrentStage("SotanoAbajo"));
-        Item baranda = new Item ("Baranda", "It's a baranda");
+        Item baranda = new Item("Baranda", "It's a baranda");
         baranda.addBehavior(use);
         return baranda;
     }
@@ -439,7 +445,7 @@ public class EscapeBuilder implements GameBuilder {
         view.setAction((Game) -> "You broke the window!");
         breakVentana.setView(view);
         breakVentana.setBehaviorAction(game -> game.getPlayer().setCurrentStage("Afuera"));
-        Item ventana = new Item ("Ventana", "It's a ventana");
+        Item ventana = new Item("Ventana", "It's a ventana");
         ventana.addBehavior(breakVentana);
         return ventana;
     }

@@ -38,7 +38,7 @@ public class EscapeDriverTest {
     public void lostWithoutHammer() {
         GameDriver driver = new ConcreteGameDriver();
         driver.initGame("escape");
-        /*driver.sendCommand("goto BibliotecaAcceso");
+        driver.sendCommand("goto BibliotecaAcceso");
         driver.sendCommand("goto Pasillo");
         driver.sendCommand("goto Salon3");
         driver.sendCommand("pick Llave");
@@ -55,20 +55,21 @@ public class EscapeDriverTest {
         driver.sendCommand("move LibroViejo");
         driver.sendCommand("goto Sotano");
         driver.sendCommand("use Baranda");
-        assertTrue(GameState.Lost == driver.getCurrentState());*/
+        assertTrue(GameState.Lost == driver.getCurrentState());
     }
 
     @Test
     public void winWithHammer() {
         GameDriver driver = new ConcreteGameDriver();
         driver.initGame("escape");
-        /*driver.sendCommand("goto BibliotecaAcceso");
+        driver.sendCommand("drop Lapicera");
+        driver.sendCommand("goto BibliotecaAcceso");
         driver.sendCommand("goto Pasillo");
         driver.sendCommand("goto Salon3");
         driver.sendCommand("pick Llave");
         driver.sendCommand("goto Pasillo");
-        driver.sendCommand("goto Salon2");
-        driver.sendCommand("pick Martillo");
+        assertEquals("You have entered to Salon2.", driver.sendCommand("goto Salon2"));
+        assertEquals("There you go!", driver.sendCommand("pick Martillo"));
         driver.sendCommand("goto Pasillo");
         driver.sendCommand("goto Salon1");
         driver.sendCommand("move CuadroBarco");
@@ -84,6 +85,6 @@ public class EscapeDriverTest {
         driver.sendCommand("use Baranda");
         driver.sendCommand("break Ventana Martillo");
         driver.sendCommand("goto Afuera");
-        assertTrue(GameState.Won == driver.getCurrentState());*/
+        assertTrue(GameState.Won == driver.getCurrentState());
     }
 }
