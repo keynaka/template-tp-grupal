@@ -177,7 +177,6 @@ public class EscapeBuilder implements GameBuilder {
     }
 
     private Item buildBoatPicture() {
-        Item boatPicture = new Item("CuadroBarco", "it's a picture of a boat.");
         Behavior behavior = new Behavior();
         behavior.setActionName("move");
         BehaviorView keyView = new BehaviorView();
@@ -187,6 +186,7 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setBehaviorAction((game) -> {
             this.movePicture();
         });
+        Item boatPicture = new Item("CuadroBarco", "it's a picture of a boat.");
         boatPicture.addBehavior(behavior);
         return boatPicture;
     }
@@ -402,9 +402,9 @@ public class EscapeBuilder implements GameBuilder {
     private Item buildEscalera() {
         Behavior use = new Behavior();
         use.setActionName("use");
-        use.setExecutionCondition((Game) -> true);
+        use.setExecutionCondition((game) -> true);
         BehaviorView view = new BehaviorView();
-        view.setAction((Game) -> "You are dead!");
+        view.setAction((game) -> "You are dead!");
         use.setView(view);
         use.setBehaviorAction(game -> game.getPlayer().addState("lifeStatus", "dead"));
         Item escalera = new Item("Escalera", "It's an escalera");
@@ -415,9 +415,9 @@ public class EscapeBuilder implements GameBuilder {
     private Item buildBaranda() {
         Behavior use = new Behavior();
         use.setActionName("use");
-        use.setExecutionCondition((Game) -> true);
+        use.setExecutionCondition((game) -> true);
         BehaviorView view = new BehaviorView();
-        view.setAction((Game) -> "There you go!");
+        view.setAction((game) -> "There you go!");
         use.setView(view);
         use.setBehaviorAction(game -> game.getPlayer().setCurrentStage("SotanoAbajo"));
         Item baranda = new Item("Baranda", "It's a baranda");
@@ -442,7 +442,7 @@ public class EscapeBuilder implements GameBuilder {
         breakVentana.setActionName("break");
         breakVentana.setExecutionCondition(game -> game.getPlayer().getInventory().contains("Martillo"));
         BehaviorView view = new BehaviorView();
-        view.setAction((Game) -> "You broke the window!");
+        view.setAction((game) -> "You broke the window!");
         breakVentana.setView(view);
         breakVentana.setBehaviorAction(game -> game.getPlayer().setCurrentStage("Afuera"));
         Item ventana = new Item("Ventana", "It's a ventana");
