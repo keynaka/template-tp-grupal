@@ -1,43 +1,36 @@
 package ar.fiuba.tdd.tp.engine.models.item;
 
+import ar.fiuba.tdd.tp.engine.models.IItemKeeper;
+import ar.fiuba.tdd.tp.engine.models.ItemBag;
 import ar.fiuba.tdd.tp.engine.models.Stage;
-
-import java.util.Set;
 
 /**
  * Created by Nico on 20/05/2016.
  */
-public class Player {
+public class Player implements IItemKeeper {
     protected String name;
     protected Stage currentStage;
-    protected Set<Item> itemsBag;
-    protected int maxItems = -1; // No limit
+    protected ItemBag itemsBag;
+
+    public Player(String name, int maxItems) {
+        this.name = name;
+        this.itemsBag = new ItemBag(maxItems);
+    }
 
     public Player(String name) {
         this.name = name;
+        this.itemsBag = new ItemBag();
+    }
+
+    public Player() {
+        this("UNKOWN_PLAYER");
     }
 
     public void setCurrentStage(Stage stage) {
         currentStage = stage;
     }
 
-    public boolean hasItem(Item item) {
-        return itemsBag.contains(item);
-    }
-
-    public boolean itemsBagIsFull() {
-        return (maxItems != -1 && maxItems == itemsBag.size());
-    }
-
-    public void addItem(Item item) {
-        if (!this.hasItem(item) && !itemsBagIsFull()) {
-            itemsBag.add(item);
-        }
-    }
-
-    public void dropItem(Item item) {
-        if (this.hasItem(item)) {
-            this.itemsBag.remove(item);
-        }
+    public ItemBag getItemsBag() {
+        return itemsBag;
     }
 }

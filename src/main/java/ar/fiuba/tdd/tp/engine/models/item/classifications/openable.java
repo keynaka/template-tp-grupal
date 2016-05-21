@@ -5,10 +5,22 @@ package ar.fiuba.tdd.tp.engine.models.item.classifications;
  */
 public class Openable extends ItemClassificationAction implements ISingleActionItem, IPairActionItem {
     protected int idKey = -1; // No key by default
+    protected static final int NO_KEY = -1;
 
-    public Openable(boolean isOpenable) {
+    public Openable(boolean isOpen, int idKey) {
         itemType = ItemClassificationType.OPENABLE;
-        state = isOpenable;
+        state = isOpen;
+        this.idKey = idKey;
+    }
+
+    public Openable(boolean isOpen) {
+        // There is no key needed to open it
+        this(isOpen, Openable.NO_KEY);
+    }
+
+    public Openable() {
+        // Is closed, and there is no key needed to open it
+        this(false, Openable.NO_KEY);
     }
 
     public void setKey(int idKey) {

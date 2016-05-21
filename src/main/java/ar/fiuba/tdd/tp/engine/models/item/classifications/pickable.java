@@ -8,4 +8,7 @@ public class Pickable extends SingleActionItem {
         itemType = ItemClassificationType.PICKABLE;
         state = isPickable;
     }
+    public Pickable() {
+        this(false);
+    }
 }

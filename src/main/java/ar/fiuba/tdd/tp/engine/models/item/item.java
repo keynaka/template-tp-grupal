@@ -6,16 +6,41 @@ import ar.fiuba.tdd.tp.engine.models.item.classifications.ISingleActionItem;
 import ar.fiuba.tdd.tp.engine.models.item.classifications.ItemClassificationTwiceActionException;
 
 import java.util.Map;
+import java.lang.Integer;
 
 /**
  * Created by Nico on 20/05/2016.
  */
-public class Item {
+public class Item implements IIdentificable<Integer> {
     protected int id;
     protected Map<String, ItemClassificationAction> classifications; // ItemClassificationType => ItemClassificationAction
+    protected String name;
+    protected static int idCount = 0;
 
     public Item(int idItem) {
         id = idItem;
+    }
+
+    public Item() {
+        this(Item.generateNewId());
+    }
+
+    // Use this to generate an id for a new item
+    public static int generateNewId() {
+        return ++Item.idCount;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        // Overrides current id
+        this.id = id;
+    }
+
+    public void setName(String itemName) {
+        name = itemName;
     }
 
     // Used only to build the Item
