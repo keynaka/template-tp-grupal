@@ -14,7 +14,7 @@ public class EscapeDriverTest {
     public void lostUsingStairs() {
         GameDriver driver = new ConcreteGameDriver();
         driver.initGame("escape");
-        driver.sendCommand("goto BibliotecaAcceso");
+        String response = driver.sendCommand("goto BibliotecaAcceso");
         driver.sendCommand("goto Pasillo");
         driver.sendCommand("goto Salon3");
         driver.sendCommand("pick Llave");
