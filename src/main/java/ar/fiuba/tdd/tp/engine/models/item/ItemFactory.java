@@ -9,20 +9,28 @@ import ar.fiuba.tdd.tp.engine.models.item.classifications.Pickable;
  */
 public class ItemFactory {
 
-    public static Item createItemByType(String type) {
+    public static Item createItemByType(String type) throws Exception {
         Item item = new Item();
-        switch(type) {
+        switch (type) {
             case ItemClassificationType.PICKABLE:
                 item.addItemClassification(type, new Pickable(true));
                 break;
+            default:
+                throw new Exception("Type " + type + " is not supported");
         }
         return item;
     }
 
     public static Item createKey(int idKey) {
-        Item item = ItemFactory.createItemByType(ItemClassificationType.PICKABLE);
-        item.setId(idKey);
-        return item;
+        Item item;
+        try {
+            item = ItemFactory.createItemByType(ItemClassificationType.PICKABLE);
+            item.setId(idKey);
+            return item;
+        } catch (Exception e) {
+            System.out.print("Error: " + e + "\n");
+        }
+        return null;
     }
 
     public static Item createLockedDoor(int idKey) {

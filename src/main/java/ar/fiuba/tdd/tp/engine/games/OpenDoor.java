@@ -10,6 +10,8 @@ public class OpenDoor extends Game {
 
     // Game constants
     public static final int ID_KEY = Item.generateNewId();
+    public static final String OPEN = "open";
+    public static final String PICK = "pick";
 
     public OpenDoor() {
         setGameName("OpenDoor");

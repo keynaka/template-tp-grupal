@@ -39,4 +39,9 @@ public class OpenDoorBuilder extends GameBuilder {
         getStageById(Game.MAIN_ROOM).getItemsBag().addItem(door);
         getStageById(Game.MAIN_ROOM).getItemsBag().addItem(key);
     }
+
+    protected void setKnownCommands() {
+        this.knownCommands.add(OpenDoor.OPEN);
+        this.knownCommands.add(OpenDoor.PICK);
+    }
 }

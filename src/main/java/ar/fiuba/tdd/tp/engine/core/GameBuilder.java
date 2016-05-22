@@ -13,6 +13,7 @@ public abstract class GameBuilder {
     protected Game game;
     protected ArrayList<Stage> stages;
     protected Player player;
+    protected ArrayList<String> knownCommands;
 
     public Game build(String gameName) {
         // Starts a new game
@@ -35,11 +36,16 @@ public abstract class GameBuilder {
         // Set the player to the game
         game.setPlayer(player);
 
+        // Set the commands supported by the game
+        setKnownCommands();
+
         return game;
     }
 
     // Every concrete game builder should build its own environment
     protected abstract void buildEnvironment();
+
+    protected abstract void setKnownCommands();
 
     protected void createPlayer() {
         player = new Player();

@@ -33,6 +33,7 @@ public class RuleHasItem extends Rule {
     }
 
     public boolean verify() {
-        return itemKeeper.getItemsBag().hasItem(idItem);
+        boolean condition = itemKeeper.getItemsBag().hasItem(idItem);
+        return (negateCondition) ? !condition : condition;
     }
 }

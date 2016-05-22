@@ -1,5 +1,6 @@
 package ar.fiuba.tdd.tp.engine.core;
 
+import ar.fiuba.tdd.tp.engine.core.rules.Rule;
 import ar.fiuba.tdd.tp.engine.models.Stage;
 import ar.fiuba.tdd.tp.engine.models.item.Player;
 
@@ -15,6 +16,7 @@ public class Game {
     protected ArrayList<Stage> stages;
     protected Player player;
     protected Parser parser;
+    protected Rule conditionToWin; // Cuando se gana el juego
 
     // Game constants
     public static final String MAIN_ROOM = "MAIN_ROOM";
@@ -47,5 +49,9 @@ public class Game {
 
     public void setParser(Parser parser) {
         this.parser = parser;
+    }
+
+    public void setConditionToWin(Rule condition) {
+        conditionToWin = condition;
     }
 }

@@ -10,6 +10,7 @@ public class FetchQuest extends Game {
 
     // Game constants
     public static final int ID_STICK = Item.generateNewId();
+    public static final String PICK = "pick";
 
     public FetchQuest() {
         setGameName("FetchQuest");

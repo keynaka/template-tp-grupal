@@ -2,6 +2,7 @@ package ar.fiuba.tdd.tp.engine.models;
 
 import ar.fiuba.tdd.tp.engine.models.item.Item;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -43,9 +44,21 @@ public class ItemBag {
         return false;
     }
 
-    public void removeItem(Item item) {
-        if (hasItem(item)) {
-            itemsBag.remove(item);
+    public Item fetchItem(int idItem) throws NoSuchElementException {
+        if (!hasItem(idItem)) {
+            throw new NoSuchElementException();
         }
+        for (Item item : itemsBag) {
+            if (item.getId().equals(idItem)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public Item removeItem(int idItem) throws NoSuchElementException {
+        Item item = fetchItem(idItem);
+        itemsBag.remove(item);
+        return item;
     }
 }

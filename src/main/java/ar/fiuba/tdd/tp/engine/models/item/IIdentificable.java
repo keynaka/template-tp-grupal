@@ -5,5 +5,6 @@ package ar.fiuba.tdd.tp.engine.models.item;
  */
 public interface IIdentificable<T> {
     T getId();
+
     void setId(T id);
 }
