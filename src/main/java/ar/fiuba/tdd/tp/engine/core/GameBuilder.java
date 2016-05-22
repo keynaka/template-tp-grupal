@@ -9,18 +9,15 @@ import java.util.ArrayList;
 /**
  * Created by Nico on 20/05/2016.
  */
-public abstract class GameBuilder {
+public abstract class GameBuilder implements IGameBuilder {
     protected Game game;
     protected ArrayList<Stage> stages;
     protected Player player;
     protected ArrayList<String> knownCommands;
 
-    public Game build(String gameName) {
+    public Game build() {
         // Starts a new game
         game = new Game();
-
-        // Sets the game name
-        game.setGameName(gameName);
 
         // Sets a parser to the game
         // TODO

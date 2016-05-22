@@ -20,7 +20,8 @@ public class FetchQuestBuilder extends GameBuilder {
     private ActionSwitchItemOwner pickStickAction;
 
     protected void buildEnvironment() {
-        game.setDescription("This is Fetch Quest. Pick the stick to win the game.");
+        game.setGameName(FetchQuest.GAME_NAME);
+        game.setDescription(FetchQuest.GAME_DESCRIPTION);
         createStages();
         createItems();
         createPlayer();

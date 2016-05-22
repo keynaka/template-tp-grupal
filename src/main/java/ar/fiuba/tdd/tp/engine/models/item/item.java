@@ -1,21 +1,23 @@
 package ar.fiuba.tdd.tp.engine.models.item;
 
-import ar.fiuba.tdd.tp.engine.models.item.classifications.ItemClassificationAction;
+import ar.fiuba.tdd.tp.engine.core.CommandExecution;
 import ar.fiuba.tdd.tp.engine.models.item.classifications.IPairActionItem;
 import ar.fiuba.tdd.tp.engine.models.item.classifications.ISingleActionItem;
+import ar.fiuba.tdd.tp.engine.models.item.classifications.ItemClassificationAction;
 import ar.fiuba.tdd.tp.engine.models.item.classifications.ItemClassificationTwiceActionException;
 
 import java.util.Map;
-import java.lang.Integer;
+import java.util.Set;
 
 /**
  * Created by Nico on 20/05/2016.
  */
 public class Item implements IIdentificable<Integer> {
-    protected int id;
+    private int id;
     protected Map<String, ItemClassificationAction> classifications; // ItemClassificationType => ItemClassificationAction
     protected String name;
-    protected static int idCount = 0;
+    private Set<CommandExecution> knownCommands;
+    private static int idCount = 0;
 
     public Item(int idItem) {
         id = idItem;
@@ -75,5 +77,21 @@ public class Item implements IIdentificable<Integer> {
             throw new ItemClassificationTypeNotSupportedException();
         }
         return this.classifications.get(itemClassificationType);
+    }
+
+    // Add supported commands by this item
+    public void addCommand(CommandExecution command) {
+        knownCommands.add(command);
+    }
+
+    public String runCommand(String commandName) {
+        String result = "Unknown action";
+        for (CommandExecution cmd : knownCommands) {
+            if (cmd.getCommandName().equals(commandName)) {
+                result = cmd.run();
+                break;
+            }
+        }
+        return result;
     }
 }

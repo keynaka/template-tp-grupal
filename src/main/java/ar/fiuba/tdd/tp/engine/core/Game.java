@@ -11,12 +11,13 @@ import java.util.ArrayList;
  */
 public class Game {
 
-    protected String name;
-    protected String description;
-    protected ArrayList<Stage> stages;
-    protected Player player;
-    protected Parser parser;
-    protected Rule conditionToWin; // Cuando se gana el juego
+    private String name;
+    private String description;
+    private ArrayList<Stage> stages;
+    private Player player;
+    private Parser parser;
+    private Rule conditionToWin;  // Cuando se gana el juego
+    private Rule conditionToLose; // Cuando se pierde el juego
 
     // Game constants
     public static final String MAIN_ROOM = "MAIN_ROOM";
@@ -25,6 +26,9 @@ public class Game {
     public Game(String gameName, String gameDescription) {
         setGameName(gameName);
         setDescription(gameDescription);
+
+        conditionToWin = null;
+        conditionToLose = null;
     }
 
     public Game() {
@@ -53,5 +57,23 @@ public class Game {
 
     public void setConditionToWin(Rule condition) {
         conditionToWin = condition;
+    }
+
+    // Checks if player win the game
+    public boolean isWon() {
+        return conditionToWin.verify();
+    }
+
+    // Checks if player lost the game
+    public boolean isLost() {
+        if (conditionToLose != null) {
+            return conditionToLose.verify();
+        }
+        return false;
+    }
+
+    // TODO
+    public String executeCommand(String command) {
+        return "Executing command 'command'";
     }
 }
