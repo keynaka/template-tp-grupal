@@ -2,6 +2,8 @@ package ar.fiuba.tdd.tp.engine.models;
 
 import ar.fiuba.tdd.tp.engine.models.item.Item;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -15,6 +17,7 @@ public class ItemBag {
 
     public ItemBag(int maxItems) {
         this.maxItems = maxItems;
+        itemsBag = new HashSet<>();
     }
 
     public ItemBag() {
@@ -60,5 +63,9 @@ public class ItemBag {
         Item item = fetchItem(idItem);
         itemsBag.remove(item);
         return item;
+    }
+
+    public Iterator<Item> iterator() {
+        return itemsBag.iterator();
     }
 }

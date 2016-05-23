@@ -2,9 +2,12 @@ package ar.fiuba.tdd.tp.engine.core;
 
 import ar.fiuba.tdd.tp.engine.core.rules.Rule;
 import ar.fiuba.tdd.tp.engine.models.Stage;
+import ar.fiuba.tdd.tp.engine.models.item.Item;
 import ar.fiuba.tdd.tp.engine.models.item.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Created by Nico on 20/05/2016.
@@ -74,6 +77,19 @@ public class Game {
 
     // TODO
     public String executeCommand(String command) {
-        return "Executing command 'command'";
+        ArrayList<String> words = new ArrayList<>(Arrays.asList(command.split("\\s+")));
+        String commandName = words.get(0);
+        String itemName = words.get(1);
+        Iterator<Item> it = player.getCurrentStage().getItemsBag().iterator();
+
+        String commandResult = "Unknown command";
+        while (it.hasNext()) {
+            Item item = it.next();
+            if (item.getName().equals(itemName)) {
+                commandResult = item.runCommand(commandName);
+                break;
+            }
+        }
+        return commandResult;
     }
 }

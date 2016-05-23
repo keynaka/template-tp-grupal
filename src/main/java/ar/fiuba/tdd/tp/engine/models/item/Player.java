@@ -33,4 +33,8 @@ public class Player implements IItemKeeper {
     public ItemBag getItemsBag() {
         return itemsBag;
     }
+
+    public Stage getCurrentStage() {
+        return currentStage;
+    }
 }

@@ -40,6 +40,9 @@ public class FetchQuestBuilder extends GameBuilder {
     private void createItems() {
         try {
             stick = ItemFactory.createItemByType(ItemClassificationType.PICKABLE);
+            //SingleActionItem PickableActionItem = new Pickable(true);
+            //Item stick = new Item();
+            //stick.addItemClassification(ItemClassificationType.PICKABLE, PickableActionItem);
             stick.setId(FetchQuest.ID_STICK);
             stick.setName("stick");
 

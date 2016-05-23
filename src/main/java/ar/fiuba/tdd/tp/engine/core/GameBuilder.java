@@ -24,6 +24,12 @@ public abstract class GameBuilder implements IGameBuilder {
         Parser parser = new Parser();
         game.setParser(parser);
 
+        // Sets empty stages
+        stages = new ArrayList<>();
+
+        // Sets empty known commands
+        knownCommands = new ArrayList<>();
+
         // Sets specific environment of a game
         buildEnvironment();
 
