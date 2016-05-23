@@ -11,9 +11,11 @@ public class CommandExecution {
     private String commandName;
     private Rule rule;
     private Action action;
+    private String successMessage;
 
-    public CommandExecution(String commandName) {
+    public CommandExecution(String commandName, String successMessage) {
         this.commandName = commandName;
+        this.successMessage = successMessage;
     }
 
     public String getCommandName() {
@@ -32,7 +34,7 @@ public class CommandExecution {
         String result;
         if (rule.verify()) {
             action.doAction();
-            result = "Executed " + commandName + "\n";
+            result = successMessage;
         } else {
             result = "Error: action not verifies\n";
             System.out.print(result);

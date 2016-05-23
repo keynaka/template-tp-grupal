@@ -6,6 +6,8 @@ import ar.fiuba.tdd.tp.engine.models.item.classifications.ISingleActionItem;
 import ar.fiuba.tdd.tp.engine.models.item.classifications.ItemClassificationAction;
 import ar.fiuba.tdd.tp.engine.models.item.classifications.ItemClassificationTwiceActionException;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,6 +23,8 @@ public class Item implements IIdentificable<Integer> {
 
     public Item(int idItem) {
         id = idItem;
+        classifications = new HashMap<>();
+        knownCommands = new HashSet<>();
     }
 
     public Item() {
@@ -42,12 +46,23 @@ public class Item implements IIdentificable<Integer> {
     }
 
     public void setName(String itemName) {
-        name = itemName;
+        name = itemName.toLowerCase();
+    }
+
+    public String getName() {
+        return name;
     }
 
     // Used only to build the Item
     public void addItemClassification(String type, ItemClassificationAction classification) {
         classifications.put(type, classification);
+    }
+
+    public boolean getClassificationState(String itemClassificationType) throws ItemClassificationTypeNotSupportedException {
+        if (!this.is(itemClassificationType)) {
+            throw new ItemClassificationTypeNotSupportedException();
+        }
+        return this.getItemAction(itemClassificationType).getState();
     }
 
     public boolean is(String itemClassificationType) {

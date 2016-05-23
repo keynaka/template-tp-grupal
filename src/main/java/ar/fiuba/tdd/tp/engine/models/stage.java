@@ -18,6 +18,7 @@ public class Stage implements IIdentificable<String>, IItemKeeper {
     public Stage(String stageName) {
         setId(stageName);
         itemsBag = new ItemBag();
+        adjacentStages = new ArrayList<>();
     }
 
     // Used only to build the Stage

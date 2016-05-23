@@ -12,4 +12,5 @@ public class FetchQuest {
     public static final String GAME_DESCRIPTION = "This is Fetch Quest. Pick the stick to win the game.";
     public static final int ID_STICK = Item.generateNewId();
     public static final String PICK = "pick";
+    public static final String PICK_SUCCESS_MESSAGE = "There you go!";
 }

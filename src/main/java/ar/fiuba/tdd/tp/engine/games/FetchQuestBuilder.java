@@ -40,9 +40,6 @@ public class FetchQuestBuilder extends GameBuilder {
     private void createItems() {
         try {
             stick = ItemFactory.createItemByType(ItemClassificationType.PICKABLE);
-            //SingleActionItem PickableActionItem = new Pickable(true);
-            //Item stick = new Item();
-            //stick.addItemClassification(ItemClassificationType.PICKABLE, PickableActionItem);
             stick.setId(FetchQuest.ID_STICK);
             stick.setName("stick");
 
@@ -66,7 +63,7 @@ public class FetchQuestBuilder extends GameBuilder {
     }
 
     private void bindRulesAndActions() {
-        CommandExecution pickStickCommand = new CommandExecution(FetchQuest.PICK);
+        CommandExecution pickStickCommand = new CommandExecution(FetchQuest.PICK, FetchQuest.PICK_SUCCESS_MESSAGE);
         pickStickCommand.setRule(roomHasStickRule);
         pickStickCommand.setAction(pickStickAction);
 
