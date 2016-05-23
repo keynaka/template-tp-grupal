@@ -65,7 +65,7 @@ public class FetchQuestBuilder extends GameBuilder {
     private void bindRulesAndActions() {
         CommandExecution pickStickCommand = new CommandExecution(FetchQuest.PICK, FetchQuest.PICK_SUCCESS_MESSAGE);
         pickStickCommand.setRule(roomHasStickRule);
-        pickStickCommand.setAction(pickStickAction);
+        pickStickCommand.addAction(pickStickAction);
 
         stick.addCommand(pickStickCommand);
     }

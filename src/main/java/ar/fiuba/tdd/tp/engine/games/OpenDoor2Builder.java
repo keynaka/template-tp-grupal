@@ -4,6 +4,7 @@ import ar.fiuba.tdd.tp.engine.core.CommandExecution;
 import ar.fiuba.tdd.tp.engine.core.Game;
 import ar.fiuba.tdd.tp.engine.core.GameBuilder;
 import ar.fiuba.tdd.tp.engine.core.actions.Action;
+import ar.fiuba.tdd.tp.engine.core.actions.ActionDoItemClassification;
 import ar.fiuba.tdd.tp.engine.core.actions.ActionDoWithItemClassification;
 import ar.fiuba.tdd.tp.engine.core.actions.ActionSwitchItemOwner;
 import ar.fiuba.tdd.tp.engine.core.rules.Rule;
@@ -15,15 +16,19 @@ import ar.fiuba.tdd.tp.engine.models.item.ItemFactory;
 import ar.fiuba.tdd.tp.engine.models.item.classifications.ItemClassificationType;
 
 /**
- * Created by Nico on 21/05/2016.
+ * Created by Nico on 23/05/2016.
  */
-public class OpenDoorBuilder extends GameBuilder {
+public class OpenDoor2Builder extends GameBuilder {
+    private Item box;
     private Item key;
     private Item door;
     private Stage mainStage;
+    private Rule boxIsClosed;
     private Rule roomHasKeyRule;
     private Rule doorIsOpen;
     private Rule doorIsClosed;
+    private Action openBoxAction;
+    private ActionSwitchItemOwner giveKeyToStageAction;
     private ActionSwitchItemOwner pickKeyAction;
     private Action openDoorAction;
 
@@ -45,18 +50,29 @@ public class OpenDoorBuilder extends GameBuilder {
     }
 
     protected void createItems() {
-        key = ItemFactory.createKey(OpenDoor.ID_KEY);
-        key.setName("key");
+        try {
+            box = ItemFactory.createItemByType(ItemClassificationType.OPENABLE);
+            box.setName("box");
 
-        door = ItemFactory.createLockedDoor(key.getId());
-        door.setName("door");
+            key = ItemFactory.createKey(OpenDoor2.ID_KEY);
+            key.setName("key");
+            box.getItemsBag().addItem(key);
 
-        getStageById(Game.MAIN_ROOM).getItemsBag().addItem(door);
-        getStageById(Game.MAIN_ROOM).getItemsBag().addItem(key);
+            door = ItemFactory.createLockedDoor(key.getId());
+            door.setName("door");
+
+            getStageById(Game.MAIN_ROOM).getItemsBag().addItem(box);
+            getStageById(Game.MAIN_ROOM).getItemsBag().addItem(door);
+        } catch (Exception e) {
+            System.out.print("Error: " + e + "\n");
+        }
     }
 
     private void createRules() {
-        roomHasKeyRule = new RuleHasItem(mainStage, OpenDoor.ID_KEY);
+        boxIsClosed = new RuleItemIsOpen(box);
+        boxIsClosed.negateCondition = true;
+
+        roomHasKeyRule = new RuleHasItem(mainStage, OpenDoor2.ID_KEY);
         doorIsOpen = new RuleItemIsOpen(door);
 
         doorIsClosed = new RuleItemIsOpen(door);
@@ -66,29 +82,39 @@ public class OpenDoorBuilder extends GameBuilder {
     }
 
     private void createActions() {
+        openBoxAction = new ActionDoItemClassification(box, ItemClassificationType.OPENABLE);
+        giveKeyToStageAction = new ActionSwitchItemOwner();
+        giveKeyToStageAction.setOldOwner(box);
+        giveKeyToStageAction.setNewOwner(mainStage);
+        giveKeyToStageAction.setItem(OpenDoor2.ID_KEY);
+
         pickKeyAction = new ActionSwitchItemOwner();
         pickKeyAction.setOldOwner(mainStage);
         pickKeyAction.setNewOwner(player);
-        pickKeyAction.setItem(OpenDoor.ID_KEY);
+        pickKeyAction.setItem(OpenDoor2.ID_KEY);
 
         openDoorAction = new ActionDoWithItemClassification(door, key, ItemClassificationType.OPENABLE);
     }
 
     private void bindRulesAndActions() {
-        CommandExecution pickKeyCommand = new CommandExecution(OpenDoor.PICK, OpenDoor.PICK_SUCCESS_MESSAGE);
+        CommandExecution openBoxCommand = new CommandExecution(OpenDoor2.OPEN, OpenDoor2.OPEN_BOX_SUCCESS_MESSAGE);
+        openBoxCommand.setRule(boxIsClosed);
+        openBoxCommand.addAction(openBoxAction);
+        openBoxCommand.addAction(giveKeyToStageAction);
+
+        CommandExecution pickKeyCommand = new CommandExecution(OpenDoor2.PICK, OpenDoor2.PICK_SUCCESS_MESSAGE);
         pickKeyCommand.setRule(roomHasKeyRule);
         pickKeyCommand.addAction(pickKeyAction);
         key.addCommand(pickKeyCommand);
 
-
-        CommandExecution openDoor = new CommandExecution(OpenDoor.OPEN, OpenDoor.OPEN_SUCCESS_MESSAGE);
+        CommandExecution openDoor = new CommandExecution(OpenDoor2.OPEN, OpenDoor2.OPEN_DOOR_SUCCESS_MESSAGE);
         openDoor.setRule(doorIsClosed);
         openDoor.addAction(openDoorAction);
         door.addCommand(openDoor);
     }
 
     protected void setKnownCommands() {
-        this.knownCommands.add(OpenDoor.OPEN);
-        this.knownCommands.add(OpenDoor.PICK);
+        this.knownCommands.add(OpenDoor2.OPEN);
+        this.knownCommands.add(OpenDoor2.PICK);
     }
 }

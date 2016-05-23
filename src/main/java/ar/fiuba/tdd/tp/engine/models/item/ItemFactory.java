@@ -15,6 +15,9 @@ public class ItemFactory {
             case ItemClassificationType.PICKABLE:
                 item.addItemClassification(type, new Pickable(true));
                 break;
+            case ItemClassificationType.OPENABLE:
+                item.addItemClassification(type, new Openable(false));
+                break;
             default:
                 throw new Exception("Type " + type + " is not supported");
         }

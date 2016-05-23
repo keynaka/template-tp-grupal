@@ -1,6 +1,8 @@
 package ar.fiuba.tdd.tp.engine.models.item;
 
 import ar.fiuba.tdd.tp.engine.core.CommandExecution;
+import ar.fiuba.tdd.tp.engine.models.IItemKeeper;
+import ar.fiuba.tdd.tp.engine.models.ItemBag;
 import ar.fiuba.tdd.tp.engine.models.item.classifications.IPairActionItem;
 import ar.fiuba.tdd.tp.engine.models.item.classifications.ISingleActionItem;
 import ar.fiuba.tdd.tp.engine.models.item.classifications.ItemClassificationAction;
@@ -14,17 +16,19 @@ import java.util.Set;
 /**
  * Created by Nico on 20/05/2016.
  */
-public class Item implements IIdentificable<Integer> {
+public class Item implements IIdentificable<Integer>, IItemKeeper {
     private int id;
     protected Map<String, ItemClassificationAction> classifications; // ItemClassificationType => ItemClassificationAction
     protected String name;
     private Set<CommandExecution> knownCommands;
+    protected ItemBag itemsBag;
     private static int idCount = 0;
 
     public Item(int idItem) {
         id = idItem;
         classifications = new HashMap<>();
         knownCommands = new HashSet<>();
+        itemsBag = new ItemBag();
     }
 
     public Item() {
@@ -51,6 +55,10 @@ public class Item implements IIdentificable<Integer> {
 
     public String getName() {
         return name;
+    }
+
+    public ItemBag getItemsBag() {
+        return itemsBag;
     }
 
     // Used only to build the Item
