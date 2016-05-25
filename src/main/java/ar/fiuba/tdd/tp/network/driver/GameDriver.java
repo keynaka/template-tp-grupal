@@ -12,6 +12,22 @@ public class GameDriver implements IGameDriver {
     private GameState currentGameState;
     private GameBuilder gameBuilder;
 
+    // TODO - This is only for test. Delete it when figure out how to compile games into JARs
+    public void setGameBuilder(GameBuilder aGameBuilder) {
+        gameBuilder = aGameBuilder;
+        try {
+            if (gameBuilder == null) {
+                throw new GameLoadFailedException();
+            }
+            this.game = gameBuilder.build();
+            this.currentGameState = GameState.Ready;
+        } catch (Exception e) {
+            // Possible exceptions:
+            // ClassNotFoundException, IOException, IllegalAccessException, InstantiationException
+            e.printStackTrace();
+        }
+    }
+
     public void initGame(String jarPath) throws GameLoadFailedException {
         try {
             gameBuilder = BuilderLoader.load(jarPath);
@@ -48,5 +64,9 @@ public class GameDriver implements IGameDriver {
 
     public GameState getCurrentState() {
         return this.currentGameState;
+    }
+
+    public String getGameName() {
+        return game.getName();
     }
 }

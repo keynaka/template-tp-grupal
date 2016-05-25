@@ -42,6 +42,10 @@ public class Game {
         name = gameName;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setStages(ArrayList<Stage> stages) {
         this.stages = stages;
     }
