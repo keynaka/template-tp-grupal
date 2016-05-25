@@ -41,7 +41,7 @@ public class CommandExecution {
             }
             result = successMessage;
         } else {
-            result = "Error: action not verifies\n";
+            result = rule.getErrorMessage()+"\n";
             System.out.print(result);
         }
         return result;

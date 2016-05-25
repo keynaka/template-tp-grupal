@@ -65,6 +65,10 @@ public class ItemBag {
         return item;
     }
 
+    public int getAmount() {
+        return itemsBag.size();
+    }
+
     public Iterator<Item> iterator() {
         return itemsBag.iterator();
     }
