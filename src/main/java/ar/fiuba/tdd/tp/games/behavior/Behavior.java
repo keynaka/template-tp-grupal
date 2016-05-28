@@ -2,10 +2,10 @@ package ar.fiuba.tdd.tp.games.behavior;
 
 import ar.fiuba.tdd.tp.games.ConcreteGame;
 import ar.fiuba.tdd.tp.games.actions.Action;
-import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.rules.Rule;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -25,6 +25,10 @@ public class Behavior {
 
     private Rule executionRule;
     private List<Action> actions = new ArrayList<>();
+
+    public static BehaviorBuilder builder() {
+        return new BehaviorBuilder();
+    }
 
     public String execute(ConcreteGame game) {
         if (executionCondition.test(game)) {
@@ -86,5 +90,58 @@ public class Behavior {
 
     public void addActions(Action action) {
         this.actions.add(action);
+    }
+
+    public void setActions(List<Action> actions) {
+        this.actions = actions;
+    }
+
+    /**
+     * Behavior builder class
+     */
+    public static class BehaviorBuilder {
+        private String actionName;
+        private String resultMessage;
+        private String failMessage;
+        private Rule executionRule;
+        private List<Action> actions;
+
+        private BehaviorBuilder() {
+        }
+
+        public BehaviorBuilder actionName(String actionName) {
+            this.actionName = actionName;
+            return this;
+        }
+
+        public BehaviorBuilder resultMessage(String resultMessage) {
+            this.resultMessage = resultMessage;
+            return this;
+        }
+
+        public BehaviorBuilder failMessage(String failMessage) {
+            this.failMessage = failMessage;
+            return this;
+        }
+
+        public BehaviorBuilder executionRule(Rule executionRule) {
+            this.executionRule = executionRule;
+            return this;
+        }
+
+        public BehaviorBuilder actions(Action... actions) {
+            this.actions = Arrays.asList(actions);
+            return this;
+        }
+
+        public Behavior build() {
+            Behavior behavior = new Behavior();
+            behavior.setActionName(this.actionName);
+            behavior.setResultMessage(this.resultMessage);
+            behavior.setFailMessage(this.failMessage);
+            behavior.setExecutionRule(this.executionRule);
+            behavior.setActions(this.actions);
+            return behavior;
+        }
     }
 }

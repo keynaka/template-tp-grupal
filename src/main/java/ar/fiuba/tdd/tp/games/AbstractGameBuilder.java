@@ -18,6 +18,9 @@ public abstract class AbstractGameBuilder implements GameBuilder {
         // Sets empty stages
         stages = new ArrayList<>();
 
+        // Create a player
+        player = new Player();
+
         // Sets empty known commands
         knownCommands = new ArrayList<>();
 
@@ -41,5 +44,5 @@ public abstract class AbstractGameBuilder implements GameBuilder {
 
     protected abstract void setKnownActions();
 
-    protected abstract void createPlayer();
+    protected abstract void configurePlayer();
 }

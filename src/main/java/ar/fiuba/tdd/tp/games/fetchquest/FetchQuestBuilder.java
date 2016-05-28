@@ -3,11 +3,8 @@ package ar.fiuba.tdd.tp.games.fetchquest;
 import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.actions.SwitchItemOwnerAction;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
-import ar.fiuba.tdd.tp.games.behavior.BehaviorView;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.rules.HasItemRule;
-
-import java.util.function.Predicate;
 
 /**
  * Created by sebass on 10/05/16.
@@ -26,7 +23,7 @@ public class FetchQuestBuilder extends AbstractGameBuilder {
 
         createStages();
         createItems();
-        createPlayer();
+        configurePlayer();
         createRules();
         createActions();
         bindRulesAndActions();
@@ -43,8 +40,7 @@ public class FetchQuestBuilder extends AbstractGameBuilder {
     }
 
     @Override
-    protected void createPlayer() {
-        player = new Player();
+    protected void configurePlayer() {
         player.setCurrentStage(mainStage.getName());
     }
 
@@ -59,11 +55,12 @@ public class FetchQuestBuilder extends AbstractGameBuilder {
     }
 
     private void bindRulesAndActions() {
-        Behavior behavior = new Behavior();
-        behavior.setActionName("pick");
-        behavior.setResultMessage("There you go.");
-        behavior.setExecutionRule(roomHasStickRule);
-        behavior.addActions(pickStickAction);
+        Behavior behavior = Behavior.builder()
+                .actionName("pick")
+                .resultMessage("There you go.")
+                .failMessage("You can't pick this object.")
+                .executionRule(roomHasStickRule)
+                .actions(pickStickAction).build();
 
         stick.addBehavior(behavior);
     }
