@@ -6,6 +6,7 @@ import ar.fiuba.tdd.tp.games.behavior.BehaviorView;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
+import ar.fiuba.tdd.tp.games.rules.IsOpenRule;
 
 import java.util.function.Predicate;
 
@@ -239,7 +240,7 @@ public class EscapeBuilder implements GameBuilder {
         showBehavior.setBehaviorAction((game) -> {
             Item credencial = game.getPlayer().getInventory().getItem("Credencial");
             if (credencial.getState("picture").equalsIgnoreCase("player")) {
-                escape.getStage("Biblioteca").addState("entranceStatus", "opened");
+                escape.getStage("Biblioteca").addState(IsOpenRule.OPEN_STATUS_KEY, IsOpenRule.OPENED);
             }
         });
         idCard.addBehavior(showBehavior);
@@ -338,8 +339,8 @@ public class EscapeBuilder implements GameBuilder {
 
     private Stage buildLibrary() {
         Stage stage = new Stage("Biblioteca");
-        stage.addState("entranceStatus", "closed");
-        stage.setEntranceCondition((player) -> stage.getState("entranceStatus").equalsIgnoreCase("opened"));
+        stage.addState(IsOpenRule.OPEN_STATUS_KEY, IsOpenRule.CLOSED);
+        stage.setEntranceRule(new IsOpenRule(stage));
         stage.addItem(buildOldBook());
         stage.addConsecutiveStage("Sotano");
         stage.addConsecutiveStage("BibliotecaAcceso");
@@ -379,7 +380,7 @@ public class EscapeBuilder implements GameBuilder {
         behavior.setView(keyView);
         behavior.setExecutionCondition((game) -> true);
         behavior.setBehaviorAction((game) -> {
-            escape.getStage("Sotano").addState("entranceStatus", "opened");
+            escape.getStage("Sotano").addState(IsOpenRule.OPEN_STATUS_KEY, IsOpenRule.OPENED);
         });
         Item book = new Item("LibroViejo", "it's an old book.");
         book.addBehavior(behavior);

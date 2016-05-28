@@ -4,6 +4,8 @@ import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 import ar.fiuba.tdd.tp.games.objects.GameObject;
+import ar.fiuba.tdd.tp.games.rules.IsOpenRule;
+import ar.fiuba.tdd.tp.games.rules.Rule;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -19,11 +21,13 @@ public class Stage extends GameObject implements ItemKeeper {
 
     private ItemContainer itemContainer;
     private List<String> consecutiveStages = new ArrayList<>();
-    private Predicate<Player> entranceCondition = (player) -> true;
+    private Rule entranceRule;
 
     public Stage() {
         this.name = "room";
         this.itemContainer = new ItemContainer(this.name, "", DEFAULT_STAGE_SIZE);
+        this.addState(IsOpenRule.OPEN_STATUS_KEY, IsOpenRule.OPENED);
+        this.entranceRule = new IsOpenRule(this);
     }
 
     public Stage(String name) {
@@ -86,12 +90,9 @@ public class Stage extends GameObject implements ItemKeeper {
         throw new GameException("Stage not found");
     }
 
-    public void setEntranceCondition(Predicate<Player> entranceCondition) {
-        this.entranceCondition = entranceCondition;
-    }
 
     public void enter(Player player) {
-        if (this.entranceCondition.test(player)) {
+        if (this.entranceRule.verify()) {
             player.setCurrentStage(this.getName());
         }
     }
@@ -109,5 +110,9 @@ public class Stage extends GameObject implements ItemKeeper {
     @Override
     public void insertItem(Item item) {
         this.itemContainer.addItem(item);
+    }
+
+    public void setEntranceRule(Rule entranceRule) {
+        this.entranceRule = entranceRule;
     }
 }
