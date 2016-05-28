@@ -67,8 +67,8 @@ public class FetchQuestBuilder extends AbstractGameBuilder {
 
     @Override
     protected void setKnownActions() {
-        game.registerKnownAction(ActionOld.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler());
-        game.registerKnownAction(ActionOld.PICK, (itemName, args) -> this.pickHandler(itemName));
+        game.registerKnownAction(ActionOld.LOOK_AROUND, (command) -> this.lookAroundHandler());
+        game.registerKnownAction(ActionOld.PICK, (command) -> this.pickHandler(command.getItemName()));
     }
 
     private String lookAroundHandler() {

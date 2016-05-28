@@ -41,4 +41,5 @@ public abstract class AbstractGameBuilder implements GameBuilder {
     protected abstract void setKnownActions();
 
     protected abstract void configurePlayer();
+
 }

@@ -64,16 +64,16 @@ public class EscapeBuilder implements GameBuilder {
 
     //----------------------------Handlers && Behaviors----------------------------------//
     private void registerKnownActions() {
-        escape.registerKnownAction(ActionOld.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler());
-        escape.registerKnownAction(ActionOld.GOTO, (itemName, args) -> this.gotoHandler(itemName));
-        escape.registerKnownAction(ActionOld.PICK, (itemName, args) -> this.pickHandler(itemName));
-        escape.registerKnownAction(ActionOld.OPEN, (itemName, args) -> this.openHandler(itemName));
-        escape.registerKnownAction(ActionOld.MOVE, (itemName, args) -> this.moveHandler(itemName));
-        escape.registerKnownAction(ActionOld.USE, (itemName, arguments) -> this.useHandler(itemName));
-        escape.registerKnownAction(ActionOld.BREAK, (itemName, arguments) -> this.breakHandler(itemName));
-        escape.registerKnownAction(ActionOld.SHOW, (itemName, arguments) -> this.showHandler(itemName, arguments[0]));
-        escape.registerKnownAction(ActionOld.PUT, (itemName, arguments) -> this.putHandler(itemName, arguments[0]));
-        escape.registerKnownAction(ActionOld.DROP, (itemName, arguments) -> this.dropHandler(itemName));
+        escape.registerKnownAction(ActionOld.LOOK_AROUND, (command) -> this.lookAroundHandler());
+        escape.registerKnownAction(ActionOld.GOTO, (command) -> this.gotoHandler(command.getItemName()));
+        escape.registerKnownAction(ActionOld.PICK, (command) -> this.pickHandler(command.getItemName()));
+        escape.registerKnownAction(ActionOld.OPEN, (command) -> this.openHandler(command.getItemName()));
+        escape.registerKnownAction(ActionOld.MOVE, (command) -> this.moveHandler(command.getItemName()));
+        escape.registerKnownAction(ActionOld.USE, (command) -> this.useHandler(command.getItemName()));
+        escape.registerKnownAction(ActionOld.BREAK, (command) -> this.breakHandler(command.getItemName()));
+        escape.registerKnownAction(ActionOld.SHOW, (command) -> this.showHandler(command.getItemName(), command.getArgument()));
+        escape.registerKnownAction(ActionOld.PUT, (command) -> this.putHandler(command.getItemName(), command.getArgument()));
+        escape.registerKnownAction(ActionOld.DROP, (command) -> this.dropHandler(command.getItemName()));
     }
 
     private String dropHandler(String itemName) {

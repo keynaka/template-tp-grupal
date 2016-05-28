@@ -35,13 +35,13 @@ public class HanoiTowersBuilder implements GameBuilder {
     }
 
     private void registerKnownActions(ConcreteGame game) {
-        game.registerKnownAction(ActionOld.SET_DISKS, (number, args) -> this.disksSetterHandler(game, number));
-        game.registerKnownAction(ActionOld.TOP_SIZE, (towerId, args) -> this.checkTopHandler(game, towerId));
-        game.registerKnownAction(ActionOld.MOVE_TOP, (itemName, args) -> this.moveTopHandler(game, itemName, args));
-        game.registerKnownAction(ActionOld.EXAMINE, (itemName, arg) -> this.examineHandler(game, itemName));
+        game.registerKnownAction(ActionOld.SET_DISKS, (command) -> this.disksSetterHandler(game, command.getItemName()));
+        game.registerKnownAction(ActionOld.TOP_SIZE, (command) -> this.checkTopHandler(game, command.getItemName()));
+        game.registerKnownAction(ActionOld.MOVE_TOP, (command) -> this.moveTopHandler(game, command.getItemName(), command.getArgument()));
+        game.registerKnownAction(ActionOld.EXAMINE, (command) -> this.examineHandler(game, command.getItemName()));
     }
 
-    private String moveTopHandler(ConcreteGame game, String itemName, String[] args) {
+    private String moveTopHandler(ConcreteGame game, String itemName, String arg) {
 
         Stage stage = game.getCurrentStage();
 
@@ -49,13 +49,13 @@ public class HanoiTowersBuilder implements GameBuilder {
             stage.getItemContainer().extract("originTowerId"); // I'll replace the old origin tower with the new one
         }
 
-        if (stage.getItemContainer().contains(args[0]) && stage.getItemContainer().contains(itemName)) {
+        if (stage.getItemContainer().contains(arg) && stage.getItemContainer().contains(itemName)) {
 
             Item originTowerId = new Item("originTowerId", itemName);
 
             stage.addItem(originTowerId);
 
-            Item destinyTower = stage.getItem(args[0]);
+            Item destinyTower = stage.getItem(arg);
 
             return destinyTower.execute(game, ActionOld.MOVE_TOP);
 
