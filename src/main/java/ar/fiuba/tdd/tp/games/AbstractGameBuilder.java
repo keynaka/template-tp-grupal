@@ -9,7 +9,6 @@ public abstract class AbstractGameBuilder implements GameBuilder {
     protected ConcreteGame game;
     protected ArrayList<Stage> stages;
     protected Player player;
-    protected ArrayList<String> knownCommands;
 
     public Game build() {
         // Starts a new game
@@ -20,9 +19,6 @@ public abstract class AbstractGameBuilder implements GameBuilder {
 
         // Create a player
         player = new Player();
-
-        // Sets empty known commands
-        knownCommands = new ArrayList<>();
 
         // Sets specific environment of a game
         buildEnvironment();

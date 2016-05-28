@@ -94,6 +94,7 @@ public class Player extends GameObject implements ItemKeeper {
         return talking.talk(this, message);
     }
 
+    @SuppressWarnings("CPD-START")
     @Override
     public Collection<Item> getItems() {
         return this.inventory.getAllItems();
@@ -104,6 +105,7 @@ public class Player extends GameObject implements ItemKeeper {
         return this.inventory.dropItem(itemName);
     }
 
+    @SuppressWarnings("CPD-END")
     @Override
     public void insertItem(Item item) {
         this.inventory.addItem(item);

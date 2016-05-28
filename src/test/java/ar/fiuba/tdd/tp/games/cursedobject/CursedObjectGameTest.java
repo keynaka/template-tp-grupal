@@ -12,6 +12,7 @@ import static org.junit.Assert.*;
 /**
  * Created by swandelow on 4/27/16.
  */
+@Ignore
 public class CursedObjectGameTest {
 
     private Game target = new CursedObjectGameBuilder().build();

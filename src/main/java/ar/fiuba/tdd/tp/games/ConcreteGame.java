@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 /**
  * Created by sebass on 10/05/16.
  */
+@SuppressWarnings("CPD-START")
 public class ConcreteGame extends AbstractGame {
 
     private static final String DEFAULT_WON_GAME_MSG = "You won the game!";
@@ -171,6 +172,8 @@ public class ConcreteGame extends AbstractGame {
     protected void doStart() {
         // no hagas nada por ahora
     }
+
+    @SuppressWarnings("CPD-END")
 
     @Override
     protected void registerKnownActions() {

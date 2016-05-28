@@ -88,10 +88,6 @@ public class Behavior {
         this.executionRule = executionRule;
     }
 
-    public void addActions(Action action) {
-        this.actions.add(action);
-    }
-
     public void setActions(List<Action> actions) {
         this.actions = actions;
     }
