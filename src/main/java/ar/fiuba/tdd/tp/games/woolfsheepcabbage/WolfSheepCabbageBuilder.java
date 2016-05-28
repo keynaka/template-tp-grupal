@@ -35,10 +35,10 @@ public class WolfSheepCabbageBuilder implements GameBuilder {
     }
 
     private void registerKnownActions(ConcreteGame game) {
-        game.registerKnownAction(Action.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler(game));
-        game.registerKnownAction(Action.CROSS, (itemName, args) -> this.crossHandler(game, itemName));
-        game.registerKnownAction(Action.TAKE, (itemName, args) -> this.takeHandler(game, itemName));
-        game.registerKnownAction(Action.LEAVE, (itemName, args) -> this.leaveHandler(game, itemName));
+        game.registerKnownAction(ActionOld.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler(game));
+        game.registerKnownAction(ActionOld.CROSS, (itemName, args) -> this.crossHandler(game, itemName));
+        game.registerKnownAction(ActionOld.TAKE, (itemName, args) -> this.takeHandler(game, itemName));
+        game.registerKnownAction(ActionOld.LEAVE, (itemName, args) -> this.leaveHandler(game, itemName));
     }
 
     private String lookAroundHandler(ConcreteGame game) {

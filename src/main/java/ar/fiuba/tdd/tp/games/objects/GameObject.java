@@ -1,6 +1,6 @@
 package ar.fiuba.tdd.tp.games.objects;
 
-import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.ActionOld;
 import ar.fiuba.tdd.tp.games.ConcreteGame;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
 
@@ -27,9 +27,14 @@ public abstract class GameObject {
         this.behaviorMap.put(behavior.getActionName(), behavior);
     }
 
-    public String execute(ConcreteGame game, Action action) {
+    public String execute(ConcreteGame game, ActionOld action) {
         Behavior behavior = this.behaviorMap.get(action.getActionName());
         return behavior.execute(game);
+    }
+
+    public String executeAction(String actionName) {
+        Behavior behavior = this.behaviorMap.get(actionName);
+        return behavior.execute();
     }
 
 }

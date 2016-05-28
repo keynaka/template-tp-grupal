@@ -64,16 +64,16 @@ public class EscapeBuilder implements GameBuilder {
 
     //----------------------------Handlers && Behaviors----------------------------------//
     private void registerKnownActions() {
-        escape.registerKnownAction(Action.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler());
-        escape.registerKnownAction(Action.GOTO, (itemName, args) -> this.gotoHandler(itemName));
-        escape.registerKnownAction(Action.PICK, (itemName, args) -> this.pickHandler(itemName));
-        escape.registerKnownAction(Action.OPEN, (itemName, args) -> this.openHandler(itemName));
-        escape.registerKnownAction(Action.MOVE, (itemName, args) -> this.moveHandler(itemName));
-        escape.registerKnownAction(Action.USE, (itemName, arguments) -> this.useHandler(itemName));
-        escape.registerKnownAction(Action.BREAK, (itemName, arguments) -> this.breakHandler(itemName));
-        escape.registerKnownAction(Action.SHOW, (itemName, arguments) -> this.showHandler(itemName, arguments[0]));
-        escape.registerKnownAction(Action.PUT, (itemName, arguments) -> this.putHandler(itemName, arguments[0]));
-        escape.registerKnownAction(Action.DROP, (itemName, arguments) -> this.dropHandler(itemName));
+        escape.registerKnownAction(ActionOld.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler());
+        escape.registerKnownAction(ActionOld.GOTO, (itemName, args) -> this.gotoHandler(itemName));
+        escape.registerKnownAction(ActionOld.PICK, (itemName, args) -> this.pickHandler(itemName));
+        escape.registerKnownAction(ActionOld.OPEN, (itemName, args) -> this.openHandler(itemName));
+        escape.registerKnownAction(ActionOld.MOVE, (itemName, args) -> this.moveHandler(itemName));
+        escape.registerKnownAction(ActionOld.USE, (itemName, arguments) -> this.useHandler(itemName));
+        escape.registerKnownAction(ActionOld.BREAK, (itemName, arguments) -> this.breakHandler(itemName));
+        escape.registerKnownAction(ActionOld.SHOW, (itemName, arguments) -> this.showHandler(itemName, arguments[0]));
+        escape.registerKnownAction(ActionOld.PUT, (itemName, arguments) -> this.putHandler(itemName, arguments[0]));
+        escape.registerKnownAction(ActionOld.DROP, (itemName, arguments) -> this.dropHandler(itemName));
     }
 
     private String dropHandler(String itemName) {
@@ -83,20 +83,20 @@ public class EscapeBuilder implements GameBuilder {
 
     private String putHandler(String itemName, String argument) {
         Item item = escape.getPlayer().getInventory().getItem(argument);
-        return item.execute(escape, Action.PUT);
+        return item.execute(escape, ActionOld.PUT);
     }
 
     private String useHandler(String itemName) {
-        return escape.getCurrentStage().getItem(itemName).execute(escape, Action.USE);
+        return escape.getCurrentStage().getItem(itemName).execute(escape, ActionOld.USE);
     }
 
     private String breakHandler(String itemName) {
-        return escape.getCurrentStage().getItem(itemName).execute(escape, Action.BREAK);
+        return escape.getCurrentStage().getItem(itemName).execute(escape, ActionOld.BREAK);
     }
 
     private String showHandler(String itemName, String receiver) {
         Item item = escape.getPlayer().getInventory().getItem(itemName);
-        return item.execute(escape, Action.SHOW);
+        return item.execute(escape, ActionOld.SHOW);
     }
 
     private String gotoHandler(String stageName) {
@@ -112,11 +112,11 @@ public class EscapeBuilder implements GameBuilder {
     }
 
     private String pickHandler(String itemName) {
-        return escape.getCurrentStage().getItem(itemName).execute(escape, Action.PICK);
+        return escape.getCurrentStage().getItem(itemName).execute(escape, ActionOld.PICK);
     }
 
     private String moveHandler(String itemName) {
-        return escape.getCurrentStage().getItem(itemName).execute(escape, Action.MOVE);
+        return escape.getCurrentStage().getItem(itemName).execute(escape, ActionOld.MOVE);
     }
 
     private String lookAroundHandler() {
@@ -125,7 +125,7 @@ public class EscapeBuilder implements GameBuilder {
 
     private String openHandler(String itemName) {
         Stage currentStage = escape.getCurrentStage();
-        return currentStage.getItem(itemName).execute(escape, Action.OPEN);
+        return currentStage.getItem(itemName).execute(escape, ActionOld.OPEN);
     }
 
     //----------------------------Fin Handlers && Behaviors----------------------------------//

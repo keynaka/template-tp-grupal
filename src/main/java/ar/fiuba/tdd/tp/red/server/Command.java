@@ -1,6 +1,6 @@
 package ar.fiuba.tdd.tp.red.server;
 
-import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.ActionOld;
 
 import java.io.Serializable;
 
@@ -8,29 +8,29 @@ import java.io.Serializable;
  * Created by swandelow on 4/22/16.
  */
 public class Command implements Serializable {
-    private Action action;
+    private ActionOld action;
     private String itemName;
     private String argument;
 
     public Command() {
-        this(Action.UNKNOWN_ACTION, "", "");
+        this(ActionOld.UNKNOWN_ACTION, "", "");
     }
 
-    public Command(Action action) {
+    public Command(ActionOld action) {
         this(action, "", "");
     }
 
-    public Command(Action action, String itemName) {
+    public Command(ActionOld action, String itemName) {
         this(action, itemName, "");
     }
 
-    public Command(Action action, String itemName, String argument) {
+    public Command(ActionOld action, String itemName, String argument) {
         this.action = action;
         this.itemName = itemName;
         this.argument = argument;
     }
 
-    public Action getAction() {
+    public ActionOld getAction() {
         return this.action;
     }
 
@@ -46,8 +46,8 @@ public class Command implements Serializable {
         return Command.checkSystemAction(this.action);
     }
 
-    public static boolean checkSystemAction(Action action) {
-        for (Action systemAction : Command.getSystemActions()) {
+    public static boolean checkSystemAction(ActionOld action) {
+        for (ActionOld systemAction : Command.getSystemActions()) {
             if (systemAction == action) {
                 return true;
             }
@@ -55,16 +55,16 @@ public class Command implements Serializable {
         return false;
     }
 
-    public static Action checkSystemAction(String actionName) {
-        for (Action systemAction : Command.getSystemActions()) {
+    public static ActionOld checkSystemAction(String actionName) {
+        for (ActionOld systemAction : Command.getSystemActions()) {
             if (actionName.contains(systemAction.getActionName())) {
                 return systemAction;
             }
         }
-        return Action.UNKNOWN_ACTION;
+        return ActionOld.UNKNOWN_ACTION;
     }
 
-    public static Action[] getSystemActions() {
-        return new Action[]{Action._EXIT, Action._HELP};
+    public static ActionOld[] getSystemActions() {
+        return new ActionOld[]{ActionOld._EXIT, ActionOld._HELP};
     }
 }

@@ -4,6 +4,7 @@ import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by swandelow on 4/21/16.
@@ -38,5 +39,9 @@ public class Inventory {
 
     public Item getItem(String itemName) {
         return this.items.getItem(itemName);
+    }
+
+    public Collection<Item> getAllItems() {
+        return this.items.getAllItems();
     }
 }

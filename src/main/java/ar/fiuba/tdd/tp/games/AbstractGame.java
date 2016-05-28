@@ -15,7 +15,7 @@ public abstract class AbstractGame implements Game {
     private static final String WELCOME_MESSAGE = "Welcome to %s!";
     private String name;
     private String endGameMessage;
-    protected Map<Action, ActionFunction> knownActions = new HashMap<>();
+    protected Map<ActionOld, ActionFunction> knownActions = new HashMap<>();
 
     protected AbstractGame(String gameName, String endGameMessage) {
         this.name = gameName;
@@ -65,7 +65,7 @@ public abstract class AbstractGame implements Game {
 
     protected abstract void registerKnownActions();
 
-    public Map<Action,ActionFunction> getKnownActions() {
+    public Map<ActionOld,ActionFunction> getKnownActions() {
         return knownActions;
     }
 }

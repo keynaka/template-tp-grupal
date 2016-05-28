@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 /**
  * Created by swandelow on 4/21/16.
  */
-public class Stage extends GameObject {
+public class Stage extends GameObject implements ItemKeeper {
 
     private static final int DEFAULT_STAGE_SIZE = 20;
 
@@ -91,10 +91,23 @@ public class Stage extends GameObject {
     }
 
     public void enter(Player player) {
-        if(this.entranceCondition.test(player)) {
+        if (this.entranceCondition.test(player)) {
             player.setCurrentStage(this.getName());
         }
     }
 
+    @Override
+    public Collection<Item> getItems() {
+        return this.itemContainer.getAllItems();
+    }
 
+    @Override
+    public Item removeItem(String itemName) {
+        return this.itemContainer.extract(itemName);
+    }
+
+    @Override
+    public void insertItem(Item item) {
+        this.itemContainer.addItem(item);
+    }
 }

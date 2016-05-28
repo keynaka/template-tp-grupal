@@ -1,8 +1,10 @@
 package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.driver.GameState;
+import ar.fiuba.tdd.tp.games.rules.Rule;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -20,6 +22,8 @@ public class ConcreteGame extends AbstractGame {
     private Player player;
     private Map<String, Stage> stages;
     private Predicate<ConcreteGame> winningCondition;
+    private Rule winningConditionRule;
+    private Rule loosingConditionRule;
     private Predicate<ConcreteGame> loosingCondition = (game) -> false;
     private GameState gameState;
 
@@ -71,20 +75,36 @@ public class ConcreteGame extends AbstractGame {
         this.player = player;
     }
 
+    @Deprecated
     public void setWinningCondition(Predicate<ConcreteGame> winningCondition) {
         this.winningCondition = winningCondition;
     }
 
+    public void setWinningCondition(Rule winningCondition) {
+        this.winningConditionRule = winningCondition;
+    }
+
+    @Deprecated
     public void setLoosingCondition(Predicate<ConcreteGame> loosingCondition) {
         this.loosingCondition = loosingCondition;
     }
 
-    public void registerKnownAction(Action action, ActionFunction actionFuntion) {
+    public void setLoosingCondition(Rule loosingCondition) {
+        this.loosingConditionRule = loosingCondition;
+    }
+
+    public void registerKnownAction(ActionOld action, ActionFunction actionFuntion) {
         this.knownActions.put(action, actionFuntion);
     }
 
     public void addStage(Stage stage) {
         this.stages.put(stage.getName(), stage);
+    }
+
+    public void setStages (List<Stage> stages) {
+        for (Stage stage : stages) {
+            addStage(stage);
+        }
     }
 
     public Stage getCurrentStage() {
@@ -109,6 +129,26 @@ public class ConcreteGame extends AbstractGame {
 
     @Override
     protected void updateGameState() {
+        if(winningCondition != null) {
+            this.oldUpdateGameState();
+        } else {
+            this.newUpdateGameState();
+        }
+    }
+
+    private void newUpdateGameState() {
+        if (this.winningConditionRule.verify()) {
+            this.gameState = GameState.Won;
+            this.endGameMessage = DEFAULT_WON_GAME_MSG;
+        } else if (this.loosingConditionRule != null && this.loosingConditionRule.verify()) {
+            this.gameState = GameState.Lost;
+            this.endGameMessage = DEFAULT_LOST_GAME_MSG;
+        } else {
+            this.gameState = GameState.InProgress;
+        }
+    }
+
+    private void oldUpdateGameState() {
         if (this.winningCondition.test(this)) {
             this.gameState = GameState.Won;
             this.endGameMessage = DEFAULT_WON_GAME_MSG;

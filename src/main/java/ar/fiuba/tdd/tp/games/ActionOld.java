@@ -3,7 +3,7 @@ package ar.fiuba.tdd.tp.games;
 /**
  * Created by swandelow on 4/22/16.
  */
-public enum Action {
+public enum ActionOld {
 
     LOOK_AROUND("look around"),
     PICK("pick"),
@@ -29,7 +29,7 @@ public enum Action {
 
     private String actionName;
 
-    Action(String actionName) {
+    ActionOld(String actionName) {
         this.actionName = actionName;
     }
 
@@ -37,8 +37,8 @@ public enum Action {
         return this.actionName;
     }
 
-    public static Action getActionByValue(String value) {
-        for (Action action : Action.values()) {
+    public static ActionOld getActionByValue(String value) {
+        for (ActionOld action : ActionOld.values()) {
             if (action.getActionName().equals(value)) {
                 return action;
             }

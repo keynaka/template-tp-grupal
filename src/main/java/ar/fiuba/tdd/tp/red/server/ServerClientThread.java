@@ -1,7 +1,7 @@
 package ar.fiuba.tdd.tp.red.server;
 
 import ar.fiuba.tdd.tp.games.AbstractGame;
-import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.ActionOld;
 import ar.fiuba.tdd.tp.games.Game;
 import ar.fiuba.tdd.tp.games.creation.GamesCreator;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
@@ -101,9 +101,9 @@ public class ServerClientThread extends Thread {
     }
 
     private void processSystemAction() {
-        if (this.command.getAction() == Action._HELP) {
+        if (this.command.getAction() == ActionOld._HELP) {
             this.setHelpResponse();
-        } else if (this.command.getAction() == Action._EXIT) {
+        } else if (this.command.getAction() == ActionOld._EXIT) {
             this.forceFinish = true;
             this.response = new Response("Thank you for playing with us! Good bye!");
             response.setGameFinalized(true);
@@ -114,11 +114,11 @@ public class ServerClientThread extends Thread {
         StringBuilder helpMessage = new StringBuilder();
         helpMessage.append("Available commands:\n");
 
-        for (Action action : ((AbstractGame) this.game).getKnownActions().keySet()) {
+        for (ActionOld action : ((AbstractGame) this.game).getKnownActions().keySet()) {
             helpMessage.append(action.getActionName() + "\n");
         }
-        helpMessage.append(Action._HELP.getActionName() + "\n");
-        helpMessage.append(Action._EXIT.getActionName() + "\n");
+        helpMessage.append(ActionOld._HELP.getActionName() + "\n");
+        helpMessage.append(ActionOld._EXIT.getActionName() + "\n");
 
         this.response = new Response(helpMessage.toString());
     }

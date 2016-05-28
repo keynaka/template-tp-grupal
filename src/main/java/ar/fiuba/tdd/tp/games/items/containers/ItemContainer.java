@@ -1,5 +1,6 @@
 package ar.fiuba.tdd.tp.games.items.containers;
 
+import ar.fiuba.tdd.tp.games.ItemKeeper;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
 
@@ -9,7 +10,7 @@ import java.util.function.Function;
 /**
  * Created by swandelow on 4/23/16.
  */
-public class ItemContainer extends Item {
+public class ItemContainer extends Item implements ItemKeeper {
     private int maxSize;
     protected Map<String, Item> items;
 
@@ -88,4 +89,20 @@ public class ItemContainer extends Item {
         }
         throw new GameException("Unknown item.");
     }
+
+    @Override
+    public Collection<Item> getItems() {
+        return this.getAllItems();
+    }
+
+    @Override
+    public Item removeItem(String itemName) {
+        return this.extract(itemName);
+    }
+
+    @Override
+    public void insertItem(Item item) {
+        this.addItem(item);
+    }
+
 }

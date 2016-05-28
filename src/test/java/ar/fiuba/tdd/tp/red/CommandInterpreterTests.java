@@ -1,12 +1,5 @@
 package ar.fiuba.tdd.tp.red;
 
-import ar.fiuba.tdd.tp.games.Action;
-import ar.fiuba.tdd.tp.games.creation.GamesList;
-import ar.fiuba.tdd.tp.red.server.Command;
-import ar.fiuba.tdd.tp.red.server.CommandInterpreter;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -25,7 +18,7 @@ public class CommandInterpreterTests {
 //    public void pickStickActionIsPick() {
 //        String gameCommand = "pick stick";
 //        Command command = interpreter.getCommand(gameCommand);
-//        assertEquals(command.getAction(), Action.PICK);
+//        assertEquals(command.getAction(), ActionOld.PICK);
 //    }
 //    @Test
 //    public void pickStickItemIsStick() {
@@ -39,7 +32,7 @@ public class CommandInterpreterTests {
 //    public void lookAroundActionIsLookAround() {
 //        String gameCommand = "look around";
 //        Command command = interpreter.getCommand(gameCommand);
-//        assertEquals(command.getAction(), Action.LOOK_AROUND);
+//        assertEquals(command.getAction(), ActionOld.LOOK_AROUND);
 //    }*/
 //
 //    @Test
@@ -54,7 +47,7 @@ public class CommandInterpreterTests {
 //    public void openActionIsOpen() {
 //        String gameCommand = "open door";
 //        Command command = interpreter.getCommand(gameCommand);
-//        assertEquals(command.getAction(), Action.OPEN);
+//        assertEquals(command.getAction(), ActionOld.OPEN);
 //        assertEquals(command.getArgument(), "");
 //    }
 //    @Test
@@ -69,7 +62,7 @@ public class CommandInterpreterTests {
 //    public void examineActionIsExamine() {
 //        String gameCommand = "examine box";
 //        Command command = interpreter.getCommand(gameCommand);
-//        assertEquals(command.getAction(), Action.EXAMINE);
+//        assertEquals(command.getAction(), ActionOld.EXAMINE);
 //    }
 //
 //    @Test
@@ -84,7 +77,7 @@ public class CommandInterpreterTests {
 //    public void diskNumberActionIsSetDisks() {
 //        String gameCommand = "play with 2";
 //        Command command = interpreter.getCommand(gameCommand);
-//        assertEquals(command.getAction(), Action.SET_DISKS);
+//        assertEquals(command.getAction(), ActionOld.SET_DISKS);
 //    }
 //
 //    @Test
@@ -99,7 +92,7 @@ public class CommandInterpreterTests {
 //    public void moveTopActionIsMove() {
 //        String gameCommand = "move top";
 //        Command command = interpreter.getCommand(gameCommand);
-//        assertEquals(command.getAction(), Action.MOVE_TOP);
+//        assertEquals(command.getAction(), ActionOld.MOVE_TOP);
 //        assertEquals(command.getArgument(), "");
 //    }
 //
@@ -115,7 +108,7 @@ public class CommandInterpreterTests {
 //    public void unknownAction() {
 //        String gameCommand = "anything else";
 //        Command command = interpreter.getCommand(gameCommand);
-//        assertEquals(command.getAction(), Action.UNKNOWN_ACTION);
+//        assertEquals(command.getAction(), ActionOld.UNKNOWN_ACTION);
 //    }
 //
 //    @Test
@@ -130,7 +123,7 @@ public class CommandInterpreterTests {
 //    public void takeActionIsTake() {
 //        String gameCommand = "take wolf";
 //        Command command = interpreter.getCommand(gameCommand);
-//        assertEquals(command.getAction(), Action.TAKE);
+//        assertEquals(command.getAction(), ActionOld.TAKE);
 //    }
 //    @Test
 //    public void takeWolfItemIsWolf() {
@@ -143,7 +136,7 @@ public class CommandInterpreterTests {
 //    public void leaveActionIsLeave() {
 //        String gameCommand = "leave sheep";
 //        Command command = interpreter.getCommand(gameCommand);
-//        assertEquals(command.getAction(), Action.LEAVE);
+//        assertEquals(command.getAction(), ActionOld.LEAVE);
 //    }
 //    @Test
 //    public void leaveSheepItemIsSheep() {
@@ -156,7 +149,7 @@ public class CommandInterpreterTests {
 //    public void crossActionIsCross() {
 //        String gameCommand = "cross north-shore";
 //        Command command = interpreter.getCommand(gameCommand);
-//        assertEquals(command.getAction(), Action.CROSS);
+//        assertEquals(command.getAction(), ActionOld.CROSS);
 //    }
 //    @Test
 //    public void crossNorthShoreItemIsNorthShore() {

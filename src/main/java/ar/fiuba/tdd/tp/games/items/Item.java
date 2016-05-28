@@ -1,15 +1,10 @@
 package ar.fiuba.tdd.tp.games.items;
 
-import ar.fiuba.tdd.tp.games.Action;
-import ar.fiuba.tdd.tp.games.ConcreteGame;
+import ar.fiuba.tdd.tp.games.ActionOld;
 import ar.fiuba.tdd.tp.games.Examinable;
-import ar.fiuba.tdd.tp.games.State;
-import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.objects.GameObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +16,7 @@ public class Item extends GameObject implements Examinable {
 
     protected String name;
     protected String description;
-    protected Map<Action, String> supportedActions;
+    protected Map<ActionOld, String> supportedActions;
 
     public Item(String name, String description) {
         this.name = name;
@@ -55,11 +50,11 @@ public class Item extends GameObject implements Examinable {
         return result;
     }
 
-    public Map<Action, String> getSupportedActions() {
+    public Map<ActionOld, String> getSupportedActions() {
         return this.supportedActions;
     }
 
-    public void registerActionAndHelp(Action action, String help) {
+    public void registerActionAndHelp(ActionOld action, String help) {
         this.supportedActions.put(action, help);
     }
 
@@ -72,8 +67,8 @@ public class Item extends GameObject implements Examinable {
             return this.getDescription();
         } else {
             StringBuilder sb = new StringBuilder();
-            for (Map.Entry<Action, String> entry : supportedActions.entrySet()) {
-                Action action = entry.getKey();
+            for (Map.Entry<ActionOld, String> entry : supportedActions.entrySet()) {
+                ActionOld action = entry.getKey();
                 String helpText = entry.getValue();
                 sb.append(String.format(EXAMINE_MSG, action.getActionName(), helpText));
             }

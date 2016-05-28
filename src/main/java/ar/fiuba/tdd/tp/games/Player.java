@@ -4,10 +4,13 @@ import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.objects.GameObject;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Created by swandelow on 4/21/16.
  */
-public class Player extends GameObject {
+public class Player extends GameObject implements ItemKeeper {
 
     private Inventory inventory;
     private String currentStage;
@@ -91,4 +94,18 @@ public class Player extends GameObject {
         return talking.talk(this, message);
     }
 
+    @Override
+    public Collection<Item> getItems() {
+        return this.inventory.getAllItems();
+    }
+
+    @Override
+    public Item removeItem(String itemName) {
+        return this.inventory.dropItem(itemName);
+    }
+
+    @Override
+    public void insertItem(Item item) {
+        this.inventory.addItem(item);
+    }
 }

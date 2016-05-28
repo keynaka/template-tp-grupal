@@ -1,7 +1,7 @@
 package ar.fiuba.tdd.tp.red.server;
 
 import ar.fiuba.tdd.tp.games.AbstractGame;
-import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.ActionOld;
 import ar.fiuba.tdd.tp.games.creation.GamesCreator;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public void addGame(AbstractGame game) {
 
         for (AbstractGame game : this.games) {
             command = this.bindActions(gameCommand, game);
-            if (command.getAction() != Action.UNKNOWN_ACTION) {
+            if (command.getAction() != ActionOld.UNKNOWN_ACTION) {
                 break;
             }
         }
@@ -61,23 +61,23 @@ public void addGame(AbstractGame game) {
 
     public Command getCommandForDriver(String gameCommand) {
 
-        if ((Action.getActionByValue(gameCommand) != null)) {
-            return new Command(Action.getActionByValue(gameCommand));
+        if ((ActionOld.getActionByValue(gameCommand) != null)) {
+            return new Command(ActionOld.getActionByValue(gameCommand));
         }
 
         String[] commandWords = gameCommand.split(" ");
         if (commandWords.length == 1) {
-            return new Command(Action.getActionByValue(commandWords[0]));
+            return new Command(ActionOld.getActionByValue(commandWords[0]));
         } else if (commandWords.length == 2) {
-            return new Command(Action.getActionByValue(commandWords[0]), commandWords[1]);
+            return new Command(ActionOld.getActionByValue(commandWords[0]), commandWords[1]);
         } else {
-            return new Command(Action.getActionByValue(commandWords[0]), commandWords[1], commandWords[2]);
+            return new Command(ActionOld.getActionByValue(commandWords[0]), commandWords[1], commandWords[2]);
         }
     }
 
     private Command bindActions(String gameCommand, AbstractGame game) {
         Command command = new Command();
-        for (Action action : game.getKnownActions().keySet()) {
+        for (ActionOld action : game.getKnownActions().keySet()) {
 
             String actionName = action.getActionName();
 
@@ -92,7 +92,7 @@ public void addGame(AbstractGame game) {
     }
 
     private Command checkSystemAction(String gameCommand) {
-        Action systemAction = Command.checkSystemAction(gameCommand);
+        ActionOld systemAction = Command.checkSystemAction(gameCommand);
         return new Command(systemAction);
     }
 

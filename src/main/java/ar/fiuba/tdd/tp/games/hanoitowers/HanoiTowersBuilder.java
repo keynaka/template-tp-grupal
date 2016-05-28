@@ -35,10 +35,10 @@ public class HanoiTowersBuilder implements GameBuilder {
     }
 
     private void registerKnownActions(ConcreteGame game) {
-        game.registerKnownAction(Action.SET_DISKS, (number, args) -> this.disksSetterHandler(game, number));
-        game.registerKnownAction(Action.TOP_SIZE, (towerId, args) -> this.checkTopHandler(game, towerId));
-        game.registerKnownAction(Action.MOVE_TOP, (itemName, args) -> this.moveTopHandler(game, itemName, args));
-        game.registerKnownAction(Action.EXAMINE, (itemName, arg) -> this.examineHandler(game, itemName));
+        game.registerKnownAction(ActionOld.SET_DISKS, (number, args) -> this.disksSetterHandler(game, number));
+        game.registerKnownAction(ActionOld.TOP_SIZE, (towerId, args) -> this.checkTopHandler(game, towerId));
+        game.registerKnownAction(ActionOld.MOVE_TOP, (itemName, args) -> this.moveTopHandler(game, itemName, args));
+        game.registerKnownAction(ActionOld.EXAMINE, (itemName, arg) -> this.examineHandler(game, itemName));
     }
 
     private String moveTopHandler(ConcreteGame game, String itemName, String[] args) {
@@ -57,7 +57,7 @@ public class HanoiTowersBuilder implements GameBuilder {
 
             Item destinyTower = stage.getItem(args[0]);
 
-            return destinyTower.execute(game, Action.MOVE_TOP);
+            return destinyTower.execute(game, ActionOld.MOVE_TOP);
 
         }
 
@@ -84,7 +84,7 @@ public class HanoiTowersBuilder implements GameBuilder {
     private String checkTopHandler(ConcreteGame game, String itemName) {
         Stage currentStage = game.getCurrentStage();
         Item item = currentStage.getItem(itemName);
-        return item.execute(game, Action.TOP_SIZE);
+        return item.execute(game, ActionOld.TOP_SIZE);
     }
 
     private String disksSetterHandler(ConcreteGame game, String number) {
@@ -135,7 +135,7 @@ public class HanoiTowersBuilder implements GameBuilder {
         tower1.addBehavior(checkTopBehavior);
         tower1.addBehavior(moveTopBehavior);
 
-        tower1.registerActionAndHelp(Action.EXAMINE, "You can check top/move top");
+        tower1.registerActionAndHelp(ActionOld.EXAMINE, "You can check top/move top");
 
         return tower1;
     }
@@ -149,7 +149,7 @@ public class HanoiTowersBuilder implements GameBuilder {
 
         tower2.addBehavior(checkTopBehavior);
         tower2.addBehavior(moveTopBehavior);
-        tower2.registerActionAndHelp(Action.EXAMINE, "You can check top/move top");
+        tower2.registerActionAndHelp(ActionOld.EXAMINE, "You can check top/move top");
 
         return tower2;
     }
@@ -163,7 +163,7 @@ public class HanoiTowersBuilder implements GameBuilder {
 
         tower3.addBehavior(checkTopBehavior);
         tower3.addBehavior(moveTopBehavior);
-        tower3.registerActionAndHelp(Action.EXAMINE, "You can check top/move top");
+        tower3.registerActionAndHelp(ActionOld.EXAMINE, "You can check top/move top");
 
         return tower3;
     }

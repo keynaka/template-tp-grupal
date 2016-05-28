@@ -32,14 +32,14 @@ public class CursedObjectGameBuilder implements GameBuilder {
 
     private void registerKnownActions(ConcreteGame game) {
         this.registerLookAround(game);
-        game.registerKnownAction(Action.EXAMINE, (itemName, args) -> this.examineHandler(game, itemName));
-        game.registerKnownAction(Action.OPEN, (itemName, args) -> this.openHandler(game, itemName));
-        game.registerKnownAction(Action.PICK, (itemName, args) -> this.pickHandler(game, itemName));
-        game.registerKnownAction(Action.TALK, (itemName, args) -> this.talkHandler(game, itemName, args[0]));
+        game.registerKnownAction(ActionOld.EXAMINE, (itemName, args) -> this.examineHandler(game, itemName));
+        game.registerKnownAction(ActionOld.OPEN, (itemName, args) -> this.openHandler(game, itemName));
+        game.registerKnownAction(ActionOld.PICK, (itemName, args) -> this.pickHandler(game, itemName));
+        game.registerKnownAction(ActionOld.TALK, (itemName, args) -> this.talkHandler(game, itemName, args[0]));
     }
 
     private void registerLookAround(ConcreteGame game) {
-        game.registerKnownAction(Action.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler(game));
+        game.registerKnownAction(ActionOld.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler(game));
     }
 
     private String lookAroundHandler(ConcreteGame game) {
@@ -79,7 +79,7 @@ public class CursedObjectGameBuilder implements GameBuilder {
 
     private Stage buildRoom1() {
         Item cursedObject = new CursedObject();
-        cursedObject.registerActionAndHelp(Action.PICK, "pick CursedObject");
+        cursedObject.registerActionAndHelp(ActionOld.PICK, "pick CursedObject");
         Door cursedDoor = this.buildCursedDoor1();
         Stage room1 = buildStage("room1", cursedObject, cursedDoor);
         return room1;
@@ -88,20 +88,20 @@ public class CursedObjectGameBuilder implements GameBuilder {
     private Door buildCursedDoor1() {
         CursedDoor cursedDoor = this.buildCursedDoor("door1", "room2");
         cursedDoor.setOpenCondition((someCharacter) -> someCharacter.hasItem("CursedObject"));
-        cursedDoor.registerActionAndHelp(Action.OPEN, "open door1");
+        cursedDoor.registerActionAndHelp(ActionOld.OPEN, "open door1");
         return cursedDoor;
     }
 
     private Door buildCursedDoor2() {
         CursedDoor cursedDoor = this.buildCursedDoor("door2", "room3");
         cursedDoor.setOpenCondition((someCharacter) -> !someCharacter.hasItem("CursedObject"));
-        cursedDoor.registerActionAndHelp(Action.OPEN, "open door2");
+        cursedDoor.registerActionAndHelp(ActionOld.OPEN, "open door2");
         return cursedDoor;
     }
 
     private Stage buildRoom2() {
         Thief thief = new Thief();
-        thief.registerActionAndHelp(Action.TALK, "\"Hello\", \"Bye\"");
+        thief.registerActionAndHelp(ActionOld.TALK, "\"Hello\", \"Bye\"");
         Stage room2 = buildStage("room2", thief, this.buildCursedDoor2());
         return room2;
     }

@@ -3,7 +3,6 @@ package ar.fiuba.tdd.tp.games.treasurehunt;
 import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.behavior.BehaviorView;
-import ar.fiuba.tdd.tp.games.cursedobject.CursedDoor;
 import ar.fiuba.tdd.tp.games.items.Door;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
@@ -37,10 +36,10 @@ public class TreasureHuntBuilder implements GameBuilder{
     }
 
     private void registerKnownActions() {
-        treasureHunt.registerKnownAction(Action.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler());
-        treasureHunt.registerKnownAction(Action.PICK, (itemName, args) -> this.pickHandler(itemName));
-        treasureHunt.registerKnownAction(Action.OPEN, (itemName, args) -> this.openHandler(itemName));
-        treasureHunt.registerKnownAction(Action.DROP, (itemName, args) -> this.dropHandler(itemName));
+        treasureHunt.registerKnownAction(ActionOld.LOOK_AROUND, (itemName, args) -> this.lookAroundHandler());
+        treasureHunt.registerKnownAction(ActionOld.PICK, (itemName, args) -> this.pickHandler(itemName));
+        treasureHunt.registerKnownAction(ActionOld.OPEN, (itemName, args) -> this.openHandler(itemName));
+        treasureHunt.registerKnownAction(ActionOld.DROP, (itemName, args) -> this.dropHandler(itemName));
     }
 
     private String lookAroundHandler() {
@@ -49,13 +48,13 @@ public class TreasureHuntBuilder implements GameBuilder{
 
     private String dropHandler(String itemName) {
         Item item = treasureHunt.getPlayer().getInventory().dropItem(itemName);
-        return item.execute(treasureHunt, Action.DROP);
+        return item.execute(treasureHunt, ActionOld.DROP);
     }
 
     private String pickHandler(String itemName) {
         Stage currentStage = treasureHunt.getCurrentStage();
         Item item = currentStage.getItem(itemName);
-        return item.execute(treasureHunt, Action.PICK);
+        return item.execute(treasureHunt, ActionOld.PICK);
     }
 
     private void pickBehavior(String itemName) {
@@ -81,7 +80,7 @@ public class TreasureHuntBuilder implements GameBuilder{
     private String openHandler(String itemName) {
         Stage currentStage = treasureHunt.getCurrentStage();
         Item item = currentStage.getItem(itemName);
-        return item.execute(treasureHunt, Action.OPEN);
+        return item.execute(treasureHunt, ActionOld.OPEN);
     }
 
     private void openBehavior(String nextStage) {
@@ -120,7 +119,7 @@ public class TreasureHuntBuilder implements GameBuilder{
 
     private Stage buildRoom1() {
         Item item = this.buildKey1();
-        item.registerActionAndHelp(Action.PICK, "pick key1");
+        item.registerActionAndHelp(ActionOld.PICK, "pick key1");
         Item door = this.buildDoor1();
         Stage room1 = buildStage("room1", door, item);
         return room1;
@@ -181,7 +180,7 @@ public class TreasureHuntBuilder implements GameBuilder{
 
     private Stage buildRoom2() {
         Item item = this.buildKey2();
-        item.registerActionAndHelp(Action.PICK, "pick key2");
+        item.registerActionAndHelp(ActionOld.PICK, "pick key2");
         Item door = this.buildDoor2();
         Stage room1 = buildStage("room2", door, item);
         return room1;
@@ -273,9 +272,9 @@ public class TreasureHuntBuilder implements GameBuilder{
 
     private Stage buildRoom3() {
         Item box = (this.buildBox());
-        box.registerActionAndHelp(Action.OPEN, "open box");
+        box.registerActionAndHelp(ActionOld.OPEN, "open box");
         Item baul = (this.buildBaul());
-        box.registerActionAndHelp(Action.OPEN, "open baul");
+        box.registerActionAndHelp(ActionOld.OPEN, "open baul");
         Item door = this.buildDoor3();
         Stage room = buildStage("room3", door, box, baul);
         return room;
@@ -368,7 +367,7 @@ public class TreasureHuntBuilder implements GameBuilder{
 
     private Stage buildRoom4() {
         Item armario = (this.buildArmario());
-        armario.registerActionAndHelp(Action.OPEN, "open armario");
+        armario.registerActionAndHelp(ActionOld.OPEN, "open armario");
         Item door = this.buildDoor4();
         Stage room = buildStage("room4", door, armario);
         return room;
