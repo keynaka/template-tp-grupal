@@ -20,21 +20,19 @@ import java.util.function.Predicate;
 
 public class EscapeBuilder2 extends AbstractGameBuilder {
 
-    Item hammer;
-
 
     @Override
     protected void buildEnvironment() {
         game.setName("Escape");
-        setWinningCondition();
-        setLosingCondition();
         this.createStages();
         this.createItems();
         this.configurePlayer();
+        setWinningCondition();
+        setLosingCondition();
     }
 
     private void createItems() {
-        this.hammer = new Item("Martillo", "Es un martillo.");
+        this.addItem(new Item("Martillo", "Es un martillo."));
     }
 
     private void setWinningCondition() {
@@ -43,7 +41,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
     private void setLosingCondition() {
         Rule isDead = new VerifiesStateRule(game.getPlayer(), "lifeStatus", "dead");
-        Rule hasntHammer = new HasItemRule(game.getPlayer(), this.hammer).negate();
+        Item hammer = this.getItem("Martillo");
+        Rule hasntHammer = new HasItemRule(game.getPlayer(), hammer).negate();
         Rule isInDownBasement = new PlayerIsInRoomRule(game.getPlayer(), "SotanoAbajo");
 
         game.setLoosingCondition(isDead.or(hasntHammer.and(isInDownBasement)));
