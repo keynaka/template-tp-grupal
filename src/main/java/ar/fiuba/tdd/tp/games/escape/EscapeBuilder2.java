@@ -33,17 +33,20 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
     private void createItems() {
         this.addItem(new Item("Martillo", "Es un martillo."));
+        this.addItem(new Item("Llave", "Es una llave."));
+        this.addItem(new Item("Mesa", "Es una mesa."));
+        this.addItem(new Item("BotellaLicor", "Es una llave."));
     }
 
     private void setWinningCondition() {
-        game.setWinningCondition(new PlayerIsInRoomRule(game.getPlayer(), "Afuera"));
+        game.setWinningCondition(new PlayerIsInRoomRule(this.player, "Afuera"));
     }
 
     private void setLosingCondition() {
-        Rule isDead = new VerifiesStateRule(game.getPlayer(), "lifeStatus", "dead");
+        Rule isDead = new VerifiesStateRule(this.player, "lifeStatus", "dead");
         Item hammer = this.getItem("Martillo");
-        Rule hasntHammer = new HasItemRule(game.getPlayer(), hammer).negate();
-        Rule isInDownBasement = new PlayerIsInRoomRule(game.getPlayer(), "SotanoAbajo");
+        Rule hasntHammer = new HasItemRule(this.player, hammer).negate();
+        Rule isInDownBasement = new PlayerIsInRoomRule(this.player, "SotanoAbajo");
 
         game.setLoosingCondition(isDead.or(hasntHammer.and(isInDownBasement)));
     }
