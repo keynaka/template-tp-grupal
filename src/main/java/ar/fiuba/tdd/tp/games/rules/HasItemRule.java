@@ -6,6 +6,7 @@ import ar.fiuba.tdd.tp.games.items.Item;
 /**
  * Created by swandelow on 5/27/16.
  */
+@SuppressWarnings("CPD-START")
 public class HasItemRule extends Rule {
 
     private ItemKeeper itemKeeper;
@@ -16,9 +17,9 @@ public class HasItemRule extends Rule {
         this.item = item;
     }
 
+    @SuppressWarnings("CPD-END")
     @Override
-    public boolean verify() {
-        boolean condition = itemKeeper.getItems().contains(item);
-        return (negateCondition) ? !condition : condition;
+    public boolean doVerify() {
+        return itemKeeper.getItems().contains(item);
     }
 }

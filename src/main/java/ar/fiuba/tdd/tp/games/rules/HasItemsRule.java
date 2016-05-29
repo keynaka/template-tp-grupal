@@ -13,7 +13,8 @@ public class HasItemsRule extends Rule {
         this.itemKeeper = itemKeeper;
     }
 
-    public boolean verify() {
+    @Override
+    public boolean doVerify() {
         return itemKeeper.getItems().size() > 0;
     }
 }

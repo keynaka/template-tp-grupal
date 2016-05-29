@@ -16,7 +16,7 @@ public class PlayerIsInRoomRule extends Rule {
     }
 
     @Override
-    public boolean verify() {
+    public boolean doVerify() {
         return player.getCurrentStage().equalsIgnoreCase(roomName);
     }
 }

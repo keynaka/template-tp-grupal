@@ -42,16 +42,11 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void setLosingCondition() {
-        /*
-        * Boolean isDead = game.getPlayer().getState("lifeStatus").equalsIgnoreCase("dead");
-        Boolean hasHammer = game.getPlayer().getInventory().contains("Martillo");
-        Boolean inSotanoAbajo = game.getPlayer().getCurrentStage().equalsIgnoreCase("SotanoAbajo");
-        return isDead || (!hasHammer && inSotanoAbajo);*/
         Rule isDead = new VerifiesStateRule(game.getPlayer(), "lifeStatus", "dead");
-        Rule hasHammer = new HasItemRule(game.getPlayer(), this.hammer);
+        Rule hasntHammer = new HasItemRule(game.getPlayer(), this.hammer).negate();
         Rule isInDownBasement = new PlayerIsInRoomRule(game.getPlayer(), "SotanoAbajo");
 
-        game.setLoosingCondition(isDead.or(hasHammer.and(isInDownBasement)));
+        game.setLoosingCondition(isDead.or(hasntHammer.and(isInDownBasement)));
     }
 
     private void createStages() {

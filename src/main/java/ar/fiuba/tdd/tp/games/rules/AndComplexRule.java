@@ -13,9 +13,8 @@ public class AndComplexRule extends Rule {
         this.rule2 = rule2;
     }
 
-
     @Override
-    public boolean verify() {
+    public boolean doVerify() {
         return rule1.verify() || rule2.verify();
     }
 }

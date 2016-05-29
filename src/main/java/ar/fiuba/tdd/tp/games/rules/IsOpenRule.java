@@ -19,7 +19,7 @@ public class IsOpenRule extends Rule {
     }
 
     @Override
-    public boolean verify() {
+    public boolean doVerify() {
         return gameObject.getState(OPEN_STATUS_KEY).equalsIgnoreCase(OPENED);
     }
 }

@@ -18,7 +18,7 @@ public class VerifiesStateRule extends Rule {
     }
 
     @Override
-    public boolean verify() {
+    public boolean doVerify() {
         return this.object.getState(stateName).equalsIgnoreCase(stateValue);
     }
 }

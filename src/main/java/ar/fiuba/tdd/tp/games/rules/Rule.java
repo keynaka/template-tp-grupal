@@ -19,7 +19,10 @@ public abstract class Rule {
         failErrorMessage = msg;
     }
 
-    public abstract boolean verify();
+    public boolean verify() {
+        boolean result = this.doVerify();
+        return (this.negateCondition) ? !result : result;
+    }
 
     public Rule or(Rule otherRule) {
         return new OrComplexRule(this, otherRule);
@@ -27,5 +30,12 @@ public abstract class Rule {
 
     public Rule and(Rule otherRule) {
         return new AndComplexRule(this, otherRule);
+    }
+
+    public abstract boolean doVerify();
+
+    public Rule negate() {
+        this.negateCondition = true;
+        return this;
     }
 }
