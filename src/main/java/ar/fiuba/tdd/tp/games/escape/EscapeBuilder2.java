@@ -6,6 +6,10 @@ import ar.fiuba.tdd.tp.games.behavior.BehaviorView;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
+import ar.fiuba.tdd.tp.games.rules.HasItemRule;
+import ar.fiuba.tdd.tp.games.rules.PlayerIsInRoomRule;
+import ar.fiuba.tdd.tp.games.rules.Rule;
+import ar.fiuba.tdd.tp.games.rules.VerifiesStateRule;
 import ar.fiuba.tdd.tp.red.server.Command;
 
 import java.util.function.Predicate;
@@ -16,11 +20,60 @@ import java.util.function.Predicate;
 
 public class EscapeBuilder2 extends AbstractGameBuilder {
 
+    Item hammer;
+
 
     @Override
     protected void buildEnvironment() {
-
+        game.setName("Escape");
+        setWinningCondition();
+        setLosingCondition();
+        this.createStages();
+        this.createItems();
+        this.configurePlayer();
     }
+
+    private void createItems() {
+        this.hammer = new Item("Martillo", "Es un martillo.");
+    }
+
+    private void setWinningCondition() {
+        game.setWinningCondition(new PlayerIsInRoomRule(game.getPlayer(), "Afuera"));
+    }
+
+    private void setLosingCondition() {
+        /*
+        * Boolean isDead = game.getPlayer().getState("lifeStatus").equalsIgnoreCase("dead");
+        Boolean hasHammer = game.getPlayer().getInventory().contains("Martillo");
+        Boolean inSotanoAbajo = game.getPlayer().getCurrentStage().equalsIgnoreCase("SotanoAbajo");
+        return isDead || (!hasHammer && inSotanoAbajo);*/
+        Rule isDead = new VerifiesStateRule(game.getPlayer(), "lifeStatus", "dead");
+        Rule hasHammer = new HasItemRule(game.getPlayer(), this.hammer);
+        Rule isInDownBasement = new PlayerIsInRoomRule(game.getPlayer(), "SotanoAbajo");
+
+        game.setLoosingCondition(isDead.or(hasHammer.and(isInDownBasement)));
+    }
+
+    private void createStages() {
+        game.addStage(createStage("Pasillo", "Salon1", "Salon2", "Salon3", "BibliotecaAcceso"));
+        game.addStage(createStage("Salon1", "Pasillo"));
+        game.addStage(createStage("Salon2", "Pasillo"));
+        game.addStage(createStage("Salon3", "Pasillo"));
+        game.addStage(createStage("BibliotecaAcceso", "Pasillo", "Biblioteca"));
+        game.addStage(createStage("Biblioteca", "BibliotecaAcceso", "Sotano"));
+        game.addStage(createStage("Sotano", "Biblioteca", "Sotano"));
+        game.addStage(createStage("SotanoAbajo", "Afuera"));
+        game.addStage(createStage("Afuera"));
+    }
+
+    private Stage createStage(String stageName, String... adjacentStages) {
+        Stage stage = new Stage(stageName);
+        for (String adjacentStage : adjacentStages) {
+            stage.addConsecutiveStage(adjacentStage);
+        }
+        return stage;
+    }
+
 
     @Override
     protected void setKnownActions() {
@@ -59,6 +112,9 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
     @Override
     protected void configurePlayer() {
-
+        player.addState("lifeStatus", "alive");
+        player.setCurrentStage("Pasillo");
+        player.addToInventory(new Item("Foto", "picture"));
+        player.addToInventory(new Item("Lapicera", "pen"));
     }
 }

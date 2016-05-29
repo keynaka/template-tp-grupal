@@ -20,4 +20,12 @@ public abstract class Rule {
     }
 
     public abstract boolean verify();
+
+    public Rule or(Rule otherRule) {
+        return new OrComplexRule(this, otherRule);
+    }
+
+    public Rule and(Rule otherRule) {
+        return new AndComplexRule(this, otherRule);
+    }
 }
