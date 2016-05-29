@@ -1,18 +1,20 @@
 package ar.fiuba.tdd.tp.games.escape;
 
-import ar.fiuba.tdd.tp.games.*;
+import ar.fiuba.tdd.tp.games.AbstractGameBuilder;
+import ar.fiuba.tdd.tp.games.ActionOld;
+import ar.fiuba.tdd.tp.games.Stage;
+import ar.fiuba.tdd.tp.games.actions.Action;
+import ar.fiuba.tdd.tp.games.actions.SwitchItemOwnerAction;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
-import ar.fiuba.tdd.tp.games.behavior.BehaviorView;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
-import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 import ar.fiuba.tdd.tp.games.rules.HasItemRule;
 import ar.fiuba.tdd.tp.games.rules.PlayerIsInRoomRule;
 import ar.fiuba.tdd.tp.games.rules.Rule;
 import ar.fiuba.tdd.tp.games.rules.VerifiesStateRule;
 import ar.fiuba.tdd.tp.red.server.Command;
 
-import java.util.function.Predicate;
+import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.*;
 
 /**
  * Created by swandelow on 5/19/16.
@@ -20,22 +22,65 @@ import java.util.function.Predicate;
 
 public class EscapeBuilder2 extends AbstractGameBuilder {
 
+    private static final String PICK_KEY_ACTION = "pickKeyAction";
+
 
     @Override
     protected void buildEnvironment() {
-        game.setName("Escape");
+        game.setName(GAME_NAME);
         this.createStages();
         this.createItems();
+        this.configureStagesAndItems();
         this.configurePlayer();
+        this.createRules();
+        this.createActions();
+        this.bindActionsAndItems();
         setWinningCondition();
         setLosingCondition();
     }
 
+    private void createRules() {
+    }
+
+    private void createActions() {
+        Action pickKeyAction = new SwitchItemOwnerAction(this.getStage(ROOM3_NAME), this.player, KEY_NAME);
+        this.addAction(PICK_KEY_ACTION, pickKeyAction);
+    }
+
+    private void bindActionsAndItems() {
+        Behavior behavior = Behavior.builder()
+                .actionName(PICK)
+                .actions(this.getAction(PICK_KEY_ACTION))
+                .resultMessage(PICK_RESULT_MSG)
+                .build();
+        this.getItem(KEY_NAME).addBehavior(behavior);
+    }
+
+    private void configureStagesAndItems() {
+        this.configureRoom1();
+        this.configureRoom3();
+    }
+
+    private void configureRoom1() {
+        Stage room1 = this.getStage("Salon1");
+        room1.addItem(this.getItem("Mesa"));
+    }
+
+    private void configureRoom3() {
+        Stage room3 = this.getStage(ROOM3_NAME);
+        room3.addItem(this.getItem(KEY_NAME));
+    }
+
     private void createItems() {
-        this.addItem(new Item("Martillo", "Es un martillo."));
-        this.addItem(new Item("Llave", "Es una llave."));
-        this.addItem(new Item("Mesa", "Es una mesa."));
-        this.addItem(new Item("BotellaLicor", "Es una llave."));
+        this.addItem(new Item("Martillo", HAMMER_DESCRIPTION));
+        this.addItem(new Item(KEY_NAME, KEY_DESCRIPTION));
+        this.addItem(new Item("Mesa", TABLE_DESCRIPTION));
+        this.addItem(new Item("BotellaLicor", LIQUOR_DESCRIPTION));
+        this.addItem(new Item("Vaso1", GLASS_DESCRIPTION));
+        this.addItem(new Item("Vaso2", GLASS_DESCRIPTION));
+        this.addItem(new Item("CuadroBarco", BOAT_PICTURE_DESCRIPTION));
+        this.addItem(new Item("Destornillador1", SCREWDRIVER_DESCRIPTION));
+        this.addItem(new Item("Destornillador2", SCREWDRIVER_DESCRIPTION));
     }
 
     private void setWinningCondition() {
@@ -52,15 +97,24 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void createStages() {
-        game.addStage(createStage("Pasillo", "Salon1", "Salon2", "Salon3", "BibliotecaAcceso"));
-        game.addStage(createStage("Salon1", "Pasillo"));
-        game.addStage(createStage("Salon2", "Pasillo"));
-        game.addStage(createStage("Salon3", "Pasillo"));
-        game.addStage(createStage("BibliotecaAcceso", "Pasillo", "Biblioteca"));
-        game.addStage(createStage("Biblioteca", "BibliotecaAcceso", "Sotano"));
-        game.addStage(createStage("Sotano", "Biblioteca", "Sotano"));
-        game.addStage(createStage("SotanoAbajo", "Afuera"));
-        game.addStage(createStage("Afuera"));
+//        game.addStage(createStage("Pasillo", "Salon1", "Salon2", "Salon3", "BibliotecaAcceso"));
+//        game.addStage(createStage("Salon1", "Pasillo"));
+//        game.addStage(createStage("Salon2", "Pasillo"));
+//        game.addStage(createStage("Salon3", "Pasillo"));
+//        game.addStage(createStage("BibliotecaAcceso", "Pasillo", "Biblioteca"));
+//        game.addStage(createStage("Biblioteca", "BibliotecaAcceso", "Sotano"));
+//        game.addStage(createStage("Sotano", "Biblioteca", "Sotano"));
+//        game.addStage(createStage("SotanoAbajo", "Afuera"));
+//        game.addStage(createStage("Afuera"));
+        createStage("Pasillo", "Salon1", "Salon2", ROOM3_NAME, "BibliotecaAcceso");
+        createStage("Salon1", "Pasillo");
+        createStage("Salon2", "Pasillo");
+        createStage(ROOM3_NAME, "Pasillo");
+        createStage("BibliotecaAcceso", "Pasillo", "Biblioteca");
+        createStage("Biblioteca", "BibliotecaAcceso", "Sotano");
+        createStage("Sotano", "Biblioteca", "Sotano");
+        createStage("SotanoAbajo", "Afuera");
+        createStage("Afuera");
     }
 
     private Stage createStage(String stageName, String... adjacentStages) {
@@ -68,6 +122,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         for (String adjacentStage : adjacentStages) {
             stage.addConsecutiveStage(adjacentStage);
         }
+        // agrego stage a la lista de stages del builder antes de retornarlo.
+        this.addStage(stage);
         return stage;
     }
 

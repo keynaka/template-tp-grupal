@@ -7,6 +7,8 @@ import ar.fiuba.tdd.tp.games.objects.GameObject;
  */
 public abstract class Rule {
 
+    public static final Rule TRUE = new TrueRule();
+
     protected boolean negateCondition = false; // Do opposite condition
 
     protected String failErrorMessage = "Rule not verifies";

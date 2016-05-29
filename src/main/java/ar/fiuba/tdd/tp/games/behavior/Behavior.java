@@ -41,13 +41,17 @@ public class Behavior {
     }
 
     public String execute() {
-        if (executionRule.verify()) {
+        if (getExecutionRule().verify()) {
             for (Action action : actions) {
                 action.doAction();
             }
             return this.resultMessage;
         }
         return this.getFailMessage();
+    }
+
+    private Rule getExecutionRule() {
+        return this.executionRule != null ? this.executionRule : Rule.TRUE;
     }
 
     public void setView(BehaviorView view) {

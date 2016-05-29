@@ -1,5 +1,6 @@
 package ar.fiuba.tdd.tp.games;
 
+import ar.fiuba.tdd.tp.games.actions.Action;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.objects.GameObject;
 
@@ -16,6 +17,7 @@ public abstract class AbstractGameBuilder implements GameBuilder {
     protected List<Stage> stages = new ArrayList<>();
     protected Player player;
     private Map<String, Item> items = new HashMap<>();
+    private Map<String, Action> actions = new HashMap<>();
 
     public Game build() {
         // Starts a new game
@@ -53,5 +55,25 @@ public abstract class AbstractGameBuilder implements GameBuilder {
 
     protected Item getItem(String itemName) {
         return this.items.get(itemName.toLowerCase());
+    }
+
+    protected void addStage(Stage stage) {
+        this.stages.add(stage);
+    }
+
+    protected Stage getStage(String stageName) {
+        String key = stageName.toLowerCase();
+        return this.stages.stream()
+                .filter(stage -> stage.getName().equalsIgnoreCase(key))
+                .findFirst()
+                .get();
+    }
+
+    protected void addAction(String key, Action action) {
+        this.actions.put(key.toLowerCase(), action);
+    }
+
+    protected Action getAction(String key) {
+        return this.actions.get(key.toLowerCase());
     }
 }
