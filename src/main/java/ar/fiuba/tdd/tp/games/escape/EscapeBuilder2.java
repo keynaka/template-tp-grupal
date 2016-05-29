@@ -4,6 +4,7 @@ import ar.fiuba.tdd.tp.games.AbstractGameBuilder;
 import ar.fiuba.tdd.tp.games.ActionOld;
 import ar.fiuba.tdd.tp.games.Stage;
 import ar.fiuba.tdd.tp.games.actions.Action;
+import ar.fiuba.tdd.tp.games.actions.AddItemAction;
 import ar.fiuba.tdd.tp.games.actions.SwitchItemOwnerAction;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
@@ -23,6 +24,7 @@ import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.*;
 public class EscapeBuilder2 extends AbstractGameBuilder {
 
     private static final String PICK_KEY_ACTION = "pickKeyAction";
+    private static final String MOVE_BOATPICTURE_ACTION = "moveBoatPictureAction";
 
 
     @Override
@@ -45,6 +47,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private void createActions() {
         Action pickKeyAction = new SwitchItemOwnerAction(this.getStage(ROOM3_NAME), this.player, KEY_NAME);
         this.addAction(PICK_KEY_ACTION, pickKeyAction);
+        Action moveBoatPictureAction = new AddItemAction(this.getStage(ROOM1_NAME), this.getItem(SAFEBOX_NAME));
+        this.addAction(MOVE_BOATPICTURE_ACTION, moveBoatPictureAction);
     }
 
     private void bindActionsAndItems() {
@@ -54,6 +58,13 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .resultMessage(PICK_RESULT_MSG)
                 .build();
         this.getItem(KEY_NAME).addBehavior(behavior);
+
+        behavior = Behavior.builder()
+                .actionName(MOVE)
+                .actions(this.getAction(MOVE_BOATPICTURE_ACTION))
+                .resultMessage(MOVE_RESULT_MSG)
+                .build();
+        this.getItem(BOAT_PICTURE_NAME).addBehavior(behavior);
     }
 
     private void configureStagesAndItems() {
@@ -62,8 +73,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void configureRoom1() {
-        Stage room1 = this.getStage("Salon1");
-        room1.addItem(this.getItem("Mesa"));
+        Stage room1 = this.getStage(ROOM1_NAME);
+        room1.addItem(this.getItem(BOAT_PICTURE_NAME));
     }
 
     private void configureRoom3() {
@@ -78,9 +89,10 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         this.addItem(new Item("BotellaLicor", LIQUOR_DESCRIPTION));
         this.addItem(new Item("Vaso1", GLASS_DESCRIPTION));
         this.addItem(new Item("Vaso2", GLASS_DESCRIPTION));
-        this.addItem(new Item("CuadroBarco", BOAT_PICTURE_DESCRIPTION));
+        this.addItem(new Item(BOAT_PICTURE_NAME, BOAT_PICTURE_DESCRIPTION));
         this.addItem(new Item("Destornillador1", SCREWDRIVER_DESCRIPTION));
         this.addItem(new Item("Destornillador2", SCREWDRIVER_DESCRIPTION));
+        this.addItem(new Item(SAFEBOX_NAME, SAFEBOX_DESCRIPTION));
     }
 
     private void setWinningCondition() {
@@ -106,8 +118,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 //        game.addStage(createStage("Sotano", "Biblioteca", "Sotano"));
 //        game.addStage(createStage("SotanoAbajo", "Afuera"));
 //        game.addStage(createStage("Afuera"));
-        createStage("Pasillo", "Salon1", "Salon2", ROOM3_NAME, "BibliotecaAcceso");
-        createStage("Salon1", "Pasillo");
+        createStage("Pasillo", ROOM1_NAME, "Salon2", ROOM3_NAME, "BibliotecaAcceso");
+        createStage(ROOM1_NAME, "Pasillo");
         createStage("Salon2", "Pasillo");
         createStage(ROOM3_NAME, "Pasillo");
         createStage("BibliotecaAcceso", "Pasillo", "Biblioteca");
@@ -133,6 +145,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         game.registerKnownAction(ActionOld.LOOK_AROUND, (command) -> this.lookAroundHandler());
         game.registerKnownAction(ActionOld.GOTO, (command) -> this.gotoHandler(command));
         game.registerKnownAction(ActionOld.PICK, (command) -> this.actionHandler(command));
+        game.registerKnownAction(ActionOld.MOVE, (command) -> this.actionHandler(command));
 //        game.registerKnownAction(ActionOld.OPEN, (itemName, args) -> this.actionHandler(ActionOld.OPEN.getActionName(),itemName));
 //        game.registerKnownAction(ActionOld.MOVE, (itemName, args) -> this.actionHandler(ActionOld.MOVE.getActionName(),itemName));
 //        game.registerKnownAction(ActionOld.USE, (itemName, arguments) -> this.actionHandler(ActionOld.USE.getActionName(),itemName));
