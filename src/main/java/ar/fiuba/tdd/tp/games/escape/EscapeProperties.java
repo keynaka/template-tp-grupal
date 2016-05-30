@@ -17,14 +17,21 @@ public class EscapeProperties {
     public static final String BOAT_PICTURE_NAME = "CuadroBarco";
     public static final String BOAT_PICTURE_DESCRIPTION = "Es un cuadro de un barco.";
     public static final String SCREWDRIVER_DESCRIPTION = "Es un destornillador.";
-    public static final String SAFEBOX_NAME = "CajaFuerte.";
+    public static final String SAFEBOX_NAME = "CajaFuerte";
     public static final String SAFEBOX_DESCRIPTION = "Es una caja fuerte.";
+    public static final int SAFEBOX_SIZE = 1;
+    public static final String ID_CARD_NAME = "Credencial";
+    public static final String ID_CARD_DESCRIPTION = "Es una credencial de la biblioteca.";
 
 
+    public static final String NOT_IN_INVENTORY_MSG = "% is not in the inventory.";
     public static final String PICK = "pick";
     public static final String PICK_RESULT_MSG = "There you go!";
     public static final String MOVE = "move";
     public static final String MOVE_RESULT_MSG = "There you go!";
+    public static final String OPEN = "open";
+    public static final String OPEN_RESULT_MSG = "%s opened.";
+
 
 
 

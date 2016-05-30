@@ -9,6 +9,7 @@ import ar.fiuba.tdd.tp.games.actions.SwitchItemOwnerAction;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 import ar.fiuba.tdd.tp.games.rules.HasItemRule;
 import ar.fiuba.tdd.tp.games.rules.PlayerIsInRoomRule;
 import ar.fiuba.tdd.tp.games.rules.Rule;
@@ -25,6 +26,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
     private static final String PICK_KEY_ACTION = "pickKeyAction";
     private static final String MOVE_BOATPICTURE_ACTION = "moveBoatPictureAction";
+    private static final String OPEN_SAFEBOX_ACTION = "openSaveboxAction";
+    private static final String OPEN_SAFEBOX_RULE = "openSaveboxRule";
 
 
     @Override
@@ -42,13 +45,19 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void createRules() {
+        Rule hasKey = new HasItemRule(this.player, this.getItem(KEY_NAME));
+        this.addRule(OPEN_SAFEBOX_RULE, hasKey);
     }
 
     private void createActions() {
         Action pickKeyAction = new SwitchItemOwnerAction(this.getStage(ROOM3_NAME), this.player, KEY_NAME);
         this.addAction(PICK_KEY_ACTION, pickKeyAction);
+
         Action moveBoatPictureAction = new AddItemAction(this.getStage(ROOM1_NAME), this.getItem(SAFEBOX_NAME));
         this.addAction(MOVE_BOATPICTURE_ACTION, moveBoatPictureAction);
+
+        Action openSafeboxAction = new SwitchItemOwnerAction(this.getItemKeeper(SAFEBOX_NAME), this.getStage(ROOM1_NAME), ID_CARD_NAME);
+        this.addAction(OPEN_SAFEBOX_ACTION, openSafeboxAction);
     }
 
     private void bindActionsAndItems() {
@@ -65,6 +74,14 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .resultMessage(MOVE_RESULT_MSG)
                 .build();
         this.getItem(BOAT_PICTURE_NAME).addBehavior(behavior);
+
+        behavior = Behavior.builder()
+                .actionName(OPEN)
+                .executionRule(this.getRule(OPEN_SAFEBOX_RULE))
+                .actions(this.getAction(OPEN_SAFEBOX_ACTION))
+                .resultMessage(String.format(OPEN_RESULT_MSG, SAFEBOX_NAME))
+                .build();
+        this.getItem(SAFEBOX_NAME).addBehavior(behavior);
     }
 
     private void configureStagesAndItems() {
@@ -92,7 +109,11 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         this.addItem(new Item(BOAT_PICTURE_NAME, BOAT_PICTURE_DESCRIPTION));
         this.addItem(new Item("Destornillador1", SCREWDRIVER_DESCRIPTION));
         this.addItem(new Item("Destornillador2", SCREWDRIVER_DESCRIPTION));
-        this.addItem(new Item(SAFEBOX_NAME, SAFEBOX_DESCRIPTION));
+        Item idCard = new Item(ID_CARD_NAME, ID_CARD_DESCRIPTION);
+        this.addItem(idCard);
+        ItemContainer safebox = new ItemContainer(SAFEBOX_NAME, SAFEBOX_DESCRIPTION, SAFEBOX_SIZE);
+        safebox.addItem(idCard);
+        this.addItem(safebox);
     }
 
     private void setWinningCondition() {
@@ -109,15 +130,6 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void createStages() {
-//        game.addStage(createStage("Pasillo", "Salon1", "Salon2", "Salon3", "BibliotecaAcceso"));
-//        game.addStage(createStage("Salon1", "Pasillo"));
-//        game.addStage(createStage("Salon2", "Pasillo"));
-//        game.addStage(createStage("Salon3", "Pasillo"));
-//        game.addStage(createStage("BibliotecaAcceso", "Pasillo", "Biblioteca"));
-//        game.addStage(createStage("Biblioteca", "BibliotecaAcceso", "Sotano"));
-//        game.addStage(createStage("Sotano", "Biblioteca", "Sotano"));
-//        game.addStage(createStage("SotanoAbajo", "Afuera"));
-//        game.addStage(createStage("Afuera"));
         createStage("Pasillo", ROOM1_NAME, "Salon2", ROOM3_NAME, "BibliotecaAcceso");
         createStage(ROOM1_NAME, "Pasillo");
         createStage("Salon2", "Pasillo");
@@ -146,6 +158,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         game.registerKnownAction(ActionOld.GOTO, (command) -> this.gotoHandler(command));
         game.registerKnownAction(ActionOld.PICK, (command) -> this.actionHandler(command));
         game.registerKnownAction(ActionOld.MOVE, (command) -> this.actionHandler(command));
+        game.registerKnownAction(ActionOld.OPEN, (command) -> this.openActionHandler(command));
 //        game.registerKnownAction(ActionOld.OPEN, (itemName, args) -> this.actionHandler(ActionOld.OPEN.getActionName(),itemName));
 //        game.registerKnownAction(ActionOld.MOVE, (itemName, args) -> this.actionHandler(ActionOld.MOVE.getActionName(),itemName));
 //        game.registerKnownAction(ActionOld.USE, (itemName, arguments) -> this.actionHandler(ActionOld.USE.getActionName(),itemName));
@@ -173,7 +186,16 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private String actionHandler(Command command) {
-        return game.getCurrentStage().getItem(command.getItemName()).executeAction(command.getAction().getActionName());
+        String actionName = command.getAction().getActionName();
+        return game.getCurrentStage().getItem(command.getItemName()).executeAction(actionName);
+    }
+
+    private String openActionHandler(Command command) {
+        String keyName = command.getArgument();
+        if (game.getPlayer().hasItem(keyName)) {
+            return this.actionHandler(command);
+        }
+        return String.format(NOT_IN_INVENTORY_MSG, keyName);
     }
 
     @Override

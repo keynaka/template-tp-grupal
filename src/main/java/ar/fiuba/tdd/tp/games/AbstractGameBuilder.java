@@ -2,7 +2,9 @@ package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.actions.Action;
 import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 import ar.fiuba.tdd.tp.games.objects.GameObject;
+import ar.fiuba.tdd.tp.games.rules.Rule;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +20,7 @@ public abstract class AbstractGameBuilder implements GameBuilder {
     protected Player player;
     private Map<String, Item> items = new HashMap<>();
     private Map<String, Action> actions = new HashMap<>();
+    private Map<String, Rule> rules = new HashMap<>();
 
     public Game build() {
         // Starts a new game
@@ -75,5 +78,17 @@ public abstract class AbstractGameBuilder implements GameBuilder {
 
     protected Action getAction(String key) {
         return this.actions.get(key.toLowerCase());
+    }
+
+    protected void addRule(String ruleName, Rule rule) {
+        this.rules.put(ruleName.toLowerCase(), rule);
+    }
+
+    protected Rule getRule(String ruleName) {
+        return this.rules.get(ruleName.toLowerCase());
+    }
+
+    protected ItemKeeper getItemKeeper(String itemName) {
+        return (ItemKeeper) this.getItem(itemName);
     }
 }
