@@ -5,6 +5,7 @@ import ar.fiuba.tdd.tp.games.ActionOld;
 import ar.fiuba.tdd.tp.games.Stage;
 import ar.fiuba.tdd.tp.games.actions.Action;
 import ar.fiuba.tdd.tp.games.actions.AddItemAction;
+import ar.fiuba.tdd.tp.games.actions.SetStateValueAction;
 import ar.fiuba.tdd.tp.games.actions.SwitchItemOwnerAction;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
@@ -22,12 +23,14 @@ import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.*;
  * Created by swandelow on 5/19/16.
  */
 
+@SuppressWarnings("CPD-START")
 public class EscapeBuilder2 extends AbstractGameBuilder {
 
     private static final String PICK_KEY_ACTION = "pickKeyAction";
     private static final String MOVE_BOATPICTURE_ACTION = "moveBoatPictureAction";
     private static final String OPEN_SAFEBOX_ACTION = "openSaveboxAction";
     private static final String PICK_ID_CARD_ACTION = "pickIdCardAction";
+    private static final String PUT_PICTURE_ACTION = "putPictureAction";
     private static final String OPEN_SAFEBOX_RULE = "openSaveboxRule";
 
 
@@ -62,6 +65,9 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Action pickIdCardAction = new SwitchItemOwnerAction(this.getStage(ROOM1_NAME), this.player, ID_CARD_NAME);
         this.addAction(PICK_ID_CARD_ACTION, pickIdCardAction);
+
+        Action putPictureAction = new SetStateValueAction(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, PLAYER_PICTURE_NAME);
+        this.addAction(PUT_PICTURE_ACTION, putPictureAction);
     }
 
     private void bindActionsAndItems() {
@@ -93,6 +99,13 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .resultMessage(PICK_RESULT_MSG)
                 .build();
         this.getItem(ID_CARD_NAME).addBehavior(behavior);
+
+        behavior = Behavior.builder()
+                .actionName(PUT)
+                .actions(this.getAction(PUT_PICTURE_ACTION))
+                .resultMessage(String.format(PUT_RESULT_MSG, PLAYER_PICTURE_NAME, ID_CARD_NAME))
+                .build();
+        this.getItem(PLAYER_PICTURE_NAME).addBehavior(behavior);
     }
 
     private void configureStagesAndItems() {
@@ -111,6 +124,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void createItems() {
+        this.addItem(new Item(PLAYER_PICTURE_NAME, PLAYER_PICTURE_DESCRIPTION));
         this.addItem(new Item("Martillo", HAMMER_DESCRIPTION));
         this.addItem(new Item(KEY_NAME, KEY_DESCRIPTION));
         this.addItem(new Item("Mesa", TABLE_DESCRIPTION));
@@ -121,6 +135,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         this.addItem(new Item("Destornillador1", SCREWDRIVER_DESCRIPTION));
         this.addItem(new Item("Destornillador2", SCREWDRIVER_DESCRIPTION));
         Item idCard = new Item(ID_CARD_NAME, ID_CARD_DESCRIPTION);
+        idCard.addState(ID_CARD_PICTURE_STATE, STRANGER_PICTURE_NAME);
         this.addItem(idCard);
         ItemContainer safebox = new ItemContainer(SAFEBOX_NAME, SAFEBOX_DESCRIPTION, SAFEBOX_SIZE);
         safebox.addItem(idCard);
@@ -170,6 +185,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         game.registerKnownAction(ActionOld.PICK, (command) -> this.actionHandler(command));
         game.registerKnownAction(ActionOld.MOVE, (command) -> this.actionHandler(command));
         game.registerKnownAction(ActionOld.OPEN, (command) -> this.openActionHandler(command));
+        game.registerKnownAction(ActionOld.PUT, (command) -> this.putActionHandler(command));
 //        game.registerKnownAction(ActionOld.OPEN, (itemName, args) -> this.actionHandler(ActionOld.OPEN.getActionName(),itemName));
 //        game.registerKnownAction(ActionOld.MOVE, (itemName, args) -> this.actionHandler(ActionOld.MOVE.getActionName(),itemName));
 //        game.registerKnownAction(ActionOld.USE, (itemName, arguments) -> this.actionHandler(ActionOld.USE.getActionName(),itemName));
@@ -209,11 +225,21 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         return String.format(NOT_IN_INVENTORY_MSG, keyName);
     }
 
+    private String putActionHandler(Command command) {
+        String item2Name = command.getArgument();
+        if (game.getPlayer().hasItem(item2Name)) {
+            return this.actionHandler(command);
+        }
+        return String.format(NOT_IN_INVENTORY_MSG, item2Name);
+    }
+
+    @SuppressWarnings("CPD-END")
+
     @Override
     protected void configurePlayer() {
         player.addState("lifeStatus", "alive");
         player.setCurrentStage("Pasillo");
-        player.addToInventory(new Item("Foto", "picture"));
+        player.addToInventory(this.getItem(PLAYER_PICTURE_NAME));
         player.addToInventory(new Item("Lapicera", "pen"));
     }
 }

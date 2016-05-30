@@ -3,6 +3,8 @@ package ar.fiuba.tdd.tp.games.escape;
 /**
  * Created by swandelow on 5/29/16.
  */
+@SuppressWarnings("CPD-START")
+
 public class EscapeProperties {
 
     public static final String GAME_NAME = "Escape";
@@ -22,15 +24,22 @@ public class EscapeProperties {
     public static final int SAFEBOX_SIZE = 1;
     public static final String ID_CARD_NAME = "Credencial";
     public static final String ID_CARD_DESCRIPTION = "Es una credencial de la biblioteca.";
+    public static final String ID_CARD_PICTURE_STATE = "idcard-picture";
+    public static final String PLAYER_PICTURE_NAME = "Foto";
+    public static final String PLAYER_PICTURE_DESCRIPTION = "Es una foto del jugador.";
+    public static final String STRANGER_PICTURE_NAME = "Foto de un extraño";
 
 
-    public static final String NOT_IN_INVENTORY_MSG = "% is not in the inventory.";
+    public static final String NOT_IN_INVENTORY_MSG = "%s is not in the inventory.";
     public static final String PICK = "pick";
     public static final String PICK_RESULT_MSG = "There you go!";
     public static final String MOVE = "move";
     public static final String MOVE_RESULT_MSG = "There you go!";
     public static final String OPEN = "open";
     public static final String OPEN_RESULT_MSG = "%s opened.";
+    public static final String PUT = "put";
+    @SuppressWarnings("CPD-END")
+    public static final String PUT_RESULT_MSG = "You have put %s in %s";
 
 
 
