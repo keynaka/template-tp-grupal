@@ -27,6 +27,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private static final String PICK_KEY_ACTION = "pickKeyAction";
     private static final String MOVE_BOATPICTURE_ACTION = "moveBoatPictureAction";
     private static final String OPEN_SAFEBOX_ACTION = "openSaveboxAction";
+    private static final String PICK_ID_CARD_ACTION = "pickIdCardAction";
     private static final String OPEN_SAFEBOX_RULE = "openSaveboxRule";
 
 
@@ -58,6 +59,9 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Action openSafeboxAction = new SwitchItemOwnerAction(this.getItemKeeper(SAFEBOX_NAME), this.getStage(ROOM1_NAME), ID_CARD_NAME);
         this.addAction(OPEN_SAFEBOX_ACTION, openSafeboxAction);
+
+        Action pickIdCardAction = new SwitchItemOwnerAction(this.getStage(ROOM1_NAME), this.player, ID_CARD_NAME);
+        this.addAction(PICK_ID_CARD_ACTION, pickIdCardAction);
     }
 
     private void bindActionsAndItems() {
@@ -82,6 +86,13 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .resultMessage(String.format(OPEN_RESULT_MSG, SAFEBOX_NAME))
                 .build();
         this.getItem(SAFEBOX_NAME).addBehavior(behavior);
+
+        behavior = Behavior.builder()
+                .actionName(PICK)
+                .actions(this.getAction(PICK_ID_CARD_ACTION))
+                .resultMessage(PICK_RESULT_MSG)
+                .build();
+        this.getItem(ID_CARD_NAME).addBehavior(behavior);
     }
 
     private void configureStagesAndItems() {
