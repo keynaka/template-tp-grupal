@@ -20,7 +20,6 @@ public class PickFromCurrentStageAction implements Action {
 
     @Override
     public void doAction() {
-        Item item = this.game.getCurrentStage().removeItem(itemName);
-        this.game.getItemKeeper(this.newOwnerName).insertItem(item);
+        new SwitchItemOwnerAction(this.game.getCurrentStage(), this.game.getItemKeeper(this.newOwnerName), this.itemName).doAction();
     }
 }
