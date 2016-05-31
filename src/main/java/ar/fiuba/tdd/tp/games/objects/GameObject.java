@@ -12,8 +12,13 @@ import java.util.Map;
  */
 public abstract class GameObject {
 
+    protected String name;
     protected Map<String, String> statesMap = new HashMap<>();
     protected Map<String, Behavior> behaviorMap = new HashMap<>();
+
+    public String getName() {
+        return this.name;
+    }
 
     public void addState(String key, String state) {
         this.statesMap.put(key, state);

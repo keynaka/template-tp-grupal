@@ -14,7 +14,6 @@ public class Item extends GameObject implements Examinable {
 
     private static final String EXAMINE_MSG = "You can %s: %s.";
 
-    protected String name;
     protected String description;
     protected Map<ActionOld, String> supportedActions;
 

@@ -17,8 +17,6 @@ public class Stage extends GameObject implements ItemKeeper {
 
     private static final int DEFAULT_STAGE_SIZE = 20;
 
-    private String name;
-
     private ItemContainer itemContainer;
     private List<String> consecutiveStages = new ArrayList<>();
     private Rule entranceRule;

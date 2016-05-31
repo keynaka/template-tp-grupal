@@ -1,12 +1,14 @@
 package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.driver.GameState;
+import ar.fiuba.tdd.tp.games.exceptions.GameException;
+import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.objects.GameObject;
 import ar.fiuba.tdd.tp.games.rules.Rule;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Created by sebass on 10/05/16.
@@ -102,7 +104,7 @@ public class ConcreteGame extends AbstractGame {
         this.stages.put(stage.getName(), stage);
     }
 
-    public void setStages (List<Stage> stages) {
+    public void setStages(List<Stage> stages) {
         for (Stage stage : stages) {
             addStage(stage);
         }
@@ -128,9 +130,36 @@ public class ConcreteGame extends AbstractGame {
         return this.gameState;
     }
 
+    public ItemKeeper getItemKeeper(String objectName) {
+        return (ItemKeeper) this.getGameObject(objectName);
+    }
+
+    private GameObject getGameObject(String objectName) {
+        Optional<GameObject> object = this.getGameObjects().stream()
+                .filter(gameObject -> gameObject.getName().equalsIgnoreCase(objectName))
+                .findFirst();
+        if(object.isPresent()) {
+            return object.get();
+        }
+        throw new GameException("GameObject not found.");
+    }
+
+    private List<GameObject> getGameObjects() {
+        List<GameObject> gameObjects = Collections.EMPTY_LIST;
+        // agrego el player
+        gameObjects.add(this.player);
+        // agrego los escenarios
+        Collection<Stage> stages = this.stages.values();
+        gameObjects.addAll(stages);
+        // agrego los items de cada escenario
+        List<Item> items = stages.stream().map(stage -> stage.getItems()).flatMap(itemList -> itemList.stream()).collect(Collectors.toList());
+        gameObjects.addAll(items);
+        return gameObjects;
+    }
+
     @Override
     protected void updateGameState() {
-        if(winningCondition != null) {
+        if (winningCondition != null) {
             this.oldUpdateGameState();
         } else {
             this.newUpdateGameState();
