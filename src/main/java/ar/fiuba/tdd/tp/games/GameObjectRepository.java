@@ -21,6 +21,12 @@ public class GameObjectRepository {
         this.game = game;
     }
 
+    // método agregado para evitar castear en todos lados
+    public Item getItem(String itemName) {
+        return (Item) this.getGameObject(itemName);
+    }
+
+    // método agregado para evitar castear en todos lados
     public ItemKeeper getItemKeeper(String objectName) {
         return (ItemKeeper) this.getGameObject(objectName);
     }

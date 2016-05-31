@@ -42,6 +42,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         this.createRules();
         this.createActions();
         this.bindActionsAndItems();
+        this.bindStagesAndActions();
         setWinningCondition();
         setLosingCondition();
     }
@@ -112,6 +113,19 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .resultMessage(String.format(PUT_RESULT_MSG, PLAYER_PICTURE_NAME, ID_CARD_NAME))
                 .build();
         this.getItem(PLAYER_PICTURE_NAME).addBehavior(behavior);
+    }
+
+    private void bindStagesAndActions() {
+        // todos los escenarios soportan comando goto.
+        for(Stage stage : this.stages) {
+            Behavior behavior = Behavior.builder()
+                    .actionName(GOTO)
+                    .executionRule(new IsNextRoomRule(this.game, stage.getName()))
+                    .actions(new ChangePlayerStageAction(this.game, stage))
+                    .resultMessage(String.format(GOTO_RESULT_MSG, stage.getName()))
+                    .build();
+            stage.addBehavior(behavior);
+        }
     }
 
     private void configureStagesAndItems() {

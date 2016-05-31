@@ -1,5 +1,6 @@
 package ar.fiuba.tdd.tp.games.actions;
 
+import ar.fiuba.tdd.tp.games.ConcreteGame;
 import ar.fiuba.tdd.tp.games.Player;
 import ar.fiuba.tdd.tp.games.Stage;
 
@@ -7,16 +8,16 @@ import ar.fiuba.tdd.tp.games.Stage;
  * Created by Nico on 28/05/2016.
  */
 public class ChangePlayerStageAction implements Action {
-    private Player player;
+    private ConcreteGame game;
     private Stage stage;
 
-    public ChangePlayerStageAction(Player player, Stage stage) {
-        this.player = player;
+    public ChangePlayerStageAction(ConcreteGame game, Stage stage) {
+        this.game = game;
         this.stage = stage;
     }
 
     @Override
     public void doAction() {
-        player.setCurrentStage(stage.getName());
+        this.game.getPlayer().setCurrentStage(stage.getName());
     }
 }

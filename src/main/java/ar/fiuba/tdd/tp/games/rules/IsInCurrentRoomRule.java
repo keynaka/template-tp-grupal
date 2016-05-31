@@ -19,7 +19,7 @@ public class IsInCurrentRoomRule extends Rule {
 
     @Override
     public boolean doVerify() {
-        Item item = (Item) this.game.getGameObjectRepository().getGameObject(itemName);
+        Item item = this.game.getGameObjectRepository().getItem(itemName);
         return new HasItemRule(this.game.getCurrentStage(), item).doVerify();
     }
 }

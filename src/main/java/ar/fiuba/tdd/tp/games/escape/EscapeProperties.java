@@ -33,6 +33,8 @@ public class EscapeProperties {
 
 
     public static final String NOT_IN_INVENTORY_MSG = "%s is not in the inventory.";
+    public static final String GOTO = "goto";
+    public static final String GOTO_RESULT_MSG = "You have entered to %s.";
     public static final String PICK = "pick";
     public static final String PICK_RESULT_MSG = "There you go!";
     public static final String MOVE = "move";
