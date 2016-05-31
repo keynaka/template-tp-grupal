@@ -6,13 +6,11 @@ import ar.fiuba.tdd.tp.games.Stage;
 import ar.fiuba.tdd.tp.games.actions.*;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
+import ar.fiuba.tdd.tp.games.handlers.DefaultActionHandler;
 import ar.fiuba.tdd.tp.games.handlers.LookAroundActionHandler;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
-import ar.fiuba.tdd.tp.games.rules.HasItemRule;
-import ar.fiuba.tdd.tp.games.rules.PlayerIsInRoomRule;
-import ar.fiuba.tdd.tp.games.rules.Rule;
-import ar.fiuba.tdd.tp.games.rules.VerifiesStateRule;
+import ar.fiuba.tdd.tp.games.rules.*;
 import ar.fiuba.tdd.tp.red.server.Command;
 
 import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.*;
@@ -30,6 +28,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private static final String PICK_ID_CARD_ACTION = "pickIdCardAction";
     private static final String PUT_PICTURE_ACTION = "putPictureAction";
     private static final String OPEN_SAFEBOX_RULE = "openSaveboxRule";
+    private static final String PICK_KEY_RULE = "pickKeyRule";
+    private static final String PICK_ID_CARD_RULE = "pickIdCardRule";
 
 
     @Override
@@ -47,6 +47,12 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void createRules() {
+        Rule pickKeyRule = new IsInCurrentRoomRule(this.game, KEY_NAME);
+        this.addRule(PICK_KEY_RULE, pickKeyRule);
+
+        Rule pickIdCardRule = new IsInCurrentRoomRule(this.game, ID_CARD_NAME);
+        this.addRule(PICK_ID_CARD_RULE, pickIdCardRule);
+
         Rule hasKey = new HasItemRule(this.player, this.getItem(KEY_NAME));
         this.addRule(OPEN_SAFEBOX_RULE, hasKey);
     }
@@ -71,6 +77,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private void bindActionsAndItems() {
         Behavior behavior = Behavior.builder()
                 .actionName(PICK)
+                .executionRule(this.getRule(KEY_NAME))
                 .actions(this.getAction(PICK_KEY_ACTION))
                 .resultMessage(PICK_RESULT_MSG)
                 .build();
@@ -93,6 +100,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         behavior = Behavior.builder()
                 .actionName(PICK)
+                .executionRule(this.getRule(PICK_ID_CARD_RULE))
                 .actions(this.getAction(PICK_ID_CARD_ACTION))
                 .resultMessage(PICK_RESULT_MSG)
                 .build();
@@ -154,11 +162,11 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void createStages() {
-        createStage("Pasillo", ROOM1_NAME, "Salon2", ROOM3_NAME, "BibliotecaAcceso");
-        createStage(ROOM1_NAME, "Pasillo");
-        createStage("Salon2", "Pasillo");
-        createStage(ROOM3_NAME, "Pasillo");
-        createStage("BibliotecaAcceso", "Pasillo", "Biblioteca");
+        createStage(HALL_NAME, ROOM1_NAME, ROOM2_NAME, ROOM3_NAME, "BibliotecaAcceso");
+        createStage(ROOM1_NAME, HALL_NAME);
+        createStage(ROOM2_NAME, HALL_NAME);
+        createStage(ROOM3_NAME, HALL_NAME);
+        createStage("BibliotecaAcceso", HALL_NAME, "Biblioteca");
         createStage("Biblioteca", "BibliotecaAcceso", "Sotano");
         createStage("Sotano", "Biblioteca", "Sotano");
         createStage("SotanoAbajo", "Afuera");
@@ -180,7 +188,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     protected void setKnownActions() {
         game.registerKnownAction(ActionOld.LOOK_AROUND, new LookAroundActionHandler(this.game));
         game.registerKnownAction(ActionOld.GOTO, (command) -> this.gotoHandler(command));
-        game.registerKnownAction(ActionOld.PICK, (command) -> this.actionHandler(command));
+        game.registerKnownAction(ActionOld.PICK, new DefaultActionHandler(this.game));
         game.registerKnownAction(ActionOld.MOVE, (command) -> this.actionHandler(command));
         game.registerKnownAction(ActionOld.OPEN, (command) -> this.openActionHandler(command));
         game.registerKnownAction(ActionOld.PUT, (command) -> this.putActionHandler(command));
@@ -232,7 +240,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     @Override
     protected void configurePlayer() {
         player.addState("lifeStatus", "alive");
-        player.setCurrentStage("Pasillo");
+        player.setCurrentStage(HALL_NAME);
         player.addToInventory(this.getItem(PLAYER_PICTURE_NAME));
         player.addToInventory(new Item("Lapicera", "pen"));
     }
