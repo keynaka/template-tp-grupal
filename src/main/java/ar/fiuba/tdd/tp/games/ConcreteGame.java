@@ -120,6 +120,9 @@ public class ConcreteGame extends AbstractGame {
         return this.stages.get(stageName);
     }
 
+    public Map<String, Stage> getStages() {
+        return this.stages;
+    }
 
     @Override
     public boolean isFinished() {
@@ -131,31 +134,8 @@ public class ConcreteGame extends AbstractGame {
         return this.gameState;
     }
 
-    public ItemKeeper getItemKeeper(String objectName) {
-        return (ItemKeeper) this.getGameObject(objectName);
-    }
-
-    private GameObject getGameObject(String objectName) {
-        Optional<GameObject> object = this.getGameObjects().stream()
-                .filter(gameObject -> gameObject.getName().equalsIgnoreCase(objectName))
-                .findFirst();
-        if(object.isPresent()) {
-            return object.get();
-        }
-        throw new GameException("GameObject not found.");
-    }
-
-    private List<GameObject> getGameObjects() {
-        List<GameObject> gameObjects = new ArrayList<>();
-        // agrego el player
-        gameObjects.add(this.player);
-        // agrego los escenarios
-        Collection<Stage> stages = this.stages.values();
-        gameObjects.addAll(stages);
-        // agrego los items de cada escenario
-        List<Item> items = stages.stream().map(stage -> stage.getItems()).flatMap(itemList -> itemList.stream()).collect(Collectors.toList());
-        gameObjects.addAll(items);
-        return gameObjects;
+    public GameObjectRepository getGameObjectRepository() {
+        return new GameObjectRepository(this);
     }
 
     @Override

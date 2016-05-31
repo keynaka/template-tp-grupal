@@ -1,7 +1,6 @@
 package ar.fiuba.tdd.tp.games.actions;
 
 import ar.fiuba.tdd.tp.games.ConcreteGame;
-import ar.fiuba.tdd.tp.games.items.Item;
 
 /**
  * Created by swandelow on 5/30/16.
@@ -22,6 +21,6 @@ public class PickFromCurrentStageAction implements Action {
     @SuppressWarnings("CPD-END")
     @Override
     public void doAction() {
-        new SwitchItemOwnerAction(this.game.getCurrentStage(), this.game.getItemKeeper(this.newOwnerName), this.itemName).doAction();
+        new SwitchItemOwnerAction(this.game.getCurrentStage(), this.game.getGameObjectRepository().getItemKeeper(this.newOwnerName), this.itemName).doAction();
     }
 }
