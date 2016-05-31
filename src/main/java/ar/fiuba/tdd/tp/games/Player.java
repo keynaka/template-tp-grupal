@@ -18,6 +18,7 @@ public class Player extends GameObject implements ItemKeeper {
     private String state2;
 
     public Player() {
+        this.name = "player";
         this.inventory = new Inventory();
         this.state = CharacterState.HEALTHY;
         this.state2 = "healthy";

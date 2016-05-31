@@ -145,7 +145,7 @@ public class ConcreteGame extends AbstractGame {
     }
 
     private List<GameObject> getGameObjects() {
-        List<GameObject> gameObjects = Collections.EMPTY_LIST;
+        List<GameObject> gameObjects = new ArrayList<>();
         // agrego el player
         gameObjects.add(this.player);
         // agrego los escenarios

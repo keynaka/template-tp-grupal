@@ -3,10 +3,7 @@ package ar.fiuba.tdd.tp.games.escape;
 import ar.fiuba.tdd.tp.games.AbstractGameBuilder;
 import ar.fiuba.tdd.tp.games.ActionOld;
 import ar.fiuba.tdd.tp.games.Stage;
-import ar.fiuba.tdd.tp.games.actions.Action;
-import ar.fiuba.tdd.tp.games.actions.AddItemAction;
-import ar.fiuba.tdd.tp.games.actions.SetStateValueAction;
-import ar.fiuba.tdd.tp.games.actions.SwitchItemOwnerAction;
+import ar.fiuba.tdd.tp.games.actions.*;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
@@ -54,7 +51,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void createActions() {
-        Action pickKeyAction = new SwitchItemOwnerAction(this.getStage(ROOM3_NAME), this.player, KEY_NAME);
+//        Action pickKeyAction = new SwitchItemOwnerAction(this.getStage(ROOM3_NAME), this.player, KEY_NAME);
+        Action pickKeyAction = new PickFromCurrentStageAction(this.game, this.player.getName(), KEY_NAME);
         this.addAction(PICK_KEY_ACTION, pickKeyAction);
 
         Action moveBoatPictureAction = new AddItemAction(this.getStage(ROOM1_NAME), this.getItem(SAFEBOX_NAME));
@@ -63,7 +61,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Action openSafeboxAction = new SwitchItemOwnerAction(this.getItemKeeper(SAFEBOX_NAME), this.getStage(ROOM1_NAME), ID_CARD_NAME);
         this.addAction(OPEN_SAFEBOX_ACTION, openSafeboxAction);
 
-        Action pickIdCardAction = new SwitchItemOwnerAction(this.getStage(ROOM1_NAME), this.player, ID_CARD_NAME);
+//        Action pickIdCardAction = new SwitchItemOwnerAction(this.getStage(ROOM1_NAME), this.player, ID_CARD_NAME);
+        Action pickIdCardAction = new PickFromCurrentStageAction(this.game, this.player.getName(), ID_CARD_NAME);
         this.addAction(PICK_ID_CARD_ACTION, pickIdCardAction);
 
         Action putPictureAction = new SetStateValueAction(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, PLAYER_PICTURE_NAME);
