@@ -6,6 +6,7 @@ import ar.fiuba.tdd.tp.games.Stage;
 import ar.fiuba.tdd.tp.games.actions.*;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
+import ar.fiuba.tdd.tp.games.handlers.LookAroundActionHandler;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 import ar.fiuba.tdd.tp.games.rules.HasItemRule;
@@ -177,7 +178,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
     @Override
     protected void setKnownActions() {
-        game.registerKnownAction(ActionOld.LOOK_AROUND, (command) -> this.lookAroundHandler());
+        game.registerKnownAction(ActionOld.LOOK_AROUND, new LookAroundActionHandler(this.game));
         game.registerKnownAction(ActionOld.GOTO, (command) -> this.gotoHandler(command));
         game.registerKnownAction(ActionOld.PICK, (command) -> this.actionHandler(command));
         game.registerKnownAction(ActionOld.MOVE, (command) -> this.actionHandler(command));
@@ -190,10 +191,6 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 //        game.registerKnownAction(ActionOld.SHOW, (itemName, arguments) -> this.actionHandler(ActionOld.SHOW.getActionName(),itemName));
 //        game.registerKnownAction(ActionOld.PUT, (itemName, arguments) -> this.actionHandler(ActionOld.PUT.getActionName(), itemName));
 //        game.registerKnownAction(ActionOld.DROP, (itemName, arguments) -> this.actionHandler(ActionOld.DROP.getActionName(),itemName));
-    }
-
-    private String lookAroundHandler() {
-        return game.getCurrentStage().lookAround();
     }
 
     private String gotoHandler(Command command) {

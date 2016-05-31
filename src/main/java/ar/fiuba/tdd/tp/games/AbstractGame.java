@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.driver.GameState;
+import ar.fiuba.tdd.tp.games.handlers.ActionHandler;
 import ar.fiuba.tdd.tp.red.server.Command;
 
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public abstract class AbstractGame implements Game {
     private static final String WELCOME_MESSAGE = "Welcome to %s!";
     private String name;
     private String endGameMessage;
-    protected Map<ActionOld, ActionFunction> knownActions = new HashMap<>();
+    protected Map<ActionOld, ActionHandler> knownActions = new HashMap<>();
 
     protected AbstractGame(String gameName, String endGameMessage) {
         this.name = gameName;
@@ -36,7 +37,7 @@ public abstract class AbstractGame implements Game {
     @Override
     public String play(Command command) {
         String result = null;
-        Optional<ActionFunction> actionMethod = Optional.ofNullable(this.knownActions.get(command.getAction()));
+        Optional<ActionHandler> actionMethod = Optional.ofNullable(this.knownActions.get(command.getAction()));
         result = actionMethod.isPresent() ? actionMethod.get().execute(command) : "Unknown command.";
 
         this.updateGameState();
@@ -65,7 +66,7 @@ public abstract class AbstractGame implements Game {
 
     protected abstract void registerKnownActions();
 
-    public Map<ActionOld,ActionFunction> getKnownActions() {
+    public Map<ActionOld,ActionHandler> getKnownActions() {
         return knownActions;
     }
 }

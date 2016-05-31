@@ -2,6 +2,7 @@ package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.driver.GameState;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
+import ar.fiuba.tdd.tp.games.handlers.ActionHandler;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.objects.GameObject;
 import ar.fiuba.tdd.tp.games.rules.Rule;
@@ -96,7 +97,7 @@ public class ConcreteGame extends AbstractGame {
         this.loosingConditionRule = loosingCondition;
     }
 
-    public void registerKnownAction(ActionOld action, ActionFunction actionFuntion) {
+    public void registerKnownAction(ActionOld action, ActionHandler actionFuntion) {
         this.knownActions.put(action, actionFuntion);
     }
 

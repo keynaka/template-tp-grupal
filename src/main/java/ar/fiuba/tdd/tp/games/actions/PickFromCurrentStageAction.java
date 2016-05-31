@@ -6,6 +6,7 @@ import ar.fiuba.tdd.tp.games.items.Item;
 /**
  * Created by swandelow on 5/30/16.
  */
+@SuppressWarnings("CPD-START")
 public class PickFromCurrentStageAction implements Action {
 
     private ConcreteGame game;
@@ -18,6 +19,7 @@ public class PickFromCurrentStageAction implements Action {
         this.itemName = itemName;
     }
 
+    @SuppressWarnings("CPD-END")
     @Override
     public void doAction() {
         new SwitchItemOwnerAction(this.game.getCurrentStage(), this.game.getItemKeeper(this.newOwnerName), this.itemName).doAction();
