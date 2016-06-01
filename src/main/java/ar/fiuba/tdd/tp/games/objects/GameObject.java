@@ -46,4 +46,9 @@ public abstract class GameObject {
         return behavior.execute();
     }
 
+    public String executeActionWith(String actionName, String parameter) {
+        Behavior behavior = this.behaviorMap.get(actionName);
+        return behavior.executeWith(parameter);
+    }
+
 }

@@ -45,6 +45,8 @@ public class GameObjectRepository {
         List<GameObject> gameObjects = new ArrayList<>();
         // agrego el player
         gameObjects.add(this.game.getPlayer());
+        // agrego los items en el inventario del player
+        gameObjects.addAll(this.game.getPlayer().getItems());
         // agrego los escenarios
         Collection<Stage> stages = this.game.getStages().values();
         gameObjects.addAll(stages);

@@ -5,11 +5,12 @@ import ar.fiuba.tdd.tp.games.ActionOld;
 import ar.fiuba.tdd.tp.games.Stage;
 import ar.fiuba.tdd.tp.games.actions.*;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
-import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.handlers.DefaultActionHandler;
 import ar.fiuba.tdd.tp.games.handlers.LookAroundActionHandler;
+import ar.fiuba.tdd.tp.games.handlers.ParametizedActionHandler;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
+import ar.fiuba.tdd.tp.games.objects.GameObject;
 import ar.fiuba.tdd.tp.games.rules.*;
 import ar.fiuba.tdd.tp.red.server.Command;
 
@@ -31,6 +32,9 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private static final String PICK_KEY_RULE = "pickKeyRule";
     private static final String PICK_ID_CARD_RULE = "pickIdCardRule";
     private static final String MOVE_BOATPICTURE_RULE = "moveBoatPictureRule";
+    private static final String HAS_ID_CARD = "hasIdCard";
+    private static final String HAS_PLAYER_PICTURE = "hasPlayerPicture";
+    private static final String PUT_PICTURE_RULE = "putPictureRule";
 
 
     @Override
@@ -60,6 +64,14 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Rule moveBoatPictureRule = new IsInCurrentRoomRule(this.game, BOAT_PICTURE_NAME);
         this.addRule(MOVE_BOATPICTURE_RULE, moveBoatPictureRule);
+
+        Rule hasIdCardRule = new HasItemRule(this.player, this.getItem(ID_CARD_NAME));
+        this.addRule(HAS_ID_CARD, hasIdCardRule);
+
+        Rule hasPlayerPictureRule = new HasItemRule(this.player, this.getItem(PLAYER_PICTURE_NAME));
+        this.addRule(HAS_PLAYER_PICTURE, hasPlayerPictureRule);
+
+        this.addRule(PUT_PICTURE_RULE, hasIdCardRule.and(hasIdCardRule));
     }
 
     private void createActions() {
@@ -112,8 +124,10 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .build();
         this.getItem(ID_CARD_NAME).addBehavior(behavior);
 
+
         behavior = Behavior.builder()
                 .actionName(PUT)
+                .executionRule(this.getRule(PUT_PICTURE_RULE))
                 .actions(this.getAction(PUT_PICTURE_ACTION))
                 .resultMessage(String.format(PUT_RESULT_MSG, PLAYER_PICTURE_NAME, ID_CARD_NAME))
                 .build();
@@ -122,7 +136,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
     private void bindStagesAndActions() {
         // todos los escenarios soportan comando goto.
-        for(Stage stage : this.stages) {
+        for (Stage stage : this.stages) {
             IsNextRoomRule isNextRoomRule = new IsNextRoomRule(this.game, stage.getName());
             isNextRoomRule.setErrorMessage(String.format(GOTO_NOT_NEXT_ROOM_MSG, stage.getName()));
 
@@ -214,7 +228,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         game.registerKnownAction(ActionOld.PICK, new DefaultActionHandler(this.game));
         game.registerKnownAction(ActionOld.MOVE, new DefaultActionHandler(this.game));
         game.registerKnownAction(ActionOld.OPEN, (command) -> this.openActionHandler(command));
-        game.registerKnownAction(ActionOld.PUT, (command) -> this.putActionHandler(command));
+        game.registerKnownAction(ActionOld.PUT, new ParametizedActionHandler(this.game));
 //        game.registerKnownAction(ActionOld.OPEN, (itemName, args) -> this.actionHandler(ActionOld.OPEN.getActionName(),itemName));
 //        game.registerKnownAction(ActionOld.MOVE, (itemName, args) -> this.actionHandler(ActionOld.MOVE.getActionName(),itemName));
 //        game.registerKnownAction(ActionOld.USE, (itemName, arguments) -> this.actionHandler(ActionOld.USE.getActionName(),itemName));
@@ -235,14 +249,6 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
             return this.actionHandler(command);
         }
         return String.format(NOT_IN_INVENTORY_MSG, keyName);
-    }
-
-    private String putActionHandler(Command command) {
-        String item2Name = command.getArgument();
-        if (game.getPlayer().hasItem(item2Name)) {
-            return this.actionHandler(command);
-        }
-        return String.format(NOT_IN_INVENTORY_MSG, item2Name);
     }
 
     @SuppressWarnings("CPD-END")

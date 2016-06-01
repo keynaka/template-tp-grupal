@@ -36,6 +36,16 @@ public abstract class Rule {
 
     public abstract boolean doVerify();
 
+    public boolean verifyWith(String parameter) {
+        boolean result = this.doVerifyWith(parameter);
+        return (this.negateCondition) ? !result : result;
+    }
+
+    // implementacion default
+    protected boolean doVerifyWith(String parameter) {
+        return this.doVerify();
+    }
+
     public Rule negate() {
         this.negateCondition = true;
         return this;
