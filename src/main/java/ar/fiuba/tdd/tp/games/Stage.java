@@ -88,6 +88,9 @@ public class Stage extends GameObject implements ItemKeeper {
         throw new GameException("Stage not found");
     }
 
+    public List<String> getConsecutiveStages() {
+        return this.consecutiveStages;
+    }
 
     public void enter(Player player) {
         if (this.entranceRule.verify()) {

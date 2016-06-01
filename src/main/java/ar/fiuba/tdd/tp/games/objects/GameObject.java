@@ -32,6 +32,10 @@ public abstract class GameObject {
         this.behaviorMap.put(behavior.getActionName(), behavior);
     }
 
+    public Behavior getBehavior(String actionName) {
+        return this.behaviorMap.get(actionName);
+    }
+
     public String execute(ConcreteGame game, ActionOld action) {
         Behavior behavior = this.behaviorMap.get(action.getActionName());
         return behavior.execute(game);

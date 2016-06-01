@@ -30,6 +30,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private static final String OPEN_SAFEBOX_RULE = "openSaveboxRule";
     private static final String PICK_KEY_RULE = "pickKeyRule";
     private static final String PICK_ID_CARD_RULE = "pickIdCardRule";
+    private static final String MOVE_BOATPICTURE_RULE = "moveBoatPictureRule";
 
 
     @Override
@@ -42,6 +43,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         this.createRules();
         this.createActions();
         this.bindActionsAndItems();
+        this.bindStagesAndActions();
         setWinningCondition();
         setLosingCondition();
     }
@@ -55,6 +57,9 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Rule hasKey = new HasItemRule(this.player, this.getItem(KEY_NAME));
         this.addRule(OPEN_SAFEBOX_RULE, hasKey);
+
+        Rule moveBoatPictureRule = new IsInCurrentRoomRule(this.game, BOAT_PICTURE_NAME);
+        this.addRule(MOVE_BOATPICTURE_RULE, moveBoatPictureRule);
     }
 
     private void createActions() {
@@ -85,6 +90,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         behavior = Behavior.builder()
                 .actionName(MOVE)
+                .executionRule(this.getRule(MOVE_BOATPICTURE_RULE))
                 .actions(this.getAction(MOVE_BOATPICTURE_ACTION))
                 .resultMessage(MOVE_RESULT_MSG)
                 .build();
@@ -112,6 +118,23 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .resultMessage(String.format(PUT_RESULT_MSG, PLAYER_PICTURE_NAME, ID_CARD_NAME))
                 .build();
         this.getItem(PLAYER_PICTURE_NAME).addBehavior(behavior);
+    }
+
+    private void bindStagesAndActions() {
+        // todos los escenarios soportan comando goto.
+        for(Stage stage : this.stages) {
+            IsNextRoomRule isNextRoomRule = new IsNextRoomRule(this.game, stage.getName());
+            isNextRoomRule.setErrorMessage(String.format(GOTO_NOT_NEXT_ROOM_MSG, stage.getName()));
+
+            Behavior behavior = Behavior.builder()
+                    .actionName(GOTO)
+                    .executionRule(isNextRoomRule)
+                    .actions(new ChangePlayerStageAction(this.game, stage))
+                    .resultMessage(String.format(GOTO_RESULT_MSG, stage.getName()))
+                    .build();
+            stage.addBehavior(behavior);
+        }
+        // TODO configurar RULE de entrada a la biblioteca
     }
 
     private void configureStagesAndItems() {
@@ -187,9 +210,9 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     @Override
     protected void setKnownActions() {
         game.registerKnownAction(ActionOld.LOOK_AROUND, new LookAroundActionHandler(this.game));
-        game.registerKnownAction(ActionOld.GOTO, (command) -> this.gotoHandler(command));
+        game.registerKnownAction(ActionOld.GOTO, new DefaultActionHandler(this.game));
         game.registerKnownAction(ActionOld.PICK, new DefaultActionHandler(this.game));
-        game.registerKnownAction(ActionOld.MOVE, (command) -> this.actionHandler(command));
+        game.registerKnownAction(ActionOld.MOVE, new DefaultActionHandler(this.game));
         game.registerKnownAction(ActionOld.OPEN, (command) -> this.openActionHandler(command));
         game.registerKnownAction(ActionOld.PUT, (command) -> this.putActionHandler(command));
 //        game.registerKnownAction(ActionOld.OPEN, (itemName, args) -> this.actionHandler(ActionOld.OPEN.getActionName(),itemName));
@@ -199,19 +222,6 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 //        game.registerKnownAction(ActionOld.SHOW, (itemName, arguments) -> this.actionHandler(ActionOld.SHOW.getActionName(),itemName));
 //        game.registerKnownAction(ActionOld.PUT, (itemName, arguments) -> this.actionHandler(ActionOld.PUT.getActionName(), itemName));
 //        game.registerKnownAction(ActionOld.DROP, (itemName, arguments) -> this.actionHandler(ActionOld.DROP.getActionName(),itemName));
-    }
-
-    private String gotoHandler(Command command) {
-        String stageName = command.getItemName();
-        String nextStageName;
-        try {
-            nextStageName = game.getCurrentStage().getConsecutiveStage(stageName);
-            Stage nextStage = game.getStage(nextStageName);
-            nextStage.enter(game.getPlayer());
-            return String.format("You have entered to %s.", nextStage.getName());
-        } catch (GameException e) {
-            return "Invalid stage.";
-        }
     }
 
     private String actionHandler(Command command) {

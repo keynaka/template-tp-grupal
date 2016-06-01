@@ -2,6 +2,7 @@ package ar.fiuba.tdd.tp.driver;
 
 import ar.fiuba.tdd.tp.games.Game;
 import ar.fiuba.tdd.tp.games.escape.EscapeBuilder;
+import ar.fiuba.tdd.tp.games.escape.EscapeBuilder2;
 import ar.fiuba.tdd.tp.games.fetchquest.FetchQuestBuilder;
 import ar.fiuba.tdd.tp.red.server.CommandInterpreter;
 
@@ -20,6 +21,10 @@ public class ConcreteGameDriver implements GameDriver {
         }
         if (gameName.equalsIgnoreCase("escape")) {
             target = new EscapeBuilder().build();
+        }
+
+        if (gameName.equalsIgnoreCase("escape2")) {
+            target = new EscapeBuilder2().build();
         }
     }
 
