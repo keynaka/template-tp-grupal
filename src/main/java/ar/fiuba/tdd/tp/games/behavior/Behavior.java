@@ -47,7 +47,7 @@ public class Behavior {
             }
             return this.resultMessage;
         }
-        return this.getFailMessage();
+        return this.getExecutionRule().getErrorMessage();
     }
 
     private Rule getExecutionRule() {
