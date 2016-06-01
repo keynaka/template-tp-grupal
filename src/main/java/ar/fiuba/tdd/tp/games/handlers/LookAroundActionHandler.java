@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.games.handlers;
 
 import ar.fiuba.tdd.tp.games.ConcreteGame;
+import ar.fiuba.tdd.tp.games.ItemKeeperView;
 import ar.fiuba.tdd.tp.red.server.Command;
 
 /**
@@ -16,6 +17,6 @@ public class LookAroundActionHandler implements ActionHandler{
 
     @Override
     public String execute(Command command) {
-        return this.game.getCurrentStage().lookAround();
+        return new ItemKeeperView(game.getCurrentStage(),game.getCurrentStage().getName()).print();
     }
 }

@@ -21,6 +21,8 @@ public class PickFromCurrentStageAction implements Action {
     @SuppressWarnings("CPD-END")
     @Override
     public void doAction() {
-        new SwitchItemOwnerAction(this.game.getCurrentStage(), this.game.getGameObjectRepository().getItemKeeper(this.newOwnerName), this.itemName).doAction();
+        new SwitchItemOwnerAction(this.game.getCurrentStage(),
+                this.game.getGameObjectRepository().getItemKeeper(this.newOwnerName),
+                this.itemName).doAction();
     }
 }

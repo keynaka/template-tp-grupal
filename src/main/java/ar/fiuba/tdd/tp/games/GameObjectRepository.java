@@ -29,7 +29,7 @@ public class GameObjectRepository {
         Optional<GameObject> object = this.getGameObjects().stream()
                 .filter(gameObject -> gameObject.getName().equalsIgnoreCase(objectName))
                 .findFirst();
-        if(object.isPresent()) {
+        if (object.isPresent()) {
             return object.get();
         }
         throw new GameException("GameObject not found.");
@@ -43,7 +43,9 @@ public class GameObjectRepository {
         Collection<Stage> stages = this.game.getStages().values();
         gameObjects.addAll(stages);
         // agrego los items de cada escenario
-        List<Item> items = stages.stream().map(stage -> stage.getItems()).flatMap(itemList -> itemList.stream()).collect(Collectors.toList());
+        List<Item> items = stages.stream().map(stage ->
+                stage.getItems()).flatMap(itemList ->
+                itemList.stream()).collect(Collectors.toList());
         gameObjects.addAll(items);
         return gameObjects;
     }
