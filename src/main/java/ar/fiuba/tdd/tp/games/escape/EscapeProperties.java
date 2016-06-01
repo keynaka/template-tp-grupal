@@ -12,8 +12,10 @@ public class EscapeProperties {
     public static final String ROOM1_NAME = "Salon1";
     public static final String ROOM2_NAME = "Salon2";
     public static final String ROOM3_NAME = "Salon3";
+    public static final String BASEMENT_DOWNSTAIRS_NAME = "SotanoAbajo";
     public static final String KEY_NAME = "Llave";
     public static final String GLASS_DESCRIPTION = "Es un vaso.";
+    public static final String HAMMER_NAME = "Martillo";
     public static final String HAMMER_DESCRIPTION = "Es un martillo.";
     public static final String LIQUOR_DESCRIPTION = "Es una botella de licor.";
     public static final String KEY_DESCRIPTION = "Es una llave.";
@@ -30,6 +32,10 @@ public class EscapeProperties {
     public static final String PLAYER_PICTURE_NAME = "Foto";
     public static final String PLAYER_PICTURE_DESCRIPTION = "Es una foto del jugador.";
     public static final String STRANGER_PICTURE_NAME = "Foto de un extraño";
+    public static final String WINDOW_NAME = "Ventana";
+    public static final String WINDOW_DESCRIPTION = "Es una ventana.";
+    public static final String WINDOW_STATE = "window-state";
+    public static final String BROKEN_WINDOW = "Rota";
 
 
     public static final String NOT_IN_INVENTORY_MSG = "%s is not in the inventory.";
@@ -43,6 +49,9 @@ public class EscapeProperties {
     public static final String OPEN = "open";
     public static final String OPEN_RESULT_MSG = "%s opened.";
     public static final String PUT = "put";
+    public static final String BREAK = "break";
+    public static final String BREAK_WINDOW_RESULT_MSG = "Window is broken!";
+
     @SuppressWarnings("CPD-END")
     public static final String PUT_RESULT_MSG = "You have put %s in %s";
 
