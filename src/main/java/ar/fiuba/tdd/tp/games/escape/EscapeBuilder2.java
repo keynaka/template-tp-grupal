@@ -30,9 +30,11 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private static final String PUT_PICTURE_ACTION = "putPictureAction";
     private static final String OPEN_SAFEBOX_RULE = "openSaveboxRule";
     private static final String BREAK_WINDOW_ACTION = "breakWindowAction";
+    private static final String SHOW_ID_CARD_ACTION = "showIdCardAction";
     private static final String PICK_KEY_RULE = "pickKeyRule";
     private static final String PICK_ID_CARD_RULE = "pickIdCardRule";
     private static final String MOVE_BOATPICTURE_RULE = "moveBoatPictureRule";
+    private static final String SHOW_ID_CARD_RULE = "showIdCardRule";
     private static final String HAS_ID_CARD = "hasIdCard";
     private static final String HAS_PLAYER_PICTURE = "hasPlayerPicture";
     private static final String BREAK_WINDOW_RULE = "breakWindowRule";
@@ -73,13 +75,15 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Rule hasPlayerPictureRule = new HasItemRule(this.player, this.getItem(PLAYER_PICTURE_NAME));
         this.addRule(HAS_PLAYER_PICTURE, hasPlayerPictureRule);
 
-        this.addRule(PUT_PICTURE_RULE, hasIdCardRule.and(hasIdCardRule));
+        this.addRule(PUT_PICTURE_RULE, hasIdCardRule.and(hasPlayerPictureRule));
 
         Rule hasHammerRule = new HasItemRule(this.player, this.getItem(HAMMER_NAME));
         Rule isInBasementDownstairsRule = new PlayerIsInRoomRule(this.player, BASEMENT_DOWNSTAIRS_NAME);
 
         this.addRule(BREAK_WINDOW_RULE, hasHammerRule.and(isInBasementDownstairsRule));
 
+        Rule idCardHasPlayersPicture = new VerifiesStateRule(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, PLAYER_PICTURE_NAME);
+        this.addRule(SHOW_ID_CARD_RULE, idCardHasPlayersPicture);
     }
 
     private void createActions() {
@@ -100,6 +104,9 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Action breakWindowAction = new SetStateValueAction(this.getItem(WINDOW_NAME), WINDOW_STATE, BROKEN_WINDOW);
         this.addAction(BREAK_WINDOW_ACTION, breakWindowAction);
+
+        Action showIdCardAction = new SwitchItemOwnerAction(this.player, this.getItemKeeper(LIBRARIAN_NAME), ID_CARD_NAME);
+        this.addAction(SHOW_ID_CARD_ACTION, showIdCardAction);
 
     }
 
@@ -152,6 +159,14 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .resultMessage(BREAK_WINDOW_RESULT_MSG)
                 .build();
         this.getItem(WINDOW_NAME).addBehavior(behavior);
+
+        behavior = Behavior.builder()
+                .actionName(SHOW)
+                .executionRule(this.getRule(SHOW_ID_CARD_RULE))
+                .actions(this.getAction(SHOW_ID_CARD_ACTION))
+                .resultMessage(SHOW_ID_CARD_RESULT_MSG)
+                .build();
+        this.getItem(ID_CARD_NAME).addBehavior(behavior);
 
     }
 
@@ -212,6 +227,10 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         ItemContainer safebox = new ItemContainer(SAFEBOX_NAME, SAFEBOX_DESCRIPTION, SAFEBOX_SIZE);
         safebox.addItem(idCard);
         this.addItem(safebox);
+        // Ver si el bibliotecario tiene que ser un ItemContainer
+        ItemContainer librarian = new ItemContainer(LIBRARIAN_NAME, LIBRIARIAN_DESCRIPTION, LIBRARIAN_SIZE);
+        this.addItem(librarian);
+
     }
 
     private void setWinningCondition() {

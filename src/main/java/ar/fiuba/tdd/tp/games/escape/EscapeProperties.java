@@ -36,7 +36,9 @@ public class EscapeProperties {
     public static final String WINDOW_DESCRIPTION = "Es una ventana.";
     public static final String WINDOW_STATE = "window-state";
     public static final String BROKEN_WINDOW = "Rota";
-
+    public static final String LIBRARIAN_NAME = "Bibliotecario";
+    public static final String LIBRIARIAN_DESCRIPTION = "Es un bibliotecario";
+    public static final int LIBRARIAN_SIZE = 1;
 
     public static final String NOT_IN_INVENTORY_MSG = "%s is not in the inventory.";
     public static final String GOTO = "goto";
@@ -50,7 +52,9 @@ public class EscapeProperties {
     public static final String OPEN_RESULT_MSG = "%s opened.";
     public static final String PUT = "put";
     public static final String BREAK = "break";
+    public static final String SHOW = "show";
     public static final String BREAK_WINDOW_RESULT_MSG = "Window is broken!";
+    public static final String SHOW_ID_CARD_RESULT_MSG = "There you go!";
 
     @SuppressWarnings("CPD-END")
     public static final String PUT_RESULT_MSG = "You have put %s in %s";
