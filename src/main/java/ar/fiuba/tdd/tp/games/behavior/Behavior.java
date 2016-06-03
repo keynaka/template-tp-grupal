@@ -2,6 +2,7 @@ package ar.fiuba.tdd.tp.games.behavior;
 
 import ar.fiuba.tdd.tp.games.ConcreteGame;
 import ar.fiuba.tdd.tp.games.actions.Action;
+import ar.fiuba.tdd.tp.games.actions.ParametizedAction;
 import ar.fiuba.tdd.tp.games.rules.Rule;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class Behavior {
 
     private Rule executionRule;
     private List<Action> actions = new ArrayList<>();
+    private List<ParametizedAction> parametizedActions = new ArrayList<>();
 
     public static BehaviorBuilder builder() {
         return new BehaviorBuilder();
@@ -44,6 +46,16 @@ public class Behavior {
         if (getExecutionRule().verify()) {
             for (Action action : actions) {
                 action.doAction();
+            }
+            return this.resultMessage;
+        }
+        return this.getExecutionRule().getErrorMessage();
+    }
+
+    public String executeWith(String parameter) {
+        if (getExecutionRule().verifyWith(parameter)) {
+            for (ParametizedAction action : parametizedActions) {
+                action.doActionWith(parameter);
             }
             return this.resultMessage;
         }
@@ -96,7 +108,7 @@ public class Behavior {
         this.actions = actions;
     }
 
-    /**
+    /*
      * Behavior builder class
      */
     public static class BehaviorBuilder {
