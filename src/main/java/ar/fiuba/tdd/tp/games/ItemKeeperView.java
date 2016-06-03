@@ -17,7 +17,6 @@ public class ItemKeeperView {
         this.name = ikName;
     }
 
-    @SuppressWarnings("CPD-START")
     public String print() {
 
         StringBuilder sb = new StringBuilder();
@@ -32,12 +31,6 @@ public class ItemKeeperView {
             }
         }
         return sb.toString();
-
-    }
-
-    @SuppressWarnings("CPD-END")
-
-    public void test() {
 
     }
 

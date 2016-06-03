@@ -122,7 +122,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
     private void bindStagesAndActions() {
         // todos los escenarios soportan comando goto.
-        for(Stage stage : this.stages) {
+        for (Stage stage : this.stages) {
             IsNextRoomRule isNextRoomRule = new IsNextRoomRule(this.game, stage.getName());
             isNextRoomRule.setErrorMessage(String.format(GOTO_NOT_NEXT_ROOM_MSG, stage.getName()));
 

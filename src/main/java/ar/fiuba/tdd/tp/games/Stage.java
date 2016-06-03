@@ -52,20 +52,12 @@ public class Stage extends GameObject implements ItemKeeper {
         return this.itemContainer.extract(itemName);
     }
 
+
     public String lookAround() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Items in the %s: ", this.getName()));
-        Iterator<Item> it = itemContainer.getAllItems().iterator();
-        while (it.hasNext()) {
-            sb.append(it.next().getName());
-            if (it.hasNext()) {
-                sb.append(", ");
-            } else {
-                sb.append(".");
-            }
-        }
-        return sb.toString();
+        return new ItemKeeperView(this,this.getName()).print();
     }
+
+
 
     public Item getItem(String itemName) {
         return this.itemContainer.getItem(itemName);
