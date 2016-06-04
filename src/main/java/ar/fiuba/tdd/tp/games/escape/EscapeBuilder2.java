@@ -100,7 +100,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         this.addRule(BREAK_WINDOW_RULE, hasHammerRule.and(isInBasementDownstairsRule));
 
         Rule idCardHasPlayersPicture = new VerifiesStateRule(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, PLAYER_PICTURE_NAME);
-        this.addRule(SHOW_ID_CARD_RULE, idCardHasPlayersPicture);
+        Rule isInLibraryRule = new PlayerIsInRoomRule(this.player, LIBRARY_ACCESS_NAME);
+        this.addRule(SHOW_ID_CARD_RULE, idCardHasPlayersPicture.and(isInLibraryRule));
 
         Rule moveOldBookRule = new IsInCurrentRoomRule(this.game, OLD_BOOK_NAME);
         this.addRule(MOVE_OLD_BOOK_RULE, moveOldBookRule);
@@ -247,6 +248,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         }
         // TODO configurar RULE de entrada a la biblioteca
         // TODO configurar RULE de entrada al Sotano (libro viejo movido)
+        // TODO configurar RULE de entrada al SotanoAfuera (baranda usada)
         // TODO configurar RULE de entrada a "Afuera" (ventana rota)
     }
 
@@ -348,7 +350,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         createStage(ROOM3_NAME, HALL_NAME);
         createStage(LIBRARY_ACCESS_NAME, HALL_NAME, LIBRARY_NAME);
         createStage(LIBRARY_NAME, LIBRARY_ACCESS_NAME, BASEMENT_NAME);
-        createStage(BASEMENT_NAME, LIBRARY_NAME, BASEMENT_NAME);
+        createStage(BASEMENT_NAME, LIBRARY_NAME, BASEMENT_DOWNSTAIRS_NAME);
         createStage(BASEMENT_DOWNSTAIRS_NAME, "Afuera");
         createStage("Afuera");
     }
@@ -372,11 +374,12 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         game.registerKnownAction(ActionOld.MOVE, new DefaultActionHandler(this.game));
         game.registerKnownAction(ActionOld.OPEN, (command) -> this.openActionHandler(command));
         game.registerKnownAction(ActionOld.PUT, new ParametizedActionHandler(this.game));
+        game.registerKnownAction(ActionOld.BREAK, new DefaultActionHandler(this.game));
+        game.registerKnownAction(ActionOld.SHOW, new DefaultActionHandler(this.game));
+        game.registerKnownAction(ActionOld.USE, new DefaultActionHandler(this.game));
+
 //        game.registerKnownAction(ActionOld.OPEN, (itemName, args) -> this.actionHandler(ActionOld.OPEN.getActionName(),itemName));
 //        game.registerKnownAction(ActionOld.MOVE, (itemName, args) -> this.actionHandler(ActionOld.MOVE.getActionName(),itemName));
-//        game.registerKnownAction(ActionOld.USE, (itemName, arguments) -> this.actionHandler(ActionOld.USE.getActionName(),itemName));
-//        game.registerKnownAction(ActionOld.BREAK, (itemName, arguments) -> this.actionHandler(ActionOld.BREAK.getActionName(),itemName));
-//        game.registerKnownAction(ActionOld.SHOW, (itemName, arguments) -> this.actionHandler(ActionOld.SHOW.getActionName(),itemName));
 //        game.registerKnownAction(ActionOld.PUT, (itemName, arguments) -> this.actionHandler(ActionOld.PUT.getActionName(), itemName));
 //        game.registerKnownAction(ActionOld.DROP, (itemName, arguments) -> this.actionHandler(ActionOld.DROP.getActionName(),itemName));
     }

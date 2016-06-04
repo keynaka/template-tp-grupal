@@ -77,7 +77,7 @@ public class EscapeProperties {
     public static final String SHOW_ID_CARD_RESULT_MSG = "There you go!";
     public static final String MOVE_OLD_BOOK_RESULT_MSG = "There you go!";
     public static final String USE_STAIRS_RESULT_MSG = "You are dead !! :(";
-    public static final String USE_RAILING_RESULT_MSG = "There you go!";
+    public static final String USE_RAILING_RESULT_MSG = "You have entered to SotanoAbajo.";
 
     @SuppressWarnings("CPD-END")
     public static final String PUT_RESULT_MSG = "You have put %s in %s";

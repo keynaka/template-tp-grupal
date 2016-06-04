@@ -1,15 +1,11 @@
 package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.driver.GameState;
-import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.handlers.ActionHandler;
-import ar.fiuba.tdd.tp.games.items.Item;
-import ar.fiuba.tdd.tp.games.objects.GameObject;
 import ar.fiuba.tdd.tp.games.rules.Rule;
 
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * Created by sebass on 10/05/16.
@@ -27,8 +23,8 @@ public class ConcreteGame extends AbstractGame {
     private Map<String, Stage> stages;
     private Predicate<ConcreteGame> winningCondition;
     private Rule winningConditionRule;
-    private Rule loosingConditionRule;
-    private Predicate<ConcreteGame> loosingCondition = (game) -> false;
+    private Rule losingConditionRule;
+    private Predicate<ConcreteGame> losingCondition = (game) -> false;
     private GameState gameState;
 
     public ConcreteGame() {
@@ -89,12 +85,12 @@ public class ConcreteGame extends AbstractGame {
     }
 
     @Deprecated
-    public void setLoosingCondition(Predicate<ConcreteGame> loosingCondition) {
-        this.loosingCondition = loosingCondition;
+    public void setLosingCondition(Predicate<ConcreteGame> losingCondition) {
+        this.losingCondition = losingCondition;
     }
 
     public void setLoosingCondition(Rule loosingCondition) {
-        this.loosingConditionRule = loosingCondition;
+        this.losingConditionRule = loosingCondition;
     }
 
     public void registerKnownAction(ActionOld action, ActionHandler actionFuntion) {
@@ -151,7 +147,7 @@ public class ConcreteGame extends AbstractGame {
         if (this.winningConditionRule.verify()) {
             this.gameState = GameState.Won;
             this.endGameMessage = DEFAULT_WON_GAME_MSG;
-        } else if (this.loosingConditionRule != null && this.loosingConditionRule.verify()) {
+        } else if (this.losingConditionRule != null && this.losingConditionRule.verify()) {
             this.gameState = GameState.Lost;
             this.endGameMessage = DEFAULT_LOST_GAME_MSG;
         } else {
@@ -163,7 +159,7 @@ public class ConcreteGame extends AbstractGame {
         if (this.winningCondition.test(this)) {
             this.gameState = GameState.Won;
             this.endGameMessage = DEFAULT_WON_GAME_MSG;
-        } else if (this.loosingCondition.test(this)) {
+        } else if (this.losingCondition.test(this)) {
             this.gameState = GameState.Lost;
             this.endGameMessage = DEFAULT_LOST_GAME_MSG;
         } else {

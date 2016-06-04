@@ -24,7 +24,7 @@ public class EscapeBuilder implements GameBuilder {
         escape = new ConcreteGame();
         escape.setName("Escape");
         escape.setWinningCondition(this.buildWinningCondition());
-        escape.setLoosingCondition(this.buildLoosingCondition());
+        escape.setLosingCondition(this.buildLoosingCondition());
         escape.setPlayer(this.buildPlayer());
         escape.addStage(this.buildHall());
         escape.addStage(this.buildRoom1());
