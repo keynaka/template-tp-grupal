@@ -7,11 +7,13 @@ import ar.fiuba.tdd.tp.games.actions.*;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.handlers.DefaultActionHandler;
 import ar.fiuba.tdd.tp.games.handlers.LookAroundActionHandler;
-import ar.fiuba.tdd.tp.games.handlers.ParametizedActionHandler;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 import ar.fiuba.tdd.tp.games.rules.*;
 import ar.fiuba.tdd.tp.red.server.Command;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.*;
 
@@ -26,10 +28,14 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private static final String MOVE_BOATPICTURE_ACTION = "moveBoatPictureAction";
     private static final String OPEN_SAFEBOX_ACTION = "openSaveboxAction";
     private static final String PICK_ID_CARD_ACTION = "pickIdCardAction";
+    private static final String PICK_HAMMER_ACTION = "pickHammerAction";
     private static final String PUT_PICTURE_ACTION = "putPictureAction";
     private static final String OPEN_SAFEBOX_RULE = "openSaveboxRule";
     private static final String BREAK_WINDOW_ACTION = "breakWindowAction";
     private static final String SHOW_ID_CARD_ACTION = "showIdCardAction";
+    private static final String UNLOCK_LIBRARY_ACTION = "unlockLibraryAction";
+    private static final String UNLOCK_BASEMENT_ACTION = "unlockBasementAction";
+    private static final String UNLOCK_OUTSIDE_ACTION = "unlockOutsideAction";
     private static final String MOVE_OLD_BOOK_ACTION = "moveOldBookAction";
     private static final String USE_STAIRS_ACTION = "useStairsAction";
     private static final String USE_RAILING_ACTION = "useRailingAction";
@@ -110,8 +116,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         this.addRule(USE_STAIRS_RULE, useStairsRule);
 
         Rule railingIsInCurrentRoomRule = new IsInCurrentRoomRule(this.game, RAILING_NAME);
-        Rule railingIsNotUsed = new VerifiesStateRule(this.getItem(RAILING_NAME), RAILING_STATE, NOT_USED);
-        this.addRule(USE_STAIRS_RULE, railingIsInCurrentRoomRule.and(railingIsNotUsed));
+        Rule playerIsInBasement = new PlayerIsInRoomRule(this.player, BASEMENT_NAME);
+        this.addRule(USE_RAILING_RULE, railingIsInCurrentRoomRule.and(playerIsInBasement));
 
     }
 
@@ -125,11 +131,17 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Action moveOldBookAction = new SetStateValueAction(this.getItem(OLD_BOOK_NAME), OLD_BOOK_STATE, MOVED_BOOK);
         this.addAction(MOVE_OLD_BOOK_ACTION, moveOldBookAction);
 
+        Action unlockBasementAction = new SetStateValueAction(this.getStage(BASEMENT_NAME), LOCK_STATUS, UNLOCKED);
+        this.addAction(UNLOCK_BASEMENT_ACTION, unlockBasementAction);
+
         Action openSafeboxAction = new SwitchItemOwnerAction(this.getItemKeeper(SAFEBOX_NAME), this.getStage(ROOM1_NAME), ID_CARD_NAME);
         this.addAction(OPEN_SAFEBOX_ACTION, openSafeboxAction);
 
         Action pickIdCardAction = new PickFromCurrentStageAction(this.game, this.player.getName(), ID_CARD_NAME);
         this.addAction(PICK_ID_CARD_ACTION, pickIdCardAction);
+
+        Action pickHammerAction = new PickFromCurrentStageAction(this.game, this.player.getName(), HAMMER_NAME);
+        this.addAction(PICK_HAMMER_ACTION, pickHammerAction);
 
         Action putPictureAction = new SetStateValueAction(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, PLAYER_PICTURE_NAME);
         this.addAction(PUT_PICTURE_ACTION, putPictureAction);
@@ -137,8 +149,14 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Action breakWindowAction = new SetStateValueAction(this.getItem(WINDOW_NAME), WINDOW_STATE, BROKEN_WINDOW);
         this.addAction(BREAK_WINDOW_ACTION, breakWindowAction);
 
+        Action unlockOutsideAction = new SetStateValueAction(this.getStage(OUTSIDE_NAME), LOCK_STATUS, UNLOCKED);
+        this.addAction(UNLOCK_OUTSIDE_ACTION, unlockOutsideAction);
+
         Action showIdCardAction = new SwitchItemOwnerAction(this.player, this.getItemKeeper(LIBRARIAN_NAME), ID_CARD_NAME);
         this.addAction(SHOW_ID_CARD_ACTION, showIdCardAction);
+
+        Action unlockLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), LOCK_STATUS, UNLOCKED);
+        this.addAction(UNLOCK_LIBRARY_ACTION, unlockLibraryAction);
 
         Action useStairsAction = new SetStateValueAction(this.player, LIFE_STATE, DEAD_PLAYER);
         this.addAction(USE_STAIRS_ACTION, useStairsAction);
@@ -149,6 +167,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void bindActionsAndItems() {
+
         Behavior behavior = Behavior.builder()
                 .actionName(PICK)
                 .executionRule(this.getRule(KEY_NAME))
@@ -181,6 +200,13 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .build();
         this.getItem(ID_CARD_NAME).addBehavior(behavior);
 
+        behavior = Behavior.builder()
+                .actionName(PICK)
+                .executionRule(this.getRule(PICK_HAMMER_RULE))
+                .actions(this.getAction(PICK_HAMMER_ACTION))
+                .resultMessage(PICK_RESULT_MSG)
+                .build();
+        this.getItem(HAMMER_NAME).addBehavior(behavior);
 
         behavior = Behavior.builder()
                 .actionName(PUT)
@@ -193,7 +219,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         behavior = Behavior.builder()
                 .actionName(BREAK)
                 .executionRule(this.getRule(BREAK_WINDOW_RULE))
-                .actions(this.getAction(BREAK_WINDOW_ACTION))
+                .actions(this.getAction(BREAK_WINDOW_ACTION), this.getAction(UNLOCK_OUTSIDE_ACTION))
                 .resultMessage(BREAK_WINDOW_RESULT_MSG)
                 .build();
         this.getItem(WINDOW_NAME).addBehavior(behavior);
@@ -201,7 +227,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         behavior = Behavior.builder()
                 .actionName(SHOW)
                 .executionRule(this.getRule(SHOW_ID_CARD_RULE))
-                .actions(this.getAction(SHOW_ID_CARD_ACTION))
+                .actions(this.getAction(SHOW_ID_CARD_ACTION), this.getAction(UNLOCK_LIBRARY_ACTION))
                 .resultMessage(SHOW_ID_CARD_RESULT_MSG)
                 .build();
         this.getItem(ID_CARD_NAME).addBehavior(behavior);
@@ -209,7 +235,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         behavior = Behavior.builder()
                 .actionName(MOVE)
                 .executionRule(this.getRule(MOVE_OLD_BOOK_RULE))
-                .actions(this.getAction(MOVE_OLD_BOOK_ACTION))
+                .actions(this.getAction(MOVE_OLD_BOOK_ACTION), this.getAction(UNLOCK_BASEMENT_ACTION))
                 .resultMessage(MOVE_OLD_BOOK_RESULT_MSG)
                 .build();
         this.getItem(OLD_BOOK_NAME).addBehavior(behavior);
@@ -230,6 +256,36 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .build();
         this.getItem(RAILING_NAME).addBehavior(behavior);
 
+        this.addBehaviorToDroppableItems();
+    }
+
+    private List<String> fillDroppableItemsList() {
+        List<String> droppableItemsNames = new ArrayList<String>();
+        droppableItemsNames.add(KEY_NAME);
+        droppableItemsNames.add(PLAYER_PICTURE_NAME);
+        droppableItemsNames.add(HAMMER_NAME);
+        droppableItemsNames.add(KEY_NAME);
+        droppableItemsNames.add(SCREWDRIVER_NUMBER1_NAME);
+        droppableItemsNames.add(SCREWDRIVER_NUMBER2_NAME);
+        droppableItemsNames.add(ID_CARD_NAME);
+        droppableItemsNames.add(PEN_NAME);
+        droppableItemsNames.add(PLAYER_PICTURE_NAME);
+        return droppableItemsNames;
+    }
+
+    private void addBehaviorToDroppableItems() {
+        List<String> droppableItemsNames = fillDroppableItemsList();
+
+        for (String itemName : droppableItemsNames) {
+            Behavior behavior = Behavior.builder()
+                    .actionName(DROP)
+                    .executionRule(new HasItemRule(this.player, this.getItem(itemName)))
+                    //TODO hace el drop siempre en el pasillo, ver como hacer que lo haga en el escenario actual
+                    .actions(new SwitchItemOwnerAction(this.player, this.getStage(this.player.getCurrentStage()), itemName))
+                    .resultMessage(String.format(DROP_RESULT_MSG, itemName))
+                    .build();
+            this.getItem(itemName).addBehavior(behavior);
+        }
     }
 
     private void bindStagesAndActions() {
@@ -237,22 +293,20 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         for (Stage stage : this.stages) {
             IsNextRoomRule isNextRoomRule = new IsNextRoomRule(this.game, stage.getName());
             isNextRoomRule.setErrorMessage(String.format(GOTO_NOT_NEXT_ROOM_MSG, stage.getName()));
+            VerifiesStateRule isUnlockedRule = new VerifiesStateRule(stage, LOCK_STATUS, UNLOCKED);
 
             Behavior behavior = Behavior.builder()
                     .actionName(GOTO)
-                    .executionRule(isNextRoomRule)
+                    .executionRule(isUnlockedRule.and(isNextRoomRule))
                     .actions(new ChangePlayerStageAction(this.game, stage))
                     .resultMessage(String.format(GOTO_RESULT_MSG, stage.getName()))
                     .build();
             stage.addBehavior(behavior);
         }
-        // TODO configurar RULE de entrada a la biblioteca
-        // TODO configurar RULE de entrada al Sotano (libro viejo movido)
-        // TODO configurar RULE de entrada al SotanoAfuera (baranda usada)
-        // TODO configurar RULE de entrada a "Afuera" (ventana rota)
     }
 
     private void configureStagesAndItems() {
+        this.configureHall();
         this.configureRoom1();
         this.configureRoom2();
         this.configureRoom3();
@@ -260,12 +314,19 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         this.configureLibrary();
         this.configureBasement();
         this.configureBasementDownstairs();
+        this.configureOutside();
+    }
+
+    private void configureHall() {
+        Stage hall = this.getStage(HALL_NAME);
+        hall.addState(LOCK_STATUS, UNLOCKED);
     }
 
     private void configureRoom1() {
         Stage room1 = this.getStage(ROOM1_NAME);
         room1.addItem(this.getItem(BOAT_PICTURE_NAME));
         room1.addItem(this.getItem(SAFEBOX_NAME));
+        room1.addState(LOCK_STATUS, UNLOCKED);
     }
 
     private void configureRoom2() {
@@ -273,27 +334,32 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         room2.addItem(this.getItem(HAMMER_NAME));
         room2.addItem(this.getItem(SCREWDRIVER_NUMBER1_NAME));
         room2.addItem(this.getItem(SCREWDRIVER_NUMBER2_NAME));
+        room2.addState(LOCK_STATUS, UNLOCKED);
     }
 
     private void configureRoom3() {
         Stage room3 = this.getStage(ROOM3_NAME);
         room3.addItem(this.getItem(KEY_NAME));
+        room3.addState(LOCK_STATUS, UNLOCKED);
     }
 
     private void configureLibraryAccess() {
         Stage libraryAccess = this.getStage(LIBRARY_ACCESS_NAME);
         libraryAccess.addItem(this.getItem(LIBRARIAN_NAME));
+        libraryAccess.addState(LOCK_STATUS, UNLOCKED);
     }
 
     private void configureLibrary() {
         Stage library = this.getStage(LIBRARY_NAME);
         library.addItem(this.getItem(OLD_BOOK_NAME));
+        library.addState(LOCK_STATUS, LOCKED);
     }
 
     private void configureBasement() {
         Stage basement = this.getStage(BASEMENT_NAME);
         basement.addItem(this.getItem(STAIRS_NAME));
         basement.addItem(this.getItem(RAILING_NAME));
+        basement.addState(LOCK_STATUS, LOCKED);
     }
 
     private void configureBasementDownstairs() {
@@ -301,10 +367,17 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         basementDownstairs.addItem(this.getItem(WINDOW_NAME));
         basementDownstairs.addItem(this.getItem(STAIRS_NAME));
         basementDownstairs.addItem(this.getItem(RAILING_NAME));
+        basementDownstairs.addState(LOCK_STATUS, LOCKED);
+    }
+
+    private void configureOutside() {
+        Stage outside = this.getStage(OUTSIDE_NAME);
+        outside.addState(LOCK_STATUS, LOCKED);
     }
 
     private void createItems() {
         this.addItem(new Item(PLAYER_PICTURE_NAME, PLAYER_PICTURE_DESCRIPTION));
+        this.addItem(new Item(PEN_NAME, PEN_DESCRIPTION));
         this.addItem(new Item(HAMMER_NAME, HAMMER_DESCRIPTION));
         this.addItem(new Item(KEY_NAME, KEY_DESCRIPTION));
         this.addItem(new Item("Mesa", TABLE_DESCRIPTION));
@@ -331,7 +404,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void setWinningCondition() {
-        game.setWinningCondition(new PlayerIsInRoomRule(this.player, "Afuera"));
+        game.setWinningCondition(new PlayerIsInRoomRule(this.player, OUTSIDE_NAME));
     }
 
     private void setLosingCondition() {
@@ -351,8 +424,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         createStage(LIBRARY_ACCESS_NAME, HALL_NAME, LIBRARY_NAME);
         createStage(LIBRARY_NAME, LIBRARY_ACCESS_NAME, BASEMENT_NAME);
         createStage(BASEMENT_NAME, LIBRARY_NAME, BASEMENT_DOWNSTAIRS_NAME);
-        createStage(BASEMENT_DOWNSTAIRS_NAME, "Afuera");
-        createStage("Afuera");
+        createStage(BASEMENT_DOWNSTAIRS_NAME, OUTSIDE_NAME);
+        createStage(OUTSIDE_NAME);
     }
 
     private Stage createStage(String stageName, String... adjacentStages) {
@@ -373,15 +446,16 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         game.registerKnownAction(ActionOld.PICK, new DefaultActionHandler(this.game));
         game.registerKnownAction(ActionOld.MOVE, new DefaultActionHandler(this.game));
         game.registerKnownAction(ActionOld.OPEN, (command) -> this.openActionHandler(command));
-        game.registerKnownAction(ActionOld.PUT, new ParametizedActionHandler(this.game));
+//        game.registerKnownAction(ActionOld.PUT, new ParametizedActionHandler(this.game));
+        game.registerKnownAction(ActionOld.PUT, new DefaultActionHandler(this.game));
         game.registerKnownAction(ActionOld.BREAK, new DefaultActionHandler(this.game));
         game.registerKnownAction(ActionOld.SHOW, new DefaultActionHandler(this.game));
         game.registerKnownAction(ActionOld.USE, new DefaultActionHandler(this.game));
+        game.registerKnownAction(ActionOld.DROP, new DefaultActionHandler(this.game));
 
 //        game.registerKnownAction(ActionOld.OPEN, (itemName, args) -> this.actionHandler(ActionOld.OPEN.getActionName(),itemName));
 //        game.registerKnownAction(ActionOld.MOVE, (itemName, args) -> this.actionHandler(ActionOld.MOVE.getActionName(),itemName));
-//        game.registerKnownAction(ActionOld.PUT, (itemName, arguments) -> this.actionHandler(ActionOld.PUT.getActionName(), itemName));
-//        game.registerKnownAction(ActionOld.DROP, (itemName, arguments) -> this.actionHandler(ActionOld.DROP.getActionName(),itemName));
+//        game.registerKnownAction(Act,ionOld.PUT, (itemName, arguments) -> this.actionHandler(ActionOld.PUT.getActionName(), itemName));
     }
 
     private String actionHandler(Command command) {
@@ -404,6 +478,6 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         player.addState(LIFE_STATE, ALIVE_PLAYER);
         player.setCurrentStage(HALL_NAME);
         player.addToInventory(this.getItem(PLAYER_PICTURE_NAME));
-        player.addToInventory(new Item("Lapicera", "pen"));
+        player.addToInventory(this.getItem(PEN_NAME));
     }
 }

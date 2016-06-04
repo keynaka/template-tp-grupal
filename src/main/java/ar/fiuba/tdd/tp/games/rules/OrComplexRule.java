@@ -15,6 +15,6 @@ public class OrComplexRule extends Rule {
 
     @Override
     public boolean doVerify() {
-        return rule1.verify() && rule2.verify();
+        return rule1.verify() || rule2.verify();
     }
 }

@@ -16,7 +16,9 @@ public class EscapeProperties {
     public static final String LIBRARY_NAME = "Biblioteca";
     public static final String BASEMENT_NAME = "Sotano";
     public static final String BASEMENT_DOWNSTAIRS_NAME = "SotanoAbajo";
+    public static final String OUTSIDE_NAME = "Afuera";
     public static final String KEY_NAME = "Llave";
+    public static final String PEN_NAME = "Lapicera";
     public static final String RAILING_NAME = "Baranda";
     public static final String RAILING_DESCRIPTION = "Es una baranda.";
     public static final String STAIRS_NAME = "Escalera";
@@ -26,6 +28,7 @@ public class EscapeProperties {
     public static final String HAMMER_DESCRIPTION = "Es un martillo.";
     public static final String LIQUOR_DESCRIPTION = "Es una botella de licor.";
     public static final String KEY_DESCRIPTION = "Es una llave.";
+    public static final String PEN_DESCRIPTION = "Es una lapicera.";
     public static final String TABLE_DESCRIPTION = "Es una mesa.";
     public static final String BOAT_PICTURE_NAME = "CuadroBarco";
     public static final String BOAT_PICTURE_DESCRIPTION = "Es un cuadro de un barco.";
@@ -38,9 +41,6 @@ public class EscapeProperties {
     public static final String ID_CARD_NAME = "Credencial";
     public static final String ID_CARD_DESCRIPTION = "Es una credencial de la biblioteca.";
     public static final String ID_CARD_PICTURE_STATE = "idcard-picture";
-    public static final String RAILING_STATE = "railing-state";
-    public static final String NOT_USED = "No usada";
-    public static final String USED = "Usada";
     public static final String PLAYER_PICTURE_NAME = "Foto";
     public static final String PLAYER_PICTURE_DESCRIPTION = "Es una foto del jugador.";
     public static final String STRANGER_PICTURE_NAME = "Foto de un extraño";
@@ -53,6 +53,9 @@ public class EscapeProperties {
     public static final String LIFE_STATE = "player-lifestatus";
     public static final String DEAD_PLAYER = "Muerto";
     public static final String ALIVE_PLAYER = "Vivo";
+    public static final String LOCK_STATUS = "lock-status";
+    public static final String LOCKED = "Cerrado";
+    public static final String UNLOCKED = "Abierto";
     public static final String LIBRARIAN_NAME = "Bibliotecario";
     public static final String LIBRIARIAN_DESCRIPTION = "Es un bibliotecario";
     public static final int LIBRARIAN_SIZE = 1;
@@ -63,7 +66,9 @@ public class EscapeProperties {
     public static final String GOTO = "goto";
     public static final String GOTO_RESULT_MSG = "You have entered to %s.";
     public static final String GOTO_NOT_NEXT_ROOM_MSG = "You can't go to %s from here.";
+    public static final String DROP_RESULT_MSG = "You have dropped %s.";
     public static final String PICK = "pick";
+    public static final String DROP = "drop";
     public static final String PICK_RESULT_MSG = "There you go!";
     public static final String MOVE = "move";
     public static final String USE = "use";

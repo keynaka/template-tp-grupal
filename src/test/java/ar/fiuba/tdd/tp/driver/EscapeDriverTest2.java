@@ -22,13 +22,6 @@ public class EscapeDriverTest2 {
     }
 
     @Test
-    public void testGotoNotNextRoomCommand() {
-        GameDriver driver = new ConcreteGameDriver();
-        driver.initGame("escape2");
-        assertEquals("You can't go to Sotano from here.", driver.sendCommand("goto Sotano"));
-    }
-
-    @Test
     public void moveBoatPicture() {
         GameDriver driver = new ConcreteGameDriver();
         driver.initGame("escape2");
@@ -59,15 +52,37 @@ public class EscapeDriverTest2 {
         assertEquals("There you go!", driver.sendCommand("move LibroViejo"));
     }
 
+    private void pickMartilloAndPutFotoInIdCardAndEnterBibliotecaAcceso(GameDriver driver) {
+        driver.sendCommand("drop Lapicera");
+        driver.sendCommand("goto Salon3");
+        driver.sendCommand("pick Llave");
+        driver.sendCommand("goto Pasillo");
+        driver.sendCommand("goto Salon1");
+        driver.sendCommand("move CuadroBarco");
+        driver.sendCommand("open CajaFuerte Llave");
+        driver.sendCommand("pick Credencial");
+        driver.sendCommand("goto Pasillo");
+        driver.sendCommand("goto Salon2");
+        driver.sendCommand("pick Martillo");
+        driver.sendCommand("put Foto Credencial");
+        driver.sendCommand("goto Pasillo");
+        driver.sendCommand("goto BibliotecaAcceso");
+    }
+
     @Test
     public void breakWindow() {
         GameDriver driver = new ConcreteGameDriver();
         driver.initGame("escape2");
-        assertEquals("You have entered to BibliotecaAcceso.", driver.sendCommand("goto BibliotecaAcceso"));
+
+        this.pickMartilloAndPutFotoInIdCardAndEnterBibliotecaAcceso(driver);
+
+        assertEquals("There you go!", driver.sendCommand("show Credencial"));
         assertEquals("You have entered to Biblioteca.", driver.sendCommand("goto Biblioteca"));
+        assertEquals("There you go!", driver.sendCommand("move LibroViejo"));
         assertEquals("You have entered to Sotano.", driver.sendCommand("goto Sotano"));
         assertEquals("You have entered to SotanoAbajo.", driver.sendCommand("use Baranda"));
         assertEquals("Window is broken!", driver.sendCommand("break Ventana"));
+
     }
 
     @Test
