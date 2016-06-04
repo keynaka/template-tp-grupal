@@ -17,7 +17,7 @@ public class FetchQuestDriverTest {
         driver.initGame("FetchQuest");
 
         String response = driver.sendCommand("look around");
-        assertEquals("Items in the room: stick.", response);
+        assertEquals("Items in room: stick.", response);
         assertTrue(GameState.InProgress == driver.getCurrentState());
 
         response = driver.sendCommand("pick stick");

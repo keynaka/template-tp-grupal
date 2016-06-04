@@ -20,6 +20,10 @@ public abstract class GameObject {
         return this.name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void addState(String key, String state) {
         this.statesMap.put(key, state);
     }

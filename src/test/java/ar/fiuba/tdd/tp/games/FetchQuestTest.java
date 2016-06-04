@@ -19,7 +19,7 @@ public class FetchQuestTest {
         //assertEquals("Welcome to Fetch Quest!", this.target.start());
 
         String response = this.target.play(new Command(ActionOld.LOOK_AROUND));
-        assertEquals("Items in the room: stick.", response);
+        assertEquals("Items in room: stick.", response);
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(ActionOld.PICK, "stick"));

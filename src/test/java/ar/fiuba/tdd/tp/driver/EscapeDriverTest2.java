@@ -102,7 +102,16 @@ public class EscapeDriverTest2 {
         assertEquals("You have entered to BibliotecaAcceso.", driver.sendCommand("goto BibliotecaAcceso"));
         assertEquals("There you go!", driver.sendCommand("show Credencial"));
         assertEquals("You have entered to Biblioteca.", driver.sendCommand("goto Biblioteca"));
+    }
 
+    @Test
+    public void testDropItems() {
+        GameDriver driver = new ConcreteGameDriver();
+        driver.initGame("escape2");
+        assertEquals("You have entered to Salon3.", driver.sendCommand("goto Salon3"));
+        assertEquals("Items in Salon3: Llave.", driver.sendCommand("look around"));
+        assertEquals("You have dropped Lapicera.", driver.sendCommand("drop Lapicera"));
+        assertEquals("Items in Salon3: Lapicera, Llave.", driver.sendCommand("look around"));
     }
 
     @Test
@@ -116,7 +125,7 @@ public class EscapeDriverTest2 {
         assertEquals("You have entered to Pasillo.", driver.sendCommand("goto Pasillo"));
         assertEquals("You have entered to Salon1.", driver.sendCommand("goto Salon1"));
         assertEquals("There you go!", driver.sendCommand("move CuadroBarco"));
-        assertEquals("Items in the Salon1: CajaFuerte, CuadroBarco.", driver.sendCommand("look around"));
+        assertEquals("Items in Salon1: CajaFuerte, CuadroBarco.", driver.sendCommand("look around"));
         assertEquals("CajaFuerte opened.", driver.sendCommand("open CajaFuerte Llave"));
         assertEquals("There you go!", driver.sendCommand("pick Credencial"));
         assertEquals("You have put Foto in Credencial", driver.sendCommand("put Foto Credencial"));

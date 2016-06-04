@@ -281,7 +281,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                     .actionName(DROP)
                     .executionRule(new HasItemRule(this.player, this.getItem(itemName)))
                     //TODO hace el drop siempre en el pasillo, ver como hacer que lo haga en el escenario actual
-                    .actions(new SwitchItemOwnerAction(this.player, this.getStage(this.player.getCurrentStage()), itemName))
+                    .actions(new DropInCurrentStageAction(this.game, itemName))
                     .resultMessage(String.format(DROP_RESULT_MSG, itemName))
                     .build();
             this.getItem(itemName).addBehavior(behavior);

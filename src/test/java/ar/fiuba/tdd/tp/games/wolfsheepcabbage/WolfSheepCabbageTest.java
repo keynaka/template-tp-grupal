@@ -79,7 +79,7 @@ public class WolfSheepCabbageTest {
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(ActionOld.LOOK_AROUND, ""));
-        assertEquals("Items in the SouthShore: cabbage, sheep.", response);
+        assertEquals("Items in SouthShore: cabbage, sheep.", response);
         assertFalse(this.target.isFinished());
     }
 
@@ -141,7 +141,7 @@ public class WolfSheepCabbageTest {
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(ActionOld.LOOK_AROUND, ""));
-        assertEquals("Items in the NorthShore: sheep.", response);
+        assertEquals("Items in NorthShore: sheep.", response);
     }
 }
 

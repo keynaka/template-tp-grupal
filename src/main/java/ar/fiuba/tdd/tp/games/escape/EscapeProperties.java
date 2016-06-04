@@ -8,6 +8,7 @@ package ar.fiuba.tdd.tp.games.escape;
 public class EscapeProperties {
 
     public static final String GAME_NAME = "Escape";
+    public static final String PLAYER_NAME = "player";
     public static final String HALL_NAME = "Pasillo";
     public static final String ROOM1_NAME = "Salon1";
     public static final String ROOM2_NAME = "Salon2";

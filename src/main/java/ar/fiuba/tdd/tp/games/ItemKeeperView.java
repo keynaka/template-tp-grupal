@@ -18,9 +18,12 @@ public class ItemKeeperView {
     }
 
     public String print() {
+        if(this.ik.getItems().isEmpty()) {
+            return String.format("No objects in %s.", this.name);
+        }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Items in the %s: ", name));
+        sb.append(String.format("Items in %s: ", name));
         Iterator<Item> it = ik.getItems().iterator();
         while (it.hasNext()) {
             sb.append(it.next().getName());
@@ -33,5 +36,4 @@ public class ItemKeeperView {
         return sb.toString();
 
     }
-
 }
