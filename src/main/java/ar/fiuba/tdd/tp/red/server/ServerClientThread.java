@@ -6,43 +6,45 @@ import ar.fiuba.tdd.tp.games.Game;
 import ar.fiuba.tdd.tp.games.creation.GamesCreator;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 
 public class ServerClientThread extends Thread {
 
     private Socket clientSocket;
-    private Server server;
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+    private ServerPortListenerThread portThread;
+
+    private DataInputStream in;
+    private DataOutputStream out;
     private Command command;
     private Response response;
     private Game game;
-    private CommandInterpreter interpreter;
     private boolean forceFinish = false;
 
-    public ServerClientThread(Socket clientSocket, Server server, String nameGame) {
-        super("ServerThread" + server.getClientAmount());
+    public ServerClientThread(Socket clientSocket, ServerPortListenerThread portThread) {
         try {
             this.clientSocket = clientSocket;
-            this.server = server;
-            this.in = new ObjectInputStream(clientSocket.getInputStream());
-            this.out = new ObjectOutputStream(clientSocket.getOutputStream());
-            this.game = GamesCreator.getGameByName(nameGame);
-            this.interpreter = new CommandInterpreter();
+            this.portThread = portThread;
+
+            this.in = new DataInputStream(clientSocket.getInputStream());
+            this.out = new DataOutputStream(clientSocket.getOutputStream());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public void interrupt() {
+        disconnectClient();
+    }
+
     public void run() {
         try {
-            welcomeToClient();
+            portThread.newClientEvent(this);
+
             readMessage();
 
-            while (!gameEnded() && !this.forceFinish) {
+            while (!this.isInterrupted()) {
                 processGame();
                 sendMessage();
 
@@ -65,13 +67,21 @@ public class ServerClientThread extends Thread {
         }
     }
 
+    public void sendMessage(String msg) {
+        try {
+            out.writeBytes(msg);
+            out.flush(); // Force send
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void welcomeToClient() throws Exception {
-        this.game.start(); // Starts the game
+        game.start(); // Starts the game
 
         StringBuilder welcomeMessage = new StringBuilder();
         welcomeMessage.append("Welcome to port " + clientSocket.getLocalPort() + "! ");
-        welcomeMessage.append("\nYou are the client number " + server.getClientAmount() + '.');
-        welcomeMessage.append("\nYou are going to play " + this.game.getName());
+        welcomeMessage.append("\nYou are going to play " + game.getName());
         this.response = new Response(welcomeMessage.toString());
 
         this.sendMessage();
@@ -123,13 +133,12 @@ public class ServerClientThread extends Thread {
         this.response = new Response(helpMessage.toString());
     }
 
-    private void sendMessage() throws Exception {
-        out.writeObject(response);
-    }
-
     private void disconnectClient() {
-        server.decrementedClientAmount();
-        System.out.println("Client amount: " + server.getClientAmount());
+        try {
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean gameEnded() {
