@@ -19,8 +19,8 @@ public abstract class AbstractGameBuilder implements GameBuilder {
     protected List<Stage> stages = new ArrayList<>();
     protected Player player;
     protected Map<String, Item> items = new HashMap<>();
+    protected Map<String, Rule> rules = new HashMap<>();
     private Map<String, Action> actions = new HashMap<>();
-    private Map<String, Rule> rules = new HashMap<>();
 
     public Game build() {
         // Starts a new game

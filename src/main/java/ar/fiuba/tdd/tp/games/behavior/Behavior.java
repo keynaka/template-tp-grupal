@@ -19,13 +19,16 @@ public class Behavior {
 
     private String actionName;
     private String resultMessage;
+    private String alternativeResultMessage;
     private Predicate<ConcreteGame> executionCondition;
     private BehaviorAction behaviorAction;
     private BehaviorView view;
     private String failMessage;
 
     private Rule executionRule;
+    private Rule alternativeExcecutionRule;
     private List<Action> actions = new ArrayList<>();
+    private List<Action> alternativeActions = new ArrayList<>();
     private List<ParametizedAction> parametizedActions = new ArrayList<>();
 
     public static BehaviorBuilder builder() {
@@ -49,7 +52,8 @@ public class Behavior {
             }
             return this.resultMessage;
         }
-        return this.getExecutionRule().getErrorMessage();
+
+        return this.performAlternativeActions();
     }
 
     public String executeWith(String parameter) {
@@ -62,8 +66,25 @@ public class Behavior {
         return this.getExecutionRule().getErrorMessage();
     }
 
+    private String performAlternativeActions() {
+        if (getAlternativeExecutionRule().verify()) {
+            for (Action alternativeAction : alternativeActions) {
+                alternativeAction.doAction();
+            }
+            return this.alternativeResultMessage;
+        }
+        return this.getExecutionRule().getErrorMessage();
+    }
+
     private Rule getExecutionRule() {
         return this.executionRule != null ? this.executionRule : Rule.TRUE;
+    }
+
+    private Rule getAlternativeExecutionRule() {
+        if (alternativeActions == null) {
+            return Rule.FALSE;
+        }
+        return this.alternativeExcecutionRule != null ? this.alternativeExcecutionRule : Rule.TRUE;
     }
 
     public void setView(BehaviorView view) {
@@ -81,6 +102,11 @@ public class Behavior {
     public void setResultMessage(String resultMessage) {
         this.resultMessage = resultMessage;
     }
+
+    public void setAlternativeResultMessage(String alternativeResultMessage) {
+        this.alternativeResultMessage = alternativeResultMessage;
+    }
+
 
     @Deprecated
     public void setExecutionCondition(Predicate<ConcreteGame> executionCondition) {
@@ -108,15 +134,26 @@ public class Behavior {
         this.actions = actions;
     }
 
+    public void setAlternativeExcecutionRule(Rule alternativeExcecutionRule) {
+        this.alternativeExcecutionRule = alternativeExcecutionRule;
+    }
+
+    public void setAlternativeActions(List<Action> alternativeActions) {
+        this.alternativeActions = alternativeActions;
+    }
+
     /*
      * Behavior builder class
      */
     public static class BehaviorBuilder {
         private String actionName;
         private String resultMessage;
+        private String alternativeResultMessage;
         private String failMessage;
         private Rule executionRule;
+        private Rule alternativeExecutionRule;
         private List<Action> actions;
+        private List<Action> alternativeActions;
 
         private BehaviorBuilder() {
         }
@@ -128,6 +165,12 @@ public class Behavior {
 
         public BehaviorBuilder resultMessage(String resultMessage) {
             this.resultMessage = resultMessage;
+            return this;
+        }
+
+
+        public BehaviorBuilder alternativeResultMessage(String alternativeResultMessage) {
+            this.alternativeResultMessage = alternativeResultMessage;
             return this;
         }
 
@@ -146,13 +189,26 @@ public class Behavior {
             return this;
         }
 
+        public BehaviorBuilder alternativeExecutionRule(Rule alternativeExecutionRule) {
+            this.alternativeExecutionRule = alternativeExecutionRule;
+            return this;
+        }
+
+        public BehaviorBuilder alternativeActions(Action... failActions) {
+            this.alternativeActions = Arrays.asList(failActions);
+            return this;
+        }
+
         public Behavior build() {
             Behavior behavior = new Behavior();
             behavior.setActionName(this.actionName);
             behavior.setResultMessage(this.resultMessage);
+            behavior.setAlternativeResultMessage(this.alternativeResultMessage);
             behavior.setFailMessage(this.failMessage);
             behavior.setExecutionRule(this.executionRule);
             behavior.setActions(this.actions);
+            behavior.setAlternativeExcecutionRule(this.alternativeExecutionRule);
+            behavior.setAlternativeActions(this.alternativeActions);
             return behavior;
         }
     }
