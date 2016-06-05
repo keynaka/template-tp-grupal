@@ -15,6 +15,7 @@ public class ServerPortListenerThread extends Thread {
     private Game game;
     ServerSocket serverSocket;
     private List<ServerClientThread> clientThreads = new ArrayList<>();
+    private CommandInterpreter interpreter = new CommandInterpreter();
 
     public ServerPortListenerThread(int portNumber, GameBuilder gameBuilder) {
         super("ServerPortListenerThread" + portNumber);
@@ -29,7 +30,8 @@ public class ServerPortListenerThread extends Thread {
 
             while (!this.isInterrupted()) {
                 // Starts new client thread
-                ServerClientThread clientThread = new ServerClientThread(serverSocket.accept(), this);
+                int playerNumber = clientThreads.size()+1;
+                ServerClientThread clientThread = new ServerClientThread(serverSocket.accept(), this, playerNumber);
                 clientThread.run();
                 clientThreads.add(clientThread);
 
@@ -55,12 +57,19 @@ public class ServerPortListenerThread extends Thread {
         // Welcomes the client
         String welcomeMessage = "Welcome to port " + portNumber + "! ";
         welcomeMessage += "\nYou are going to play " + game.getName();
-        welcomeMessage += "\nYou are the player number " + clientThreads.size();
+        welcomeMessage += "\nYou are the player number " + newClientThread.getPlayerNumber();
         newClientThread.sendMessage(welcomeMessage);
 
         // Notifies remaining clients
-        notify(newClientThread, "Player number " + clientThreads.size() + " has logged in.")
+        notify(newClientThread, "Player number " + newClientThread.getPlayerNumber() + " has logged in.");
+    }
 
+    public void processMessageByClientEvent(ServerClientThread clientThread, String command) {
+        // Notifies remaining clients
+        notify(clientThread, "Player " + clientThread.getPlayerNumber() + " executed: " + command);
+
+        String response = game.play(interpreter.getCommandForDriver(command));
+        clientThread.sendMessage(response);
     }
 
     public void notify(ServerClientThread notifier, String msg) {
