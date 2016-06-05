@@ -18,7 +18,7 @@ public class ItemKeeperView {
     }
 
     public String print() {
-        if(this.ik.getItems().isEmpty()) {
+        if (this.ik.getItems().isEmpty()) {
             return String.format("No objects in %s.", this.name);
         }
 

@@ -24,14 +24,14 @@ public class RemoveItemAction implements Action {
         this(itemKeeper, null);
     }
 
-        @Override
+    @Override
     public void doAction() {
         String itemName;
         if (item == null) {
             // Removes a random  item
             Random randomGenerator = new Random();
             int index = randomGenerator.nextInt(itemKeeper.getItems().size());
-            Item randomItem = (Item)itemKeeper.getItems().toArray()[index];
+            Item randomItem = (Item) itemKeeper.getItems().toArray()[index];
             itemName = randomItem.getName();
         } else {
             itemName = item.getName();
