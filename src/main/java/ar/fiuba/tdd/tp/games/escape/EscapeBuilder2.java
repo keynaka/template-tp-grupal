@@ -24,16 +24,13 @@ import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.*;
 @SuppressWarnings("CPD-START")
 public class EscapeBuilder2 extends AbstractGameBuilder {
 
-    private static final String PICK_KEY_ACTION = "pickKeyAction";
     private static final String MOVE_BOATPICTURE_ACTION = "moveBoatPictureAction";
     private static final String OPEN_SAFEBOX_ACTION = "openSaveboxAction";
-    private static final String PICK_ID_CARD_ACTION = "pickIdCardAction";
-    private static final String PICK_LIQUOR_ACTION = "pickLiquorAction";
-    private static final String PICK_HAMMER_ACTION = "pickHammerAction";
     private static final String PUT_PICTURE_ACTION = "putPictureAction";
     private static final String OPEN_SAFEBOX_RULE = "openSaveboxRule";
     private static final String BREAK_WINDOW_ACTION = "breakWindowAction";
     private static final String SHOW_ID_CARD_ACTION = "showIdCardAction";
+    private static final String BAN_PLAYER_FROM_LIBRARY_ACTION = "banPlayerFromLibraryAction";
     private static final String SHOW_LIQUOR_ACTION = "showLiquorAction";
     private static final String UNLOCK_LIBRARY_ACTION = "unlockLibraryAction";
     private static final String UNLOCK_BASEMENT_ACTION = "unlockBasementAction";
@@ -41,14 +38,9 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private static final String MOVE_OLD_BOOK_ACTION = "moveOldBookAction";
     private static final String USE_STAIRS_ACTION = "useStairsAction";
     private static final String USE_RAILING_ACTION = "useRailingAction";
-    private static final String PICK_KEY_RULE = "pickKeyRule";
-    private static final String PICK_HAMMER_RULE = "pickHammerRule";
-    private static final String SCREWDRIVER_NUMBER1_RULE = "pickScrewdriverNumber1Rule";
-    private static final String SCREWDRIVER_NUMBER2_RULE = "pickScrewdriverNumber2Rule";
-    private static final String PICK_ID_CARD_RULE = "pickIdCardRule";
-    private static final String PICK_LIQUOR_RULE = "pickLiquorRule";
     private static final String MOVE_BOATPICTURE_RULE = "moveBoatPictureRule";
     private static final String SHOW_ID_CARD_RULE = "showIdCardRule";
+    private static final String SHOW_WRONG_ID_CARD_RULE = "showWrongIdCardRule";
     private static final String SHOW_LIQUOR_RULE = "showLiquorRule";
     private static final String MOVE_OLD_BOOK_RULE = "moveOldBookRule";
     private static final String USE_STAIRS_RULE = "useStairsRule";
@@ -97,7 +89,11 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Rule idCardHasPlayersPicture = new VerifiesStateRule(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, PLAYER_PICTURE_NAME);
         Rule isInLibraryRule = new PlayerIsInRoomRule(this.player, LIBRARY_ACCESS_NAME);
-        this.addRule(SHOW_ID_CARD_RULE, idCardHasPlayersPicture.and(isInLibraryRule).and(hasIdCardRule));
+        Rule isAllowedInLibrary = new VerifiesStateRule(this.player, ALLOWED_IN_LIBRARY_STATUS, ALLOWED);
+        this.addRule(SHOW_ID_CARD_RULE, idCardHasPlayersPicture.and(isInLibraryRule).and(hasIdCardRule).and(isAllowedInLibrary));
+
+        Rule idCardHasNotPlayersPicture = new VerifiesStateRule(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, STRANGER_PICTURE_NAME);
+        this.addRule(SHOW_WRONG_ID_CARD_RULE, idCardHasNotPlayersPicture);
 
         Rule hasLiquorRule = new HasItemRule(this.player, this.getItem(LIQUOR_NAME));
         this.addRule(SHOW_LIQUOR_RULE, hasLiquorRule.and(isInLibraryRule));
@@ -112,6 +108,15 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Rule playerIsInBasement = new PlayerIsInRoomRule(this.player, BASEMENT_NAME);
         this.addRule(USE_RAILING_RULE, railingIsInCurrentRoomRule.and(playerIsInBasement));
 
+        this.setRulesErrorMessage();
+
+    }
+
+    private void setRulesErrorMessage() {
+        for (String ruleName : this.rules.keySet()) {
+            Rule rule = this.getRule(ruleName);
+            rule.setErrorMessage(ERR_MSG);
+        }
     }
 
     private void createActions() {
@@ -140,13 +145,16 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Action showIdCardAction = new SwitchItemOwnerAction(this.player, this.getItemKeeper(LIBRARIAN_NAME), ID_CARD_NAME);
         this.addAction(SHOW_ID_CARD_ACTION, showIdCardAction);
 
+        Action banPlayerFromLibrary = new SetStateValueAction(this.player, ALLOWED_IN_LIBRARY_STATUS, NOT_ALLOWED);
+        this.addAction(BAN_PLAYER_FROM_LIBRARY_ACTION, banPlayerFromLibrary);
+
         Action showLiquorAction = new SwitchItemOwnerAction(this.player, this.getItemKeeper(LIBRARIAN_NAME), LIQUOR_NAME);
         this.addAction(SHOW_LIQUOR_ACTION, showLiquorAction);
 
         Action unlockLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), LOCK_STATUS, UNLOCKED);
         this.addAction(UNLOCK_LIBRARY_ACTION, unlockLibraryAction);
 
-        Action useStairsAction = new SetStateValueAction(this.player, LIFE_STATE, DEAD_PLAYER);
+        Action useStairsAction = new SetStateValueAction(this.player, LIFE_STATUS, DEAD_PLAYER);
         this.addAction(USE_STAIRS_ACTION, useStairsAction);
 
         Action useRailingAction = new ChangePlayerStageAction(this.game, this.getStage(BASEMENT_DOWNSTAIRS_NAME));
@@ -192,7 +200,10 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .actionName(SHOW)
                 .executionRule(this.getRule(SHOW_ID_CARD_RULE))
                 .actions(this.getAction(SHOW_ID_CARD_ACTION), this.getAction(UNLOCK_LIBRARY_ACTION))
+                .alternativeExecutionRule(this.getRule(SHOW_WRONG_ID_CARD_RULE))
+                .alternativeActions(this.getAction(BAN_PLAYER_FROM_LIBRARY_ACTION))
                 .resultMessage(SHOW_RESULT_MSG)
+                .alternativeResultMessage(SHOW_ALT_RESULT_MSG)
                 .build();
         this.getItem(ID_CARD_NAME).addBehavior(behavior);
 
@@ -241,7 +252,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         return pickableItemsNames;
     }
 
-    private void addBehaviorToPickableItems(){
+    private void addBehaviorToPickableItems() {
         List<String> pickableItemsNames = fillPickableItemsList();
 
         for (String itemName : pickableItemsNames) {
@@ -405,7 +416,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void setLosingCondition() {
-        Rule isDead = new VerifiesStateRule(this.player, LIFE_STATE, DEAD_PLAYER);
+        Rule isDead = new VerifiesStateRule(this.player, LIFE_STATUS, DEAD_PLAYER);
         Item hammer = this.getItem(HAMMER_NAME);
         Rule hasntHammer = new HasItemRule(this.player, hammer).negate();
         Rule isInDownBasement = new PlayerIsInRoomRule(this.player, BASEMENT_DOWNSTAIRS_NAME);
@@ -472,7 +483,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
     @Override
     protected void configurePlayer() {
-        player.addState(LIFE_STATE, ALIVE_PLAYER);
+        player.addState(LIFE_STATUS, ALIVE_PLAYER);
+        player.addState(ALLOWED_IN_LIBRARY_STATUS, ALLOWED);
         player.setCurrentStage(HALL_NAME);
         player.addToInventory(this.getItem(PLAYER_PICTURE_NAME));
         player.addToInventory(this.getItem(PEN_NAME));

@@ -1,6 +1,5 @@
 package ar.fiuba.tdd.tp.games.rules;
 
-import ar.fiuba.tdd.tp.games.objects.GameObject;
 
 /**
  * Created by Nico on 21/05/2016.
@@ -8,7 +7,7 @@ import ar.fiuba.tdd.tp.games.objects.GameObject;
 public abstract class Rule {
 
     public static final Rule TRUE = new TrueRule();
-
+    public static final Rule FALSE = new FalseRule();
     protected boolean negateCondition = false; // Do opposite condition
 
     protected String failErrorMessage = "Rule not verifies";

@@ -52,7 +52,7 @@ public class EscapeDriverTest2 {
         assertEquals("There you go!", driver.sendCommand("move LibroViejo"));
     }
 
-    private void pickMartilloAndPutFotoInIdCardAndEnterBibliotecaAcceso(GameDriver driver) {
+    private void pickMartilloAndEnterBibliotecaAcceso(GameDriver driver) {
         driver.sendCommand("drop Lapicera");
         driver.sendCommand("goto Salon3");
         driver.sendCommand("pick Llave");
@@ -64,7 +64,6 @@ public class EscapeDriverTest2 {
         driver.sendCommand("goto Pasillo");
         driver.sendCommand("goto Salon2");
         driver.sendCommand("pick Martillo");
-        driver.sendCommand("put Foto Credencial");
         driver.sendCommand("goto Pasillo");
         driver.sendCommand("goto BibliotecaAcceso");
     }
@@ -74,7 +73,8 @@ public class EscapeDriverTest2 {
         GameDriver driver = new ConcreteGameDriver();
         driver.initGame("escape2");
 
-        this.pickMartilloAndPutFotoInIdCardAndEnterBibliotecaAcceso(driver);
+        this.pickMartilloAndEnterBibliotecaAcceso(driver);
+        driver.sendCommand("put Foto Credencial");
 
         assertEquals("There you go!", driver.sendCommand("show Credencial"));
         assertEquals("You have entered to Biblioteca.", driver.sendCommand("goto Biblioteca"));
@@ -114,6 +114,24 @@ public class EscapeDriverTest2 {
         assertEquals("You have entered to BibliotecaAcceso.", driver.sendCommand("goto BibliotecaAcceso"));
         assertEquals("There you go!", driver.sendCommand("show BotellaLicor"));
         assertEquals("You have entered to Biblioteca.", driver.sendCommand("goto Biblioteca"));
+    }
+
+    @Test
+    public void tryToEnterBibliotecaWithStrangerPicture() {
+        GameDriver driver = new ConcreteGameDriver();
+        driver.initGame("escape2");
+        this.pickMartilloAndEnterBibliotecaAcceso(driver);
+        assertEquals("You are banned from the library!", driver.sendCommand("show Credencial"));
+    }
+
+    @Test
+    public void tryToReEnterLibraryWithIdCardAfterGettingBanned() {
+        GameDriver driver = new ConcreteGameDriver();
+        driver.initGame("escape2");
+        this.pickMartilloAndEnterBibliotecaAcceso(driver);
+        assertEquals("You are banned from the library!", driver.sendCommand("show Credencial"));
+        driver.sendCommand("put Foto Credencial");
+        assertEquals("You can't do that!", driver.sendCommand("show Credencial"));
     }
 
     @Test

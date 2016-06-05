@@ -52,9 +52,12 @@ public class EscapeProperties {
     public static final String BROKEN_WINDOW = "Rota";
     public static final String OLD_BOOK_STATE = "old-book-state";
     public static final String MOVED_BOOK = "Movido";
-    public static final String LIFE_STATE = "player-lifestatus";
+    public static final String LIFE_STATUS = "player-lifestatus";
     public static final String DEAD_PLAYER = "Muerto";
     public static final String ALIVE_PLAYER = "Vivo";
+    public static final String ALLOWED_IN_LIBRARY_STATUS = "allowed-in-library-status";
+    public static final String ALLOWED = "Puede ingresar";
+    public static final String NOT_ALLOWED = "No puede ingresar";
     public static final String LOCK_STATUS = "lock-status";
     public static final String LOCKED = "Cerrado";
     public static final String UNLOCKED = "Abierto";
@@ -82,9 +85,11 @@ public class EscapeProperties {
     public static final String SHOW = "show";
     public static final String BREAK_WINDOW_RESULT_MSG = "Window is broken!";
     public static final String SHOW_RESULT_MSG = "There you go!";
+    public static final String SHOW_ALT_RESULT_MSG = "You are banned from the library!";
     public static final String MOVE_OLD_BOOK_RESULT_MSG = "There you go!";
     public static final String USE_STAIRS_RESULT_MSG = "You are dead !! :(";
     public static final String USE_RAILING_RESULT_MSG = "You have entered to SotanoAbajo.";
+    public static final String ERR_MSG = "You can't do that!";
 
     @SuppressWarnings("CPD-END")
     public static final String PUT_RESULT_MSG = "You have put %s in %s";
