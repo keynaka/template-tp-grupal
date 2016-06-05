@@ -16,8 +16,8 @@ public class Server {
     // Runs the server and starts listening
     public void run() {
         while (!isExit()) {
-            userInput();
-            if (userInput != null && userInput.matches("^(?i)/load game .+\\.jar$")) {
+            this.userInput = userInput();
+            if (userInput != null && userInput.matches("^(?i)load game .+\\.jar$")) {
                 String gameName = userInput.split(" ")[2];
                 loadGame(gameName);
             }
