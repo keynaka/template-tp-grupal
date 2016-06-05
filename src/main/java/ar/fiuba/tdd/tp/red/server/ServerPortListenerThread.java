@@ -32,7 +32,7 @@ public class ServerPortListenerThread extends Thread {
                 // Starts new client thread
                 int playerNumber = clientThreads.size()+1;
                 ServerClientThread clientThread = new ServerClientThread(serverSocket.accept(), this, playerNumber);
-                clientThread.run();
+                clientThread.start();
                 clientThreads.add(clientThread);
 
                 System.out.println("New connection in port " + portNumber + "! Client amount: " + clientThreads.size());

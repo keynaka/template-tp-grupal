@@ -54,7 +54,7 @@ public class Server {
 
     public void listenPort(int portNumber, GameBuilder gameBuilder) {
         ServerPortListenerThread thread = new ServerPortListenerThread(portNumber, gameBuilder);
-        thread.run();
+        thread.start();
         portThreads.add(thread);
     }
 
