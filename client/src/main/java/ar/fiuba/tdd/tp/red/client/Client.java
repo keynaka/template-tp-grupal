@@ -1,7 +1,8 @@
 package ar.fiuba.tdd.tp.red.client;
 
 import java.io.*;
-import java.net.*;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 
 public class Client {
