@@ -27,6 +27,7 @@ public class EscapeProperties {
     public static final String GLASS_DESCRIPTION = "Es un vaso.";
     public static final String HAMMER_NAME = "Martillo";
     public static final String HAMMER_DESCRIPTION = "Es un martillo.";
+    public static final String LIQUOR_NAME = "BotellaLicor";
     public static final String LIQUOR_DESCRIPTION = "Es una botella de licor.";
     public static final String KEY_DESCRIPTION = "Es una llave.";
     public static final String PEN_DESCRIPTION = "Es una lapicera.";
@@ -80,7 +81,7 @@ public class EscapeProperties {
     public static final String BREAK = "break";
     public static final String SHOW = "show";
     public static final String BREAK_WINDOW_RESULT_MSG = "Window is broken!";
-    public static final String SHOW_ID_CARD_RESULT_MSG = "There you go!";
+    public static final String SHOW_RESULT_MSG = "There you go!";
     public static final String MOVE_OLD_BOOK_RESULT_MSG = "There you go!";
     public static final String USE_STAIRS_RESULT_MSG = "You are dead !! :(";
     public static final String USE_RAILING_RESULT_MSG = "You have entered to SotanoAbajo.";
