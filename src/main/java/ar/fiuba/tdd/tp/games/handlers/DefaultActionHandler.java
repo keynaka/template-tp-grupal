@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.games.handlers;
 
 import ar.fiuba.tdd.tp.games.ConcreteGame;
+import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.objects.GameObject;
 import ar.fiuba.tdd.tp.red.server.Command;
 
@@ -17,7 +18,11 @@ public class DefaultActionHandler implements ActionHandler {
 
     @Override
     public String execute(Command command) {
-        GameObject gameObject = this.game.getGameObjectRepository().getGameObject(command.getItemName());
-        return gameObject.executeAction(command.getAction().getActionName());
+        try {
+            GameObject gameObject = this.game.getGameObjectRepository().getGameObject(command.getItemName());
+            return gameObject.executeAction(command.getAction().getActionName());
+        } catch (GameException e) {
+            return e.getMessage();
+        }
     }
 }
