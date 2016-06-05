@@ -2,7 +2,6 @@ package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.hanoitowers.HanoiTowersBuilder;
 import ar.fiuba.tdd.tp.games.hanoitowers.Stacker;
-import ar.fiuba.tdd.tp.red.server.Command;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

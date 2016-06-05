@@ -1,13 +1,11 @@
 package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.treasurehunt.TreasureHuntBuilder;
-import ar.fiuba.tdd.tp.red.server.Command;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 @Ignore
 public class TreasureHuntTest {

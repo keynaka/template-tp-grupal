@@ -1,6 +1,4 @@
-package ar.fiuba.tdd.tp.red.server;
-
-import ar.fiuba.tdd.tp.games.ActionOld;
+package ar.fiuba.tdd.tp.games;
 
 import java.io.Serializable;
 

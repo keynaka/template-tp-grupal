@@ -1,14 +1,12 @@
 package ar.fiuba.tdd.tp.games.wolfsheepcabbage;
 
 import ar.fiuba.tdd.tp.games.ActionOld;
+import ar.fiuba.tdd.tp.games.Command;
 import ar.fiuba.tdd.tp.games.Game;
 import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbageBuilder;
-import ar.fiuba.tdd.tp.red.server.Command;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by Fede on 17/05/2016.

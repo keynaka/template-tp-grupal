@@ -1,7 +1,5 @@
-package ar.fiuba.tdd.tp.red.server;
+package ar.fiuba.tdd.tp.games;
 
-import ar.fiuba.tdd.tp.games.AbstractGame;
-import ar.fiuba.tdd.tp.games.ActionOld;
 import ar.fiuba.tdd.tp.games.creation.GamesCreator;
 
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
 package ar.fiuba.tdd.tp.games.cursedobject;
 
 import ar.fiuba.tdd.tp.games.ActionOld;
+import ar.fiuba.tdd.tp.games.Command;
 import ar.fiuba.tdd.tp.games.Game;
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
-import ar.fiuba.tdd.tp.red.server.Command;
 import org.junit.Ignore;
 import org.junit.Test;
 

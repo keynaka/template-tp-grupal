@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.games.handlers;
 
-import ar.fiuba.tdd.tp.red.server.Command;
+
+import ar.fiuba.tdd.tp.games.Command;
 
 /**
  * Created by swandelow on 4/23/16.

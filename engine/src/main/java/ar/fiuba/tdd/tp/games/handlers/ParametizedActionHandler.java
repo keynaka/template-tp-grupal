@@ -1,8 +1,8 @@
 package ar.fiuba.tdd.tp.games.handlers;
 
+import ar.fiuba.tdd.tp.games.Command;
 import ar.fiuba.tdd.tp.games.ConcreteGame;
 import ar.fiuba.tdd.tp.games.objects.GameObject;
-import ar.fiuba.tdd.tp.red.server.Command;
 
 /**
  * Created by swandelow on 6/1/16.

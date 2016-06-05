@@ -2,6 +2,7 @@ package ar.fiuba.tdd.tp.games.escape;
 
 import ar.fiuba.tdd.tp.games.AbstractGameBuilder;
 import ar.fiuba.tdd.tp.games.ActionOld;
+import ar.fiuba.tdd.tp.games.Command;
 import ar.fiuba.tdd.tp.games.Stage;
 import ar.fiuba.tdd.tp.games.actions.*;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
@@ -10,7 +11,6 @@ import ar.fiuba.tdd.tp.games.handlers.LookAroundActionHandler;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 import ar.fiuba.tdd.tp.games.rules.*;
-import ar.fiuba.tdd.tp.red.server.Command;
 
 import java.util.ArrayList;
 import java.util.List;

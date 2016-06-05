@@ -2,7 +2,6 @@ package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.driver.GameState;
 import ar.fiuba.tdd.tp.games.handlers.ActionHandler;
-import ar.fiuba.tdd.tp.red.server.Command;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,10 +1,10 @@
 package ar.fiuba.tdd.tp.driver;
 
+import ar.fiuba.tdd.tp.games.CommandInterpreter;
 import ar.fiuba.tdd.tp.games.Game;
 import ar.fiuba.tdd.tp.games.escape.EscapeBuilder;
 import ar.fiuba.tdd.tp.games.escape.EscapeBuilder2;
 import ar.fiuba.tdd.tp.games.fetchquest.FetchQuestBuilder;
-import ar.fiuba.tdd.tp.red.server.CommandInterpreter;
 
 /**
  * Created by Fede on 19/05/2016.

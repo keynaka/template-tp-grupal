@@ -1,5 +1,6 @@
 package ar.fiuba.tdd.tp.red.server;
 
+import ar.fiuba.tdd.tp.games.CommandInterpreter;
 import ar.fiuba.tdd.tp.games.Game;
 import ar.fiuba.tdd.tp.games.GameBuilder;
 
@@ -30,7 +31,7 @@ public class ServerPortListenerThread extends Thread {
 
             while (!this.isInterrupted()) {
                 // Starts new client thread
-                int playerNumber = clientThreads.size()+1;
+                int playerNumber = clientThreads.size() + 1;
                 ServerClientThread clientThread = new ServerClientThread(serverSocket.accept(), this, playerNumber);
                 clientThread.start();
                 clientThreads.add(clientThread);
