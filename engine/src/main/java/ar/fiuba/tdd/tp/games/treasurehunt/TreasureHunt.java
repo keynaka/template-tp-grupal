@@ -1,23 +1,10 @@
 package ar.fiuba.tdd.tp.games.treasurehunt;
 
-import ar.fiuba.tdd.tp.games.AbstractGame;
-import ar.fiuba.tdd.tp.games.Action;
-import ar.fiuba.tdd.tp.games.Player;
-import ar.fiuba.tdd.tp.games.Stage;
-import ar.fiuba.tdd.tp.games.items.Door;
-import ar.fiuba.tdd.tp.games.items.Item;
-import ar.fiuba.tdd.tp.games.items.Key;
-import ar.fiuba.tdd.tp.games.items.LockedDoor;
-import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
-
-import java.util.ArrayList;
-import java.util.Collection;
-
 /**
  * Created by Fede on 26/04/2016.
  */
-public class TreasureHunt extends AbstractGame {
-
+public class TreasureHunt /*extends AbstractGame*/ {
+/*
     private ArrayList<Stage> rooms;
     private int actualRoom;
     private Player player;
@@ -48,10 +35,10 @@ public class TreasureHunt extends AbstractGame {
 
     @Override
     protected void registerKnownActions() {
-        this.knownActions.put(Action.LOOK_AROUND, (itemName, args) -> this.lookAround());
-        this.knownActions.put(Action.OPEN, (itemName, args) -> this.open(itemName));
-        this.knownActions.put(Action.PICK, (itemName, args) -> this.pick(itemName));
-        this.knownActions.put(Action.DROP, (itemName, args) -> this.drop(itemName));
+        this.knownActions.put(ActionOld.LOOK_AROUND, (itemName, args) -> this.lookAround());
+        this.knownActions.put(ActionOld.OPEN, (itemName, args) -> this.open(itemName));
+        this.knownActions.put(ActionOld.PICK, (itemName, args) -> this.pick(itemName));
+        this.knownActions.put(ActionOld.DROP, (itemName, args) -> this.drop(itemName));
     }
 
     private void buildRoomOne() {
@@ -97,7 +84,7 @@ public class TreasureHunt extends AbstractGame {
 
     private void buildRoomFive() {
 
-    }*/
+    }
 
     @Override
     public boolean isFinished() {
@@ -158,5 +145,5 @@ public class TreasureHunt extends AbstractGame {
             }
         }
         return false;
-    }
+    }*/
 }

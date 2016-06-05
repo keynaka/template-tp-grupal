@@ -1,13 +1,13 @@
 package ar.fiuba.tdd.tp.games.opendoor;
 
-import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.items.Item;
 
 /**
  * Created by swandelow on 4/22/16.
  */
-public class OpenDoor extends AbstractOpenDoor {
-
+public class OpenDoor /*extends AbstractOpenDoor*/ {
+/*
     public OpenDoor() {
         super("OpenDoor", "You enter room 2. You won the game!");
     }
@@ -33,7 +33,7 @@ public class OpenDoor extends AbstractOpenDoor {
     }
 
     private void addKnownActions() {
-        this.knownActions.put(Action.OPEN, (itemName, args) -> this.openAction(itemName));
-    }
+        this.knownActions.put(ActionOld.OPEN, (itemName, args) -> this.openAction(itemName));
+    }*/
 }
 

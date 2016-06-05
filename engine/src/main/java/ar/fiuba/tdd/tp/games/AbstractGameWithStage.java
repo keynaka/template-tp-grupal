@@ -18,7 +18,7 @@ public abstract class AbstractGameWithStage extends AbstractGame {
 
     @Override
     protected void registerKnownActions() {
-        this.knownActions.put(Action.LOOK_AROUND, (itemName, args) -> this.stage.lookAround());
+        this.knownActions.put(ActionOld.LOOK_AROUND, (command) -> this.stage.lookAround());
     }
 
 }

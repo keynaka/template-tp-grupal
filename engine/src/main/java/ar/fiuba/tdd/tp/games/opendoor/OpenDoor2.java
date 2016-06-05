@@ -1,6 +1,6 @@
 package ar.fiuba.tdd.tp.games.opendoor;
 
-import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.items.containers.Box;
 
@@ -10,8 +10,8 @@ import java.util.Optional;
 /**
  * Created by swandelow on 4/22/16.
  */
-public class OpenDoor2 extends AbstractOpenDoor {
-
+public class OpenDoor2 /*extends AbstractOpenDoor*/ {
+/*
     private Box box;
 
     public OpenDoor2() {
@@ -21,8 +21,8 @@ public class OpenDoor2 extends AbstractOpenDoor {
     @Override
     protected void registerKnownActions() {
         super.registerKnownActions();
-        this.knownActions.put(Action.OPEN, (itemName, args) -> this.openAction(itemName));
-        this.knownActions.put(Action.EXAMINE, (itemName, args) -> this.examineItem(itemName));
+        this.knownActions.put(ActionOld.OPEN, (itemName, args) -> this.openAction(itemName));
+        this.knownActions.put(ActionOld.EXAMINE, (itemName, args) -> this.examineItem(itemName));
     }
 
     private String openAction(String itemName) {
@@ -56,8 +56,8 @@ public class OpenDoor2 extends AbstractOpenDoor {
     }
 
 //    private void addKnownActions() {
-//        this.knownActions.put(Action.OPEN, (itemName) -> this.openAction(itemName));
-//        this.knownActions.put(Action.EXAMINE, (itemName) -> this.examineItem(itemName));
-//    }
+//        this.knownActions.put(ActionOld.OPEN, (itemName) -> this.openAction(itemName));
+//        this.knownActions.put(ActionOld.EXAMINE, (itemName) -> this.examineItem(itemName));
+//    }*/
 }
 

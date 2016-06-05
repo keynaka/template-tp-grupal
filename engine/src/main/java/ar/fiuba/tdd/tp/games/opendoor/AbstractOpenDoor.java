@@ -1,18 +1,14 @@
 package ar.fiuba.tdd.tp.games.opendoor;
 
-import ar.fiuba.tdd.tp.games.AbstractGame;
-import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.Player;
-import ar.fiuba.tdd.tp.games.Stage;
 import ar.fiuba.tdd.tp.games.items.Item;
-import ar.fiuba.tdd.tp.games.items.Key;
-import ar.fiuba.tdd.tp.games.items.LockedDoor;
 
 /**
  * Created by swandelow on 4/23/16.
  */
-public abstract class AbstractOpenDoor extends AbstractGame {
-
+public abstract class AbstractOpenDoor /*extends AbstractGame*/ {
+/*
     protected Player player;
     protected Stage room;
     protected LockedDoor door;
@@ -41,8 +37,8 @@ public abstract class AbstractOpenDoor extends AbstractGame {
 
     @Override
     protected void registerKnownActions() {
-        this.knownActions.put(Action.LOOK_AROUND, (itemName, args) -> this.room.lookAround());
-        this.knownActions.put(Action.PICK, (itemName, args) -> this.pickAction(itemName));
+        this.knownActions.put(ActionOld.LOOK_AROUND, (itemName, args) -> this.room.lookAround());
+        this.knownActions.put(ActionOld.PICK, (itemName, args) -> this.pickAction(itemName));
     }
 
     protected String pickAction(String itemName) {
@@ -81,4 +77,5 @@ public abstract class AbstractOpenDoor extends AbstractGame {
     private boolean hasTheCharacterTheKey() {
         return this.player.hasItem(this.key.getName());
     }
+    */
 }

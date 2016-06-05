@@ -2,19 +2,26 @@ package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.exceptions.GameException;
 import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.objects.GameObject;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by swandelow on 4/21/16.
  */
-public class Player {
+public class Player extends GameObject implements ItemKeeper {
 
     private Inventory inventory;
     private String currentStage;
     private CharacterState state;
+    private String state2;
 
     public Player() {
+        this.name = "player";
         this.inventory = new Inventory();
         this.state = CharacterState.HEALTHY;
+        this.state2 = "healthy";
     }
 
     public Inventory getInventory() {
@@ -39,6 +46,14 @@ public class Player {
 
     public CharacterState getState() {
         return state;
+    }
+
+    public String getState2() {
+        return state2;
+    }
+
+    public void modifyState2(String state) {
+        this.state2 = state;
     }
 
     public void modifyState(CharacterState state) {
@@ -80,4 +95,20 @@ public class Player {
         return talking.talk(this, message);
     }
 
+    @SuppressWarnings("CPD-START")
+    @Override
+    public Collection<Item> getItems() {
+        return this.inventory.getAllItems();
+    }
+
+    @Override
+    public Item removeItem(String itemName) {
+        return this.inventory.dropItem(itemName);
+    }
+
+    @SuppressWarnings("CPD-END")
+    @Override
+    public void insertItem(Item item) {
+        this.inventory.addItem(item);
+    }
 }

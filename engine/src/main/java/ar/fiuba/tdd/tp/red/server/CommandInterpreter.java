@@ -1,7 +1,7 @@
 package ar.fiuba.tdd.tp.red.server;
 
 import ar.fiuba.tdd.tp.games.AbstractGame;
-import ar.fiuba.tdd.tp.games.Action;
+import ar.fiuba.tdd.tp.games.ActionOld;
 import ar.fiuba.tdd.tp.games.creation.GamesCreator;
 
 import java.util.ArrayList;
@@ -18,23 +18,24 @@ public class CommandInterpreter {
         this.games = GamesCreator.getAllGames();
         startGames();
     }
-        /*
-        this.games = new ArrayList<AbstractGame>();
 
-        this.addGame(new FetchQuest());
-        this.addGame(new OpenDoor());
-        this.addGame(new OpenDoor2());
-        this.addGame(new HanoiTowers());
-        this.addGame(new WolfSheepCabbage());
-        this.addGame(new TreasureHunt());
-        this.addGame(new CursedObjectGame());
+    /*
+    this.games = new ArrayList<AbstractGame>();
+
+    this.addGame(new FetchQuest());
+    this.addGame(new OpenDoor());
+    this.addGame(new OpenDoor2());
+    this.addGame(new HanoiTowers());
+    this.addGame(new WolfSheepCabbage());
+    this.addGame(new TreasureHunt());
+    this.addGame(new CursedObjectGame());
 
 
-    public void addGame(AbstractGame game) {
-        game.start();
-        this.games.add(game);
-    }
-    */
+public void addGame(AbstractGame game) {
+    game.start();
+    this.games.add(game);
+}
+*/
     private void startGames() {
         for (AbstractGame game : this.games) {
             game.start();
@@ -51,16 +52,32 @@ public class CommandInterpreter {
 
         for (AbstractGame game : this.games) {
             command = this.bindActions(gameCommand, game);
-            if (command.getAction() != Action.UNKNOWN_ACTION) {
+            if (command.getAction() != ActionOld.UNKNOWN_ACTION) {
                 break;
             }
         }
         return command;
     }
 
+    public Command getCommandForDriver(String gameCommand) {
+
+        if ((ActionOld.getActionByValue(gameCommand) != null)) {
+            return new Command(ActionOld.getActionByValue(gameCommand));
+        }
+
+        String[] commandWords = gameCommand.split(" ");
+        if (commandWords.length == 1) {
+            return new Command(ActionOld.getActionByValue(commandWords[0]));
+        } else if (commandWords.length == 2) {
+            return new Command(ActionOld.getActionByValue(commandWords[0]), commandWords[1]);
+        } else {
+            return new Command(ActionOld.getActionByValue(commandWords[0]), commandWords[1], commandWords[2]);
+        }
+    }
+
     private Command bindActions(String gameCommand, AbstractGame game) {
         Command command = new Command();
-        for (Action action : game.getKnownActions().keySet()) {
+        for (ActionOld action : game.getKnownActions().keySet()) {
 
             String actionName = action.getActionName();
 
@@ -75,7 +92,7 @@ public class CommandInterpreter {
     }
 
     private Command checkSystemAction(String gameCommand) {
-        Action systemAction = Command.checkSystemAction(gameCommand);
+        ActionOld systemAction = Command.checkSystemAction(gameCommand);
         return new Command(systemAction);
     }
 
