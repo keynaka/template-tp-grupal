@@ -1,7 +1,5 @@
 package ar.fiuba.tdd.tp.red.client;
 
-import ar.fiuba.tdd.tp.red.server.Response;
-
 import java.io.*;
 import java.net.*;
 import java.nio.charset.Charset;
@@ -9,19 +7,19 @@ import java.nio.charset.Charset;
 public class Client {
 
     private Socket serverSocket;
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+    private DataInputStream in;
+    private DataOutputStream out;
     private String hostName;
-    private Response response;
-    private boolean connected;
+    public boolean connected;
+    private ServerListenerThread serverListenerThread;
 
     public Client(String hostName, int portNumber) {
         this.hostName = hostName;
         connected = true;
         try {
             serverSocket = new Socket(this.hostName, portNumber);
-            out = new ObjectOutputStream(serverSocket.getOutputStream());
-            in = new ObjectInputStream(serverSocket.getInputStream());
+            out = new DataOutputStream(serverSocket.getOutputStream());
+            in = new DataInputStream(serverSocket.getInputStream());
         } catch (IOException e) {
             System.err.println("IOException!");
         } catch (NumberFormatException e) {
@@ -31,15 +29,15 @@ public class Client {
 
     public void run() {
         try {
-            receive();
-            while (connected) {
+            // A thread that is always listening to the server
+            serverListenerThread = new ServerListenerThread(this, in);
 
+            while (connected) {
                 String rawCommand = this.readRawCommand();
                 sendRawCommand(rawCommand);
-
-                receive();
             }
             serverSocket.close();
+            serverListenerThread.interrupt();
 
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
@@ -57,15 +55,8 @@ public class Client {
     }
 
 
-    private void sendRawCommand(String string) throws Exception {
-        this.out.writeObject(string);
-    }
-
-    private void receive() throws Exception {
-        response = (Response) in.readObject();
-        System.out.println("> " + response.getResponse());
-        if (response.isGameFinalized()) {
-            connected = false;
-        }
+    private void sendRawCommand(String string) throws IOException {
+        out.writeBytes(string);
+        out.flush();
     }
 }
