@@ -8,7 +8,6 @@ import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.handlers.DefaultActionHandler;
 import ar.fiuba.tdd.tp.games.handlers.LookAroundActionHandler;
 import ar.fiuba.tdd.tp.games.items.Item;
-import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 import ar.fiuba.tdd.tp.games.rules.*;
 import ar.fiuba.tdd.tp.red.server.Command;
 
@@ -239,21 +238,36 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .build();
         this.getItem(RAILING_NAME).addBehavior(behavior);
 
-        this.addBehaviorToDroppableItems();
-        this.addBehaviorToPickableItems();
+        this.addDropBehaviorToDroppableItems();
+        this.addPickBehaviorToPickableItems();
     }
 
-    private List<String> fillPickableItemsList() {
-        List<String> pickableItemsNames = new ArrayList<String>();
-        pickableItemsNames.add(LIQUOR_NAME);
-        pickableItemsNames.add(ID_CARD_NAME);
-        pickableItemsNames.add(HAMMER_NAME);
-        pickableItemsNames.add(KEY_NAME);
-        return pickableItemsNames;
+    private List<String> fillPickableAndDroppableItemsList() {
+        List<String> itemNames = new ArrayList<String>();
+        itemNames.add(LIQUOR_NAME);
+        itemNames.add(GLASS1_NAME);
+        itemNames.add(GLASS2_NAME);
+        itemNames.add(ID_CARD_NAME);
+        itemNames.add(SCREWDRIVER1_NAME);
+        itemNames.add(SCREWDRIVER2_NAME);
+        itemNames.add(BOOK1_NAME);
+        itemNames.add(BOOK2_NAME);
+        itemNames.add(BOOK3_NAME);
+        itemNames.add(BOOK4_NAME);
+        itemNames.add(BOOK5_NAME);
+        itemNames.add(BOOK6_NAME);
+        itemNames.add(BOOK7_NAME);
+        itemNames.add(BOOK8_NAME);
+        itemNames.add(BOOK9_NAME);
+        itemNames.add(HAMMER_NAME);
+        itemNames.add(PLAYER_PICTURE_NAME);
+        itemNames.add(PEN_NAME);
+        itemNames.add(KEY_NAME);
+        return itemNames;
     }
 
-    private void addBehaviorToPickableItems() {
-        List<String> pickableItemsNames = fillPickableItemsList();
+    private void addPickBehaviorToPickableItems() {
+        List<String> pickableItemsNames = fillPickableAndDroppableItemsList();
 
         for (String itemName : pickableItemsNames) {
             Behavior behavior = Behavior.builder()
@@ -266,23 +280,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         }
     }
 
-    private List<String> fillDroppableItemsList() {
-        List<String> droppableItemsNames = new ArrayList<String>();
-        droppableItemsNames.add(KEY_NAME);
-        droppableItemsNames.add(PLAYER_PICTURE_NAME);
-        droppableItemsNames.add(HAMMER_NAME);
-        droppableItemsNames.add(KEY_NAME);
-        droppableItemsNames.add(SCREWDRIVER_NUMBER1_NAME);
-        droppableItemsNames.add(SCREWDRIVER_NUMBER2_NAME);
-        droppableItemsNames.add(ID_CARD_NAME);
-        droppableItemsNames.add(PEN_NAME);
-        droppableItemsNames.add(PLAYER_PICTURE_NAME);
-        droppableItemsNames.add(LIQUOR_NAME);
-        return droppableItemsNames;
-    }
-
-    private void addBehaviorToDroppableItems() {
-        List<String> droppableItemsNames = fillDroppableItemsList();
+    private void addDropBehaviorToDroppableItems() {
+        List<String> droppableItemsNames = fillPickableAndDroppableItemsList();
 
         for (String itemName : droppableItemsNames) {
             Behavior behavior = Behavior.builder()
@@ -332,6 +331,12 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private void configureRoom1() {
         Stage room1 = this.getStage(ROOM1_NAME);
         room1.addItem(this.getItem(BOAT_PICTURE_NAME));
+        room1.addItem(this.getItem(TRAIN_PICTURE_NAME));
+        room1.addItem(this.getItem(TABLE_NAME));
+        room1.addItem(this.getItem(GLASS1_NAME));
+        room1.addItem(this.getItem(GLASS2_NAME));
+        room1.addItem(this.getItem(CHAIR1_NAME));
+        room1.addItem(this.getItem(CHAIR2_NAME));
         room1.addItem(this.getItem(SAFEBOX_NAME));
         room1.addItem(this.getItem(LIQUOR_NAME));
         room1.addState(LOCK_STATUS, UNLOCKED);
@@ -340,8 +345,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private void configureRoom2() {
         Stage room2 = this.getStage(ROOM2_NAME);
         room2.addItem(this.getItem(HAMMER_NAME));
-        room2.addItem(this.getItem(SCREWDRIVER_NUMBER1_NAME));
-        room2.addItem(this.getItem(SCREWDRIVER_NUMBER2_NAME));
+        room2.addItem(this.getItem(SCREWDRIVER1_NAME));
+        room2.addItem(this.getItem(SCREWDRIVER2_NAME));
         room2.addState(LOCK_STATUS, UNLOCKED);
     }
 
@@ -384,31 +389,11 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void createItems() {
-        this.addItem(new Item(PLAYER_PICTURE_NAME, PLAYER_PICTURE_DESCRIPTION));
-        this.addItem(new Item(PEN_NAME, PEN_DESCRIPTION));
-        this.addItem(new Item(HAMMER_NAME, HAMMER_DESCRIPTION));
-        this.addItem(new Item(KEY_NAME, KEY_DESCRIPTION));
-        this.addItem(new Item("Mesa", TABLE_DESCRIPTION));
-        this.addItem(new Item(LIQUOR_NAME, LIQUOR_DESCRIPTION));
-        this.addItem(new Item("Vaso1", GLASS_DESCRIPTION));
-        this.addItem(new Item("Vaso2", GLASS_DESCRIPTION));
-        this.addItem(new Item(STAIRS_NAME, STAIRS_DESCRIPTION));
-        this.addItem(new Item(RAILING_NAME, RAILING_DESCRIPTION));
-        this.addItem(new Item(BOAT_PICTURE_NAME, BOAT_PICTURE_DESCRIPTION));
-        this.addItem(new Item(SCREWDRIVER_NUMBER1_NAME, SCREWDRIVER_DESCRIPTION));
-        this.addItem(new Item(SCREWDRIVER_NUMBER2_NAME, SCREWDRIVER_DESCRIPTION));
-        this.addItem(new Item(WINDOW_NAME, WINDOW_DESCRIPTION));
-        this.addItem(new Item(OLD_BOOK_NAME, OLD_BOOK_DESCRIPTION));
-        Item idCard = new Item(ID_CARD_NAME, ID_CARD_DESCRIPTION);
-        idCard.addState(ID_CARD_PICTURE_STATE, STRANGER_PICTURE_NAME);
-        this.addItem(idCard);
-        ItemContainer safebox = new ItemContainer(SAFEBOX_NAME, SAFEBOX_DESCRIPTION, SAFEBOX_SIZE);
-        safebox.addItem(idCard);
-        this.addItem(safebox);
-        // Ver si el bibliotecario tiene que ser un ItemContainer
-        ItemContainer librarian = new ItemContainer(LIBRARIAN_NAME, LIBRIARIAN_DESCRIPTION, LIBRARIAN_SIZE);
-        this.addItem(librarian);
-
+        EscapeItemsCreator escapeItemsCreator = new EscapeItemsCreator();
+        List<Item> createdItems = escapeItemsCreator.create();
+        for (Item createdItem : createdItems) {
+            this.addItem(createdItem);
+        }
     }
 
     private void setWinningCondition() {

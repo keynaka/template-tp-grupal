@@ -151,11 +151,12 @@ public class EscapeDriverTest2 {
         assertEquals("You have entered to BibliotecaAcceso.", driver.sendCommand("goto BibliotecaAcceso"));
         assertEquals("You have entered to Pasillo.", driver.sendCommand("goto Pasillo"));
         assertEquals("You have entered to Salon3.", driver.sendCommand("goto Salon3"));
+        assertEquals("Items in Salon3: Llave.", driver.sendCommand("look around"));
         assertEquals("There you go!", driver.sendCommand("pick Llave"));
         assertEquals("You have entered to Pasillo.", driver.sendCommand("goto Pasillo"));
         assertEquals("You have entered to Salon1.", driver.sendCommand("goto Salon1"));
         assertEquals("There you go!", driver.sendCommand("move CuadroBarco"));
-        assertEquals("Items in Salon1: BotellaLicor, CajaFuerte, CuadroBarco.", driver.sendCommand("look around"));
+        assertEquals("Items in Salon1: BotellaLicor, CajaFuerte, CuadroBarco, CuadroTren, Mesa, Silla1, Silla2, Vaso1, Vaso2.", driver.sendCommand("look around"));
         assertEquals("CajaFuerte opened.", driver.sendCommand("open CajaFuerte Llave"));
         assertEquals("There you go!", driver.sendCommand("pick Credencial"));
         assertEquals("You have put Foto in Credencial", driver.sendCommand("put Foto Credencial"));
