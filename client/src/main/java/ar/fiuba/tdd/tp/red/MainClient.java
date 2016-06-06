@@ -13,7 +13,7 @@ public class MainClient {
         try {
             System.out.print("Host [127.0.0.1]: ");
             String hostName = stdIn.readLine();
-            if (hostName == null) {
+            if (hostName == null || hostName.isEmpty()) {
                 hostName = "localhost";
             }
 

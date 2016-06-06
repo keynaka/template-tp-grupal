@@ -32,6 +32,7 @@ public class Client {
         try {
             // A thread that is always listening to the server
             serverListenerThread = new ServerListenerThread(this, in);
+            serverListenerThread.start();
 
             while (connected) {
                 String rawCommand = this.readRawCommand();
@@ -57,7 +58,7 @@ public class Client {
 
 
     private void sendRawCommand(String string) throws IOException {
-        out.writeBytes(string);
+        out.writeUTF(string);
         out.flush();
     }
 }

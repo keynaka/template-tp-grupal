@@ -52,7 +52,7 @@ public class ServerClientThread extends Thread {
 
     public void sendMessage(String msg) {
         try {
-            out.writeBytes(msg);
+            out.writeUTF(msg);
             out.flush(); // Force send
         } catch (IOException e) {
             e.printStackTrace();

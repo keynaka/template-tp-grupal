@@ -57,8 +57,10 @@ public class ServerPortListenerThread extends Thread {
     public void newClientEvent(ServerClientThread newClientThread) {
         // Welcomes the client
         String welcomeMessage = "Welcome to port " + portNumber + "! ";
-        welcomeMessage += "\nYou are going to play " + game.getName();
-        welcomeMessage += "\nYou are the player number " + newClientThread.getPlayerNumber();
+//        welcomeMessage += "\nYou are going to play " + game.getName();
+        welcomeMessage += "\nAre you ready to play " + game.getName() + "?";
+//        welcomeMessage += "\nYou are the player number " + newClientThread.getPlayerNumber();
+        welcomeMessage += "\nYou are player number " + newClientThread.getPlayerNumber();
         newClientThread.sendMessage(welcomeMessage);
 
         // Notifies remaining clients

@@ -17,7 +17,7 @@ public class Server {
     // Runs the server and starts listening
     public void run() {
         while (!isExit()) {
-            this.userInput = userInput();
+            this.userInput = getUserInput();
             if (userInput != null && userInput.matches("^(?i)load game .+\\.jar$")) {
                 String gameName = userInput.split(" ")[2];
                 loadGame(gameName);
@@ -31,7 +31,7 @@ public class Server {
         return userInput.equalsIgnoreCase("exit");
     }
 
-    private String userInput() {
+    private String getUserInput() {
         try {
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
             System.out.print("> ");
@@ -47,7 +47,7 @@ public class Server {
             GameBuilder gameBuilder = BuilderLoader.load(gameName);
             listenPort(defaultPort++, gameBuilder);
 
-            System.out.println('"' + gameName + '"' + " loaded and listening on port " + defaultPort);
+            System.out.println('"' + gameName + '"' + " loaded and listening on port " + (defaultPort - 1));
         } catch (Exception e) {
             e.printStackTrace();
         }
