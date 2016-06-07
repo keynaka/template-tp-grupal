@@ -1,2 +1,3 @@
 rootProject.name = 'tp-tp-grupal'
-
+include 'client', 'server', 'engine'
+include 'fetch-quest'

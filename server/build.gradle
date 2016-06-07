@@ -1,0 +1,10 @@
+dependencies {
+    compile project(":engine")
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'ar.fiuba.tdd.tp.red.MainServer'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
