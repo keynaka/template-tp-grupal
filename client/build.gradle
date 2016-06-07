@@ -1,3 +1,6 @@
-dependencies {
-    compile project(":server")
+jar {
+    manifest {
+        attributes 'Main-Class': 'ar.fiuba.tdd.tp.red.MainClient'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
