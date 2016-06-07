@@ -7,7 +7,7 @@ import ar.fiuba.tdd.tp.games.ItemKeeperView;
 /**
  * Created by swandelow on 5/31/16.
  */
-public class LookAroundActionHandler implements ActionHandler {
+public class LookAroundActionHandler implements ActionHandler{
 
     private ConcreteGame game;
 
@@ -17,6 +17,6 @@ public class LookAroundActionHandler implements ActionHandler {
 
     @Override
     public String execute(Command command) {
-        return new ItemKeeperView(game.getCurrentStage(), game.getCurrentStage().getName()).print();
+        return new ItemKeeperView(game.getCurrentStage(),game.getCurrentStage().getName()).print();
     }
 }

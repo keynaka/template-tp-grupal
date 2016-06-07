@@ -9,7 +9,6 @@ import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.handlers.DefaultActionHandler;
 import ar.fiuba.tdd.tp.games.handlers.LookAroundActionHandler;
 import ar.fiuba.tdd.tp.games.items.Item;
-import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
 import ar.fiuba.tdd.tp.games.rules.*;
 
 import java.util.ArrayList;
@@ -24,28 +23,24 @@ import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.*;
 @SuppressWarnings("CPD-START")
 public class EscapeBuilder2 extends AbstractGameBuilder {
 
-    private static final String PICK_KEY_ACTION = "pickKeyAction";
     private static final String MOVE_BOATPICTURE_ACTION = "moveBoatPictureAction";
     private static final String OPEN_SAFEBOX_ACTION = "openSaveboxAction";
-    private static final String PICK_ID_CARD_ACTION = "pickIdCardAction";
-    private static final String PICK_HAMMER_ACTION = "pickHammerAction";
     private static final String PUT_PICTURE_ACTION = "putPictureAction";
     private static final String OPEN_SAFEBOX_RULE = "openSaveboxRule";
     private static final String BREAK_WINDOW_ACTION = "breakWindowAction";
     private static final String SHOW_ID_CARD_ACTION = "showIdCardAction";
+    private static final String BAN_PLAYER_FROM_LIBRARY_ACTION = "banPlayerFromLibraryAction";
+    private static final String SHOW_LIQUOR_ACTION = "showLiquorAction";
     private static final String UNLOCK_LIBRARY_ACTION = "unlockLibraryAction";
     private static final String UNLOCK_BASEMENT_ACTION = "unlockBasementAction";
     private static final String UNLOCK_OUTSIDE_ACTION = "unlockOutsideAction";
     private static final String MOVE_OLD_BOOK_ACTION = "moveOldBookAction";
     private static final String USE_STAIRS_ACTION = "useStairsAction";
     private static final String USE_RAILING_ACTION = "useRailingAction";
-    private static final String PICK_KEY_RULE = "pickKeyRule";
-    private static final String PICK_HAMMER_RULE = "pickHammerRule";
-    private static final String SCREWDRIVER_NUMBER1_RULE = "pickScrewdriverNumber1Rule";
-    private static final String SCREWDRIVER_NUMBER2_RULE = "pickScrewdriverNumber2Rule";
-    private static final String PICK_ID_CARD_RULE = "pickIdCardRule";
     private static final String MOVE_BOATPICTURE_RULE = "moveBoatPictureRule";
     private static final String SHOW_ID_CARD_RULE = "showIdCardRule";
+    private static final String SHOW_WRONG_ID_CARD_RULE = "showWrongIdCardRule";
+    private static final String SHOW_LIQUOR_RULE = "showLiquorRule";
     private static final String MOVE_OLD_BOOK_RULE = "moveOldBookRule";
     private static final String USE_STAIRS_RULE = "useStairsRule";
     private static final String USE_RAILING_RULE = "useRailingRule";
@@ -71,20 +66,6 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void createRules() {
-        Rule pickKeyRule = new IsInCurrentRoomRule(this.game, KEY_NAME);
-        this.addRule(PICK_KEY_RULE, pickKeyRule);
-
-        Rule pickIdCardRule = new IsInCurrentRoomRule(this.game, ID_CARD_NAME);
-        this.addRule(PICK_ID_CARD_RULE, pickIdCardRule);
-
-        Rule pickHammerRule = new IsInCurrentRoomRule(this.game, HAMMER_NAME);
-        this.addRule(PICK_HAMMER_RULE, pickHammerRule);
-
-        Rule pickScrewDriver1Rule = new IsInCurrentRoomRule(this.game, SCREWDRIVER_NUMBER1_NAME);
-        this.addRule(SCREWDRIVER_NUMBER1_RULE, pickScrewDriver1Rule);
-
-        Rule pickScrewDriver2Rule = new IsInCurrentRoomRule(this.game, SCREWDRIVER_NUMBER2_NAME);
-        this.addRule(SCREWDRIVER_NUMBER2_RULE, pickScrewDriver2Rule);
 
         Rule hasKey = new HasItemRule(this.player, this.getItem(KEY_NAME));
         this.addRule(OPEN_SAFEBOX_RULE, hasKey);
@@ -107,7 +88,14 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Rule idCardHasPlayersPicture = new VerifiesStateRule(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, PLAYER_PICTURE_NAME);
         Rule isInLibraryRule = new PlayerIsInRoomRule(this.player, LIBRARY_ACCESS_NAME);
-        this.addRule(SHOW_ID_CARD_RULE, idCardHasPlayersPicture.and(isInLibraryRule));
+        Rule isAllowedInLibrary = new VerifiesStateRule(this.player, ALLOWED_IN_LIBRARY_STATUS, ALLOWED);
+        this.addRule(SHOW_ID_CARD_RULE, idCardHasPlayersPicture.and(isInLibraryRule).and(hasIdCardRule).and(isAllowedInLibrary));
+
+        Rule idCardHasNotPlayersPicture = new VerifiesStateRule(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, STRANGER_PICTURE_NAME);
+        this.addRule(SHOW_WRONG_ID_CARD_RULE, idCardHasNotPlayersPicture);
+
+        Rule hasLiquorRule = new HasItemRule(this.player, this.getItem(LIQUOR_NAME));
+        this.addRule(SHOW_LIQUOR_RULE, hasLiquorRule.and(isInLibraryRule));
 
         Rule moveOldBookRule = new IsInCurrentRoomRule(this.game, OLD_BOOK_NAME);
         this.addRule(MOVE_OLD_BOOK_RULE, moveOldBookRule);
@@ -119,11 +107,18 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Rule playerIsInBasement = new PlayerIsInRoomRule(this.player, BASEMENT_NAME);
         this.addRule(USE_RAILING_RULE, railingIsInCurrentRoomRule.and(playerIsInBasement));
 
+        this.setRulesErrorMessage();
+
+    }
+
+    private void setRulesErrorMessage() {
+        for (String ruleName : this.rules.keySet()) {
+            Rule rule = this.getRule(ruleName);
+            rule.setErrorMessage(ERR_MSG);
+        }
     }
 
     private void createActions() {
-        Action pickKeyAction = new PickFromCurrentStageAction(this.game, this.player.getName(), KEY_NAME);
-        this.addAction(PICK_KEY_ACTION, pickKeyAction);
 
         Action moveBoatPictureAction = new AddItemAction(this.getStage(ROOM1_NAME), this.getItem(SAFEBOX_NAME));
         this.addAction(MOVE_BOATPICTURE_ACTION, moveBoatPictureAction);
@@ -137,12 +132,6 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Action openSafeboxAction = new SwitchItemOwnerAction(this.getItemKeeper(SAFEBOX_NAME), this.getStage(ROOM1_NAME), ID_CARD_NAME);
         this.addAction(OPEN_SAFEBOX_ACTION, openSafeboxAction);
 
-        Action pickIdCardAction = new PickFromCurrentStageAction(this.game, this.player.getName(), ID_CARD_NAME);
-        this.addAction(PICK_ID_CARD_ACTION, pickIdCardAction);
-
-        Action pickHammerAction = new PickFromCurrentStageAction(this.game, this.player.getName(), HAMMER_NAME);
-        this.addAction(PICK_HAMMER_ACTION, pickHammerAction);
-
         Action putPictureAction = new SetStateValueAction(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, PLAYER_PICTURE_NAME);
         this.addAction(PUT_PICTURE_ACTION, putPictureAction);
 
@@ -155,10 +144,16 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Action showIdCardAction = new SwitchItemOwnerAction(this.player, this.getItemKeeper(LIBRARIAN_NAME), ID_CARD_NAME);
         this.addAction(SHOW_ID_CARD_ACTION, showIdCardAction);
 
+        Action banPlayerFromLibrary = new SetStateValueAction(this.player, ALLOWED_IN_LIBRARY_STATUS, NOT_ALLOWED);
+        this.addAction(BAN_PLAYER_FROM_LIBRARY_ACTION, banPlayerFromLibrary);
+
+        Action showLiquorAction = new SwitchItemOwnerAction(this.player, this.getItemKeeper(LIBRARIAN_NAME), LIQUOR_NAME);
+        this.addAction(SHOW_LIQUOR_ACTION, showLiquorAction);
+
         Action unlockLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), LOCK_STATUS, UNLOCKED);
         this.addAction(UNLOCK_LIBRARY_ACTION, unlockLibraryAction);
 
-        Action useStairsAction = new SetStateValueAction(this.player, LIFE_STATE, DEAD_PLAYER);
+        Action useStairsAction = new SetStateValueAction(this.player, LIFE_STATUS, DEAD_PLAYER);
         this.addAction(USE_STAIRS_ACTION, useStairsAction);
 
         Action useRailingAction = new ChangePlayerStageAction(this.game, this.getStage(BASEMENT_DOWNSTAIRS_NAME));
@@ -169,14 +164,6 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private void bindActionsAndItems() {
 
         Behavior behavior = Behavior.builder()
-                .actionName(PICK)
-                .executionRule(this.getRule(KEY_NAME))
-                .actions(this.getAction(PICK_KEY_ACTION))
-                .resultMessage(PICK_RESULT_MSG)
-                .build();
-        this.getItem(KEY_NAME).addBehavior(behavior);
-
-        behavior = Behavior.builder()
                 .actionName(MOVE)
                 .executionRule(this.getRule(MOVE_BOATPICTURE_RULE))
                 .actions(this.getAction(MOVE_BOATPICTURE_ACTION))
@@ -191,22 +178,6 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .resultMessage(String.format(OPEN_RESULT_MSG, SAFEBOX_NAME))
                 .build();
         this.getItem(SAFEBOX_NAME).addBehavior(behavior);
-
-        behavior = Behavior.builder()
-                .actionName(PICK)
-                .executionRule(this.getRule(PICK_ID_CARD_RULE))
-                .actions(this.getAction(PICK_ID_CARD_ACTION))
-                .resultMessage(PICK_RESULT_MSG)
-                .build();
-        this.getItem(ID_CARD_NAME).addBehavior(behavior);
-
-        behavior = Behavior.builder()
-                .actionName(PICK)
-                .executionRule(this.getRule(PICK_HAMMER_RULE))
-                .actions(this.getAction(PICK_HAMMER_ACTION))
-                .resultMessage(PICK_RESULT_MSG)
-                .build();
-        this.getItem(HAMMER_NAME).addBehavior(behavior);
 
         behavior = Behavior.builder()
                 .actionName(PUT)
@@ -228,9 +199,20 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .actionName(SHOW)
                 .executionRule(this.getRule(SHOW_ID_CARD_RULE))
                 .actions(this.getAction(SHOW_ID_CARD_ACTION), this.getAction(UNLOCK_LIBRARY_ACTION))
-                .resultMessage(SHOW_ID_CARD_RESULT_MSG)
+                .alternativeExecutionRule(this.getRule(SHOW_WRONG_ID_CARD_RULE))
+                .alternativeActions(this.getAction(BAN_PLAYER_FROM_LIBRARY_ACTION))
+                .resultMessage(SHOW_RESULT_MSG)
+                .alternativeResultMessage(SHOW_ALT_RESULT_MSG)
                 .build();
         this.getItem(ID_CARD_NAME).addBehavior(behavior);
+
+        behavior = Behavior.builder()
+                .actionName(SHOW)
+                .executionRule(this.getRule(SHOW_LIQUOR_RULE))
+                .actions(this.getAction(SHOW_LIQUOR_ACTION), this.getAction(UNLOCK_LIBRARY_ACTION))
+                .resultMessage(SHOW_RESULT_MSG)
+                .build();
+        this.getItem(LIQUOR_NAME).addBehavior(behavior);
 
         behavior = Behavior.builder()
                 .actionName(MOVE)
@@ -256,25 +238,50 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .build();
         this.getItem(RAILING_NAME).addBehavior(behavior);
 
-        this.addBehaviorToDroppableItems();
+        this.addDropBehaviorToDroppableItems();
+        this.addPickBehaviorToPickableItems();
     }
 
-    private List<String> fillDroppableItemsList() {
-        List<String> droppableItemsNames = new ArrayList<String>();
-        droppableItemsNames.add(KEY_NAME);
-        droppableItemsNames.add(PLAYER_PICTURE_NAME);
-        droppableItemsNames.add(HAMMER_NAME);
-        droppableItemsNames.add(KEY_NAME);
-        droppableItemsNames.add(SCREWDRIVER_NUMBER1_NAME);
-        droppableItemsNames.add(SCREWDRIVER_NUMBER2_NAME);
-        droppableItemsNames.add(ID_CARD_NAME);
-        droppableItemsNames.add(PEN_NAME);
-        droppableItemsNames.add(PLAYER_PICTURE_NAME);
-        return droppableItemsNames;
+    private List<String> fillPickableAndDroppableItemsList() {
+        List<String> itemNames = new ArrayList<String>();
+        itemNames.add(LIQUOR_NAME);
+        itemNames.add(GLASS1_NAME);
+        itemNames.add(GLASS2_NAME);
+        itemNames.add(ID_CARD_NAME);
+        itemNames.add(SCREWDRIVER1_NAME);
+        itemNames.add(SCREWDRIVER2_NAME);
+        itemNames.add(BOOK1_NAME);
+        itemNames.add(BOOK2_NAME);
+        itemNames.add(BOOK3_NAME);
+        itemNames.add(BOOK4_NAME);
+        itemNames.add(BOOK5_NAME);
+        itemNames.add(BOOK6_NAME);
+        itemNames.add(BOOK7_NAME);
+        itemNames.add(BOOK8_NAME);
+        itemNames.add(BOOK9_NAME);
+        itemNames.add(HAMMER_NAME);
+        itemNames.add(PLAYER_PICTURE_NAME);
+        itemNames.add(PEN_NAME);
+        itemNames.add(KEY_NAME);
+        return itemNames;
     }
 
-    private void addBehaviorToDroppableItems() {
-        List<String> droppableItemsNames = fillDroppableItemsList();
+    private void addPickBehaviorToPickableItems() {
+        List<String> pickableItemsNames = fillPickableAndDroppableItemsList();
+
+        for (String itemName : pickableItemsNames) {
+            Behavior behavior = Behavior.builder()
+                    .actionName(PICK)
+                    .executionRule(new IsInCurrentRoomRule(this.game, itemName))
+                    .actions(new PickFromCurrentStageAction(this.game, this.player.getName(), itemName))
+                    .resultMessage(PICK_RESULT_MSG)
+                    .build();
+            this.getItem(itemName).addBehavior(behavior);
+        }
+    }
+
+    private void addDropBehaviorToDroppableItems() {
+        List<String> droppableItemsNames = fillPickableAndDroppableItemsList();
 
         for (String itemName : droppableItemsNames) {
             Behavior behavior = Behavior.builder()
@@ -324,15 +331,22 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private void configureRoom1() {
         Stage room1 = this.getStage(ROOM1_NAME);
         room1.addItem(this.getItem(BOAT_PICTURE_NAME));
+        room1.addItem(this.getItem(TRAIN_PICTURE_NAME));
+        room1.addItem(this.getItem(TABLE_NAME));
+        room1.addItem(this.getItem(GLASS1_NAME));
+        room1.addItem(this.getItem(GLASS2_NAME));
+        room1.addItem(this.getItem(CHAIR1_NAME));
+        room1.addItem(this.getItem(CHAIR2_NAME));
         room1.addItem(this.getItem(SAFEBOX_NAME));
+        room1.addItem(this.getItem(LIQUOR_NAME));
         room1.addState(LOCK_STATUS, UNLOCKED);
     }
 
     private void configureRoom2() {
         Stage room2 = this.getStage(ROOM2_NAME);
         room2.addItem(this.getItem(HAMMER_NAME));
-        room2.addItem(this.getItem(SCREWDRIVER_NUMBER1_NAME));
-        room2.addItem(this.getItem(SCREWDRIVER_NUMBER2_NAME));
+        room2.addItem(this.getItem(SCREWDRIVER1_NAME));
+        room2.addItem(this.getItem(SCREWDRIVER2_NAME));
         room2.addState(LOCK_STATUS, UNLOCKED);
     }
 
@@ -375,31 +389,11 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void createItems() {
-        this.addItem(new Item(PLAYER_PICTURE_NAME, PLAYER_PICTURE_DESCRIPTION));
-        this.addItem(new Item(PEN_NAME, PEN_DESCRIPTION));
-        this.addItem(new Item(HAMMER_NAME, HAMMER_DESCRIPTION));
-        this.addItem(new Item(KEY_NAME, KEY_DESCRIPTION));
-        this.addItem(new Item("Mesa", TABLE_DESCRIPTION));
-        this.addItem(new Item("BotellaLicor", LIQUOR_DESCRIPTION));
-        this.addItem(new Item("Vaso1", GLASS_DESCRIPTION));
-        this.addItem(new Item("Vaso2", GLASS_DESCRIPTION));
-        this.addItem(new Item(STAIRS_NAME, STAIRS_DESCRIPTION));
-        this.addItem(new Item(RAILING_NAME, RAILING_DESCRIPTION));
-        this.addItem(new Item(BOAT_PICTURE_NAME, BOAT_PICTURE_DESCRIPTION));
-        this.addItem(new Item(SCREWDRIVER_NUMBER1_NAME, SCREWDRIVER_DESCRIPTION));
-        this.addItem(new Item(SCREWDRIVER_NUMBER2_NAME, SCREWDRIVER_DESCRIPTION));
-        this.addItem(new Item(WINDOW_NAME, WINDOW_DESCRIPTION));
-        this.addItem(new Item(OLD_BOOK_NAME, OLD_BOOK_DESCRIPTION));
-        Item idCard = new Item(ID_CARD_NAME, ID_CARD_DESCRIPTION);
-        idCard.addState(ID_CARD_PICTURE_STATE, STRANGER_PICTURE_NAME);
-        this.addItem(idCard);
-        ItemContainer safebox = new ItemContainer(SAFEBOX_NAME, SAFEBOX_DESCRIPTION, SAFEBOX_SIZE);
-        safebox.addItem(idCard);
-        this.addItem(safebox);
-        // Ver si el bibliotecario tiene que ser un ItemContainer
-        ItemContainer librarian = new ItemContainer(LIBRARIAN_NAME, LIBRIARIAN_DESCRIPTION, LIBRARIAN_SIZE);
-        this.addItem(librarian);
-
+        EscapeItemsCreator escapeItemsCreator = new EscapeItemsCreator();
+        List<Item> createdItems = escapeItemsCreator.create();
+        for (Item createdItem : createdItems) {
+            this.addItem(createdItem);
+        }
     }
 
     private void setWinningCondition() {
@@ -407,7 +401,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void setLosingCondition() {
-        Rule isDead = new VerifiesStateRule(this.player, LIFE_STATE, DEAD_PLAYER);
+        Rule isDead = new VerifiesStateRule(this.player, LIFE_STATUS, DEAD_PLAYER);
         Item hammer = this.getItem(HAMMER_NAME);
         Rule hasntHammer = new HasItemRule(this.player, hammer).negate();
         Rule isInDownBasement = new PlayerIsInRoomRule(this.player, BASEMENT_DOWNSTAIRS_NAME);
@@ -474,7 +468,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
     @Override
     protected void configurePlayer() {
-        player.addState(LIFE_STATE, ALIVE_PLAYER);
+        player.addState(LIFE_STATUS, ALIVE_PLAYER);
+        player.addState(ALLOWED_IN_LIBRARY_STATUS, ALLOWED);
         player.setCurrentStage(HALL_NAME);
         player.addToInventory(this.getItem(PLAYER_PICTURE_NAME));
         player.addToInventory(this.getItem(PEN_NAME));
