@@ -17,7 +17,7 @@ public class GameTimer {
 
     public void startTimer() {
         timer = new Timer();
-        timer.schedule(new ChangeState(), this.seconds * 1000, this.seconds * 1000);
+        //timer.schedule(new ChangeState(), this.seconds * 1000, this.seconds * 1000);
     }
 
     public void scheduleGameTimerTask(GameTimerTask task) {

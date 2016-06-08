@@ -28,6 +28,7 @@ public class ConcreteGame extends AbstractGame {
     private GameState gameState;
     private List<GameObserver> gameObservers = new ArrayList<>();
     private String eventMessage = "soy un mensaje asíncrono.";
+    private GameTimer timer;
 
     public ConcreteGame() {
         super("", "");
@@ -96,6 +97,14 @@ public class ConcreteGame extends AbstractGame {
         for (GameObserver observer : this.gameObservers) {
             observer.update();
         }
+    }
+
+    public GameTimer getTimer() {
+        return timer;
+    }
+
+    public void setTimer(GameTimer timer) {
+        this.timer = timer;
     }
 
     @Deprecated

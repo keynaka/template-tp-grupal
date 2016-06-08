@@ -27,6 +27,14 @@ public class FetchQuestBuilder extends AbstractGameBuilder {
         createRules();
         createActions();
         bindRulesAndActions();
+        createTimer();
+    }
+
+    private void createTimer() {
+        this.game.setTimer(new GameTimer());
+        GameTimerTask taskEjemplo = new GameTimerTask(this.game, 2000L, 2000L);
+        this.game.getTimer().startTimer();
+        this.game.getTimer().scheduleGameTimerTask(taskEjemplo);
     }
 
     private void createStages() {
