@@ -28,6 +28,7 @@ public class ServerPortListenerThread extends Thread implements GameObserver {
     public void run() {
         try {
             game = gameBuilder.build();
+            game.registerObserver(this);
             serverSocket = new ServerSocket(portNumber);
 
             while (!this.isInterrupted()) {
@@ -87,10 +88,10 @@ public class ServerPortListenerThread extends Thread implements GameObserver {
     @Override
     public void update() {
         String eventMessage = this.game.getEventMessage();
-        this.notifyAll(eventMessage);
+        this.notifyAllClients(eventMessage);
     }
 
-    private void notifyAll(String message) {
+    private void notifyAllClients(String message) {
         for (ServerClientThread client : clientThreads) {
             client.sendMessage(message);
         }
