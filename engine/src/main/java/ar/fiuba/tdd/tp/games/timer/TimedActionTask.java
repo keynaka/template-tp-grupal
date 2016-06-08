@@ -17,6 +17,12 @@ public class TimedActionTask extends AbstractGameTimerTask {
         this.resultMessage = resultMessage;
     }
 
+    public TimedActionTask(ConcreteGame game, Long delay, Long period, Action action, String resultMessage) {
+        super(game, delay, period);
+        this.action = action;
+        this.resultMessage = resultMessage;
+    }
+
     @Override
     protected String doRun() {
         System.out.println("Running scheduled action.");

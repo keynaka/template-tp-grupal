@@ -57,4 +57,16 @@ public class GameObjectRepository {
         gameObjects.addAll(items);
         return gameObjects;
     }
+
+    public Stage getCurrentStageFor(String itemName) {
+        Stage foundStage = null;
+        for (Stage stage : this.game.getStages().values()) {
+            for (Item item : stage.getItems()) {
+                if (item.getName().equalsIgnoreCase(itemName)) {
+                    return stage;
+                }
+            }
+        }
+        return foundStage;
+    }
 }
