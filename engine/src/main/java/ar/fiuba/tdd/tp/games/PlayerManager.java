@@ -26,8 +26,8 @@ public class PlayerManager {
     }
 
     public void addNewPlayer(Integer playerNumber) {
-        System.out.println("Adding new player");
         if (this.isPossibleAddPlayer()) {
+            System.out.println("Adding new player");
             String playerName = PREFIX_PLAYER_NAME.concat(String.valueOf(playerNumber));
             this.playerCreator.setPlayerName(playerName);
             Player player = this.playerCreator.create();
@@ -42,7 +42,7 @@ public class PlayerManager {
     }
 
 
-    private boolean isPossibleAddPlayer() {
+    public boolean isPossibleAddPlayer() {
         boolean isFirstPlayer = this.players.isEmpty();
         return isFirstPlayer || (this.allowMultiplayer && this.players.size() < this.maxAmountOfPlayer);
     }

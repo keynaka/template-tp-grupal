@@ -8,8 +8,11 @@ import ar.fiuba.tdd.tp.games.exceptions.AddingPlayerException;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ServerPortListenerThread extends Thread {
 
@@ -17,7 +20,8 @@ public class ServerPortListenerThread extends Thread {
     private GameBuilder gameBuilder;
     private Game game;
     ServerSocket serverSocket;
-    private List<ServerClientThread> clientThreads = new ArrayList<>();
+   // private List<ServerClientThread> clientThreads = new ArrayList<>();
+    Map<Integer, ServerClientThread> clientThreads = new HashMap<>();
     private CommandInterpreter interpreter = new CommandInterpreter();
 
     public ServerPortListenerThread(int portNumber, GameBuilder gameBuilder) {
@@ -30,16 +34,19 @@ public class ServerPortListenerThread extends Thread {
         try {
             game = gameBuilder.build();
             serverSocket = new ServerSocket(portNumber);
-
             while (!this.isInterrupted()) {
                 // Starts new client thread
                 int playerNumber = clientThreads.size() + 1;
-
                 ServerClientThread clientThread = new ServerClientThread(serverSocket.accept(), this, playerNumber);
                 clientThread.start();
-                clientThreads.add(clientThread);
+                System.out.println("New connection in port " + portNumber + "! Client amount: " + playerNumber);
 
-                System.out.println("New connection in port " + portNumber + "! Client amount: " + clientThreads.size());
+                if (this.game.getPlayerManager().isPossibleAddPlayer()) {
+                    clientThreads.put(playerNumber, clientThread);
+                } else {
+                    clientThread.sendMessage("More players are not allowed. Goodbye");
+                    clientThread.interrupt();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,7 +54,7 @@ public class ServerPortListenerThread extends Thread {
     }
 
     public void interrupt() {
-        for (Thread thread : clientThreads) {
+        for (Thread thread : clientThreads.values()) {
             thread.interrupt();
         }
         try {
@@ -71,11 +78,9 @@ public class ServerPortListenerThread extends Thread {
             // Notifies remaining clients
             notify(newClientThread, "Player number " + newClientThread.getPlayerNumber() + " has logged in.");
         } catch (AddingPlayerException e) {
-            // TODO cerrar conexion fallida con el client
-            welcomeMessage = e.getMessage();
-            newClientThread.sendMessage("More players are not allowed. Goodbye.");
+            newClientThread.sendMessage("More players are not allowed. Goodbye player " + newClientThread.getPlayerNumber());
+            //clientThreads.remove(newClientThread.getPlayerNumber());
         }
-
     }
 
     public void processMessageByClientEvent(ServerClientThread clientThread, String command) {
@@ -100,8 +105,8 @@ public class ServerPortListenerThread extends Thread {
     }
 
     public void notify(ServerClientThread notifier, String msg) {
-        for (ServerClientThread client : clientThreads) {
-            if (client != notifier) {
+        for (ServerClientThread client : clientThreads.values()) {
+            if (!client.isInterrupted() && client != notifier) {
                 client.sendMessage(msg);
             }
         }
