@@ -26,6 +26,8 @@ public class ConcreteGame extends AbstractGame {
     private Rule losingConditionRule;
     private Predicate<ConcreteGame> losingCondition = (game) -> false;
     private GameState gameState;
+    private List<GameObserver> gameObservers = new ArrayList<>();
+    private String eventMessage = "soy un mensaje asíncrono.";
 
     public ConcreteGame() {
         super("", "");
@@ -74,6 +76,22 @@ public class ConcreteGame extends AbstractGame {
     @Override
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    @Override
+    public void registerObserver(GameObserver observer) {
+        this.gameObservers.add(observer);
+    }
+
+    @Override
+    public String getEventMessage() {
+        return this.eventMessage;
+    }
+
+    private void notifyObservers() {
+        for (GameObserver observer : this.gameObservers) {
+            observer.update();
+        }
     }
 
     @Deprecated

@@ -3,13 +3,14 @@ package ar.fiuba.tdd.tp.red.server;
 import ar.fiuba.tdd.tp.games.CommandInterpreter;
 import ar.fiuba.tdd.tp.games.Game;
 import ar.fiuba.tdd.tp.games.GameBuilder;
+import ar.fiuba.tdd.tp.games.GameObserver;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerPortListenerThread extends Thread {
+public class ServerPortListenerThread extends Thread implements GameObserver {
 
     private int portNumber;
     private GameBuilder gameBuilder;
@@ -80,6 +81,18 @@ public class ServerPortListenerThread extends Thread {
             if (client != notifier) {
                 client.sendMessage(msg);
             }
+        }
+    }
+
+    @Override
+    public void update() {
+        String eventMessage = this.game.getEventMessage();
+        this.notifyAll(eventMessage);
+    }
+
+    private void notifyAll(String message) {
+        for (ServerClientThread client : clientThreads) {
+            client.sendMessage(message);
         }
     }
 }

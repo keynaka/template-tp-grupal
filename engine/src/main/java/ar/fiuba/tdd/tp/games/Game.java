@@ -34,4 +34,8 @@ public interface Game {
     GameState getGameState();
 
     void setPlayer(Player player);
+
+    void registerObserver(GameObserver observer);
+
+    String getEventMessage();
 }
