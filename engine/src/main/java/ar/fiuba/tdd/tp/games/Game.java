@@ -32,4 +32,6 @@ public interface Game {
     String getName();
 
     GameState getGameState();
+
+    void setPlayer(Player player);
 }

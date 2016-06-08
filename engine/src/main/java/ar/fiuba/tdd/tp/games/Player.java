@@ -5,7 +5,6 @@ import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.objects.GameObject;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by swandelow on 4/21/16.
@@ -22,6 +21,11 @@ public class Player extends GameObject implements ItemKeeper {
         this.inventory = new Inventory();
         this.state = CharacterState.HEALTHY;
         this.state2 = "healthy";
+    }
+
+    public Player(String playerName) {
+        super();
+        this.name = playerName;
     }
 
     public Inventory getInventory() {
