@@ -71,6 +71,7 @@ public class ConcreteGame extends AbstractGame {
         return player;
     }
 
+    @Override
     public void setPlayer(Player player) {
         this.player = player;
     }
