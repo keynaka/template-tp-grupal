@@ -24,6 +24,7 @@ public class FetchQuestBuilder extends AbstractGameBuilder {
         createStages();
         createItems();
         configurePlayer();
+        configurePlayerManager();
         createRules();
         createActions();
         bindRulesAndActions();
@@ -42,6 +43,13 @@ public class FetchQuestBuilder extends AbstractGameBuilder {
     @Override
     protected void configurePlayer() {
         player.setCurrentStage(mainStage.getName());
+    }
+
+    private void configurePlayerManager() {
+        PlayerCreator playerCreator = new PlayerCreator();
+        playerCreator.setInitialRoom("room");
+        this.playerManager = new PlayerManager(playerCreator, true, 2);
+        this.game.setPlayerManager(this.playerManager);
     }
 
     protected void createRules() {
