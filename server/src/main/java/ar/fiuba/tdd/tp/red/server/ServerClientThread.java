@@ -1,7 +1,5 @@
 package ar.fiuba.tdd.tp.red.server;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -60,6 +58,7 @@ public class ServerClientThread extends Thread {
             out.writeUTF(msg);
             out.flush(); // Force send
         } catch (SocketException e) {
+            System.out.print("");
         } catch (IOException e) {
             e.printStackTrace();
         }
