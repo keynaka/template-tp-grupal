@@ -88,7 +88,11 @@ public class ConcreteGame extends AbstractGame {
         return this.eventMessage;
     }
 
-    private void notifyObservers() {
+    public void setEventMessage(String eventMessage) {
+        this.eventMessage = eventMessage;
+    }
+
+    public void notifyObservers() {
         for (GameObserver observer : this.gameObservers) {
             observer.update();
         }
