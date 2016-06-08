@@ -1,10 +1,14 @@
 package ar.fiuba.tdd.tp.games.fetchquest;
 
-import ar.fiuba.tdd.tp.games.*;
+import ar.fiuba.tdd.tp.games.AbstractGameBuilder;
+import ar.fiuba.tdd.tp.games.ActionOld;
+import ar.fiuba.tdd.tp.games.Stage;
 import ar.fiuba.tdd.tp.games.actions.SwitchItemOwnerAction;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.rules.HasItemRule;
+import ar.fiuba.tdd.tp.games.timer.GameTimer;
+import ar.fiuba.tdd.tp.games.timer.GameTimerTask;
 
 /**
  * Created by sebass on 10/05/16.
@@ -34,7 +38,7 @@ public class FetchQuestBuilder extends AbstractGameBuilder {
         this.game.setTimer(new GameTimer());
         GameTimerTask taskEjemplo = new GameTimerTask(this.game, 2000L, 2000L);
         this.game.getTimer().startTimer();
-        this.game.getTimer().scheduleGameTimerTask(taskEjemplo);
+        this.game.getTimer().schedulePeriodicGameTask(taskEjemplo);
     }
 
     private void createStages() {

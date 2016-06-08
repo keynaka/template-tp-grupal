@@ -1,10 +1,12 @@
-package ar.fiuba.tdd.tp.games;
+package ar.fiuba.tdd.tp.games.timer;
 
-import java.util.TimerTask;
+import ar.fiuba.tdd.tp.games.ConcreteGame;
 
 /**
  * Created by swandelow on 6/8/16.
  */
+
+// TODO borrar esta clase!!
 public class GameTimerTask extends AbstractGameTimerTask {
 
     public GameTimerTask(ConcreteGame game, Long delay, Long period) {

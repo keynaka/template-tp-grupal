@@ -1,4 +1,6 @@
-package ar.fiuba.tdd.tp.games;
+package ar.fiuba.tdd.tp.games.timer;
+
+import ar.fiuba.tdd.tp.games.ConcreteGame;
 
 import java.util.TimerTask;
 
@@ -10,6 +12,11 @@ public abstract class AbstractGameTimerTask extends TimerTask {
     private ConcreteGame game;
     private Long delay;
     private Long period;
+
+    public AbstractGameTimerTask(ConcreteGame game, Long delay) {
+        this.game = game;
+        this.delay = delay;
+    }
 
     public AbstractGameTimerTask(ConcreteGame game, Long delay, Long period) {
         this.game = game;

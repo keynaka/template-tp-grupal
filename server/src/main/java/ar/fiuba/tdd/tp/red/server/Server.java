@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.red.server;
 
 import ar.fiuba.tdd.tp.games.GameBuilder;
+import ar.fiuba.tdd.tp.games.escape.EscapeBuilder2;
 import ar.fiuba.tdd.tp.games.fetchquest.FetchQuestBuilder;
 
 import java.io.BufferedReader;
@@ -46,7 +47,7 @@ public class Server {
     private void loadGame(String gameName) {
         try {
             //GameBuilder gameBuilder = BuilderLoader.load(gameName);
-            GameBuilder gameBuilder = new FetchQuestBuilder();
+            GameBuilder gameBuilder = new EscapeBuilder2();
             listenPort(defaultPort++, gameBuilder);
 
             System.out.println('"' + gameName + '"' + " loaded and listening on port " + (defaultPort - 1));

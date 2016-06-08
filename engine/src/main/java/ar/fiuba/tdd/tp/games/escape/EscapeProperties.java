@@ -87,6 +87,12 @@ public class EscapeProperties {
     public static final String OLD_BOOK_NAME = "LibroViejo";
     public static final String OLD_BOOK_DESCRIPTION = "Es un libro viejo.";
 
+    public static final String SLEEP_STATUS = "sleep-status";
+    public static final String SLEEP_STATUS_AWAKE = "awake";
+    public static final String SLEEP_STATUS_SLEPT = "slept";
+
+
+
     public static final String NOT_IN_INVENTORY_MSG = "%s is not in the inventory.";
     public static final String GOTO = "goto";
     public static final String GOTO_RESULT_MSG = "You have entered to %s.";

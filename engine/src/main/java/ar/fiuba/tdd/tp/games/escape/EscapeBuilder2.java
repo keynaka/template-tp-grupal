@@ -10,6 +10,7 @@ import ar.fiuba.tdd.tp.games.handlers.DefaultActionHandler;
 import ar.fiuba.tdd.tp.games.handlers.LookAroundActionHandler;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.rules.*;
+import ar.fiuba.tdd.tp.games.timer.GameTimer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private static final String MOVE_OLD_BOOK_ACTION = "moveOldBookAction";
     private static final String USE_STAIRS_ACTION = "useStairsAction";
     private static final String USE_RAILING_ACTION = "useRailingAction";
+    private static final String SLEEP_LIBRARIAN_ACTION = "sleepLibrarian";
+    private static final String AWAKE_LIBRARIAN_ACTION = "awakeLibrarian";
     private static final String MOVE_BOATPICTURE_RULE = "moveBoatPictureRule";
     private static final String SHOW_ID_CARD_RULE = "showIdCardRule";
     private static final String SHOW_WRONG_ID_CARD_RULE = "showWrongIdCardRule";
@@ -61,8 +64,14 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         this.createActions();
         this.bindActionsAndItems();
         this.bindStagesAndActions();
+        this.createTimer();
         setWinningCondition();
         setLosingCondition();
+    }
+
+    private void createTimer() {
+        this.game.setTimer(new GameTimer());
+        this.game.getTimer().startTimer();
     }
 
     private void createRules() {
@@ -153,6 +162,15 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Action unlockLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), LOCK_STATUS, UNLOCKED);
         this.addAction(UNLOCK_LIBRARY_ACTION, unlockLibraryAction);
 
+        Action sleepLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), SLEEP_STATUS, SLEEP_STATUS_SLEPT);
+        this.addAction(SLEEP_LIBRARIAN_ACTION, sleepLibraryAction);
+
+        Action awakeLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), SLEEP_STATUS, SLEEP_STATUS_AWAKE);
+
+        Long awakeTime = 1000 * 3L;
+        Action scheduledAwakeLibrarianAction = new TimedAction(this.game, awakeTime, awakeLibraryAction, "Librarian is awake.");
+        this.addAction(AWAKE_LIBRARIAN_ACTION, scheduledAwakeLibrarianAction);
+
         Action useStairsAction = new SetStateValueAction(this.player, LIFE_STATUS, DEAD_PLAYER);
         this.addAction(USE_STAIRS_ACTION, useStairsAction);
 
@@ -209,7 +227,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         behavior = Behavior.builder()
                 .actionName(SHOW)
                 .executionRule(this.getRule(SHOW_LIQUOR_RULE))
-                .actions(this.getAction(SHOW_LIQUOR_ACTION), this.getAction(UNLOCK_LIBRARY_ACTION))
+                .actions(this.getAction(SHOW_LIQUOR_ACTION), this.getAction(UNLOCK_LIBRARY_ACTION), this.getAction(SLEEP_LIBRARIAN_ACTION), this.getAction(AWAKE_LIBRARIAN_ACTION))
                 .resultMessage(SHOW_RESULT_MSG)
                 .build();
         this.getItem(LIQUOR_NAME).addBehavior(behavior);
