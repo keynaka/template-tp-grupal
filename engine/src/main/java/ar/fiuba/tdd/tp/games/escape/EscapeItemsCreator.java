@@ -64,6 +64,7 @@ public class EscapeItemsCreator {
 
     private void createLibraryAccessItems() {
         ItemContainer librarian = new ItemContainer(LIBRARIAN_NAME, LIBRIARIAN_DESCRIPTION, LIBRARIAN_SIZE);
+        librarian.addState(SLEEP_STATUS, SLEEP_STATUS_AWAKE);
         this.addItem(librarian);
     }
 

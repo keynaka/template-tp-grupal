@@ -337,6 +337,18 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                     .build();
             stage.addBehavior(behavior);
         }
+
+        Stage library = this.getStage(LIBRARY_NAME);
+        Rule isNextRoomRule = new IsNextRoomRule(this.game, library.getName());
+        Rule isSlept = new VerifiesStateRule(this.getItem(LIBRARIAN_NAME), SLEEP_STATUS, SLEEP_STATUS_SLEPT);
+        Rule isNotInLibraryAccess = new IsInCurrentRoomRule(this.game, LIBRARIAN_NAME).negate();
+        Rule isAllowed = new VerifyPlayerStateRule(this.game, ALLOWED_IN_LIBRARY_STATUS, ALLOWED);
+
+        Rule libraryAccessRule = isNextRoomRule.and(isSlept.or(isNotInLibraryAccess.or(isAllowed)));
+
+        Behavior libraryBehavior = library.getBehavior(GOTO);
+        libraryBehavior.setExecutionRule(libraryAccessRule);
+
     }
 
     private void configureStagesAndItems() {
