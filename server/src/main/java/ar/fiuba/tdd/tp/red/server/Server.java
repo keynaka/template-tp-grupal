@@ -45,8 +45,8 @@ public class Server {
 
     private void loadGame(String gameName) {
         try {
-            //GameBuilder gameBuilder = BuilderLoader.load(gameName);
-            GameBuilder gameBuilder = new FetchQuestBuilder();
+            GameBuilder gameBuilder = BuilderLoader.load(gameName);
+            //GameBuilder gameBuilder = new FetchQuestBuilder();
             listenPort(defaultPort++, gameBuilder);
 
             System.out.println('"' + gameName + '"' + " loaded and listening on port " + (defaultPort - 1));
