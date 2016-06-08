@@ -79,6 +79,13 @@ public class ServerPortListenerThread extends Thread {
     }
 
     public void processMessageByClientEvent(ServerClientThread clientThread, String command) {
+
+        if (game.isFinished()) {
+            String endGameMsg = "Game Over - Press Exit";
+            clientThread.sendMessage(endGameMsg);
+            return;
+        }
+
         int playerNumber = clientThread.getPlayerNumber();
 
         Player player = this.game.getPlayerManager().getPlayer(playerNumber);
@@ -89,6 +96,7 @@ public class ServerPortListenerThread extends Thread {
 
         String response = game.play(interpreter.getCommandForDriver(command));
         clientThread.sendMessage(response);
+        verifyAndNotifyWinnig(clientThread);
     }
 
     public void notify(ServerClientThread notifier, String msg) {
@@ -98,4 +106,12 @@ public class ServerPortListenerThread extends Thread {
             }
         }
     }
+
+    private void verifyAndNotifyWinnig(ServerClientThread clientThread) {
+        if (game.isFinished()) {
+            String endGameMsg = "Game Over - The winner is Player " + clientThread.getPlayerNumber();
+            notify(clientThread, endGameMsg);
+        }
+    }
+
 }
