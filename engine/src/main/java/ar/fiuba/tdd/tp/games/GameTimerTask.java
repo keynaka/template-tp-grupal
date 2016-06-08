@@ -5,33 +5,15 @@ import java.util.TimerTask;
 /**
  * Created by swandelow on 6/8/16.
  */
-public class GameTimerTask extends TimerTask {
-
-    private ConcreteGame game;
-    private Long delay;
-    private Long period;
+public class GameTimerTask extends AbstractGameTimerTask {
 
     public GameTimerTask(ConcreteGame game, Long delay, Long period) {
-        this.game = game;
-        this.delay = delay;
-        this.period = period;
+        super(game, delay, period);
     }
 
     @Override
-    public void run() {
-        // aca se modifican el estado de los objetos
-
-        // luego setear el mensaje del evento
-        this.game.setEventMessage("sarapatin tin tin tin tin.");
-        // notificar a todos los observadores del juego (server)
-        this.game.notifyObservers();
+    protected String doRun() {
+        return "sarapatin tin tin tin tin.";
     }
 
-    public Long getDelay() {
-        return delay;
-    }
-
-    public Long getPeriod() {
-        return period;
-    }
 }
