@@ -1,19 +1,12 @@
 package ar.fiuba.tdd.tp.games.timer;
 
-import ar.fiuba.tdd.tp.games.timer.AbstractGameTimerTask;
-
 import java.util.Timer;
 
 public class GameTimer {
-    Timer timer;
-    int seconds;
+    private Timer timer;
 
     public GameTimer() {
 
-    }
-
-    public GameTimer(int seconds) {
-        this.seconds = seconds;
     }
 
     public void startTimer() {

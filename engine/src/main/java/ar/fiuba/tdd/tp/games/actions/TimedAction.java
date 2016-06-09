@@ -6,6 +6,7 @@ import ar.fiuba.tdd.tp.games.timer.TimedActionTask;
 /**
  * Created by swandelow on 6/8/16.
  */
+@SuppressWarnings("CPD-START")
 public class TimedAction implements Action {
 
     private ConcreteGame game;
@@ -20,6 +21,7 @@ public class TimedAction implements Action {
         this.resultMessage = resultMessage;
     }
 
+    @SuppressWarnings("CPD-END")
     @Override
     public void doAction() {
         TimedActionTask task = new TimedActionTask(game, delay, scheduledAction, resultMessage);
