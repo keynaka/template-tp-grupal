@@ -172,13 +172,11 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Action randomChangeStageLibrarian = new RandomChangeStageAction(this.game, LIBRARIAN_NAME);
 
-        Long randomWalkerPeriod = 1000 * 60 * 4L;
-        Action scheduledRandomWalkLibrarianAction = new PeriodicTimedAction(this.game, randomWalkerPeriod, randomWalkerPeriod, randomChangeStageLibrarian, "Librarian have moved.");
+        Action scheduledRandomWalkLibrarianAction = new PeriodicTimedAction(this.game, RANDOM_WALKER_PERIOD, RANDOM_WALKER_PERIOD, randomChangeStageLibrarian, "Librarian have moved.");
         this.addAction(RANDOM_WALK_LIBRARIAN_ACTION, scheduledRandomWalkLibrarianAction);
 
-        Long awakeTime = 1000 * 60 * 2L;
         Action combinedAction = new CombinedAction(Arrays.asList(awakeLibraryAction, scheduledRandomWalkLibrarianAction));
-        Action scheduledAwakeLibrarianAction = new TimedAction(this.game, awakeTime, combinedAction, "Librarian is awake.");
+        Action scheduledAwakeLibrarianAction = new TimedAction(this.game, AWAKE_TIME, combinedAction, "Librarian is awake.");
         this.addAction(AWAKE_LIBRARIAN_ACTION, scheduledAwakeLibrarianAction);
 
         Action useStairsAction = new SetStateValueAction(this.player, LIFE_STATUS, DEAD_PLAYER);
@@ -338,6 +336,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
             stage.addBehavior(behavior);
         }
 
+        // configurando acceso a biblioteca
         Stage library = this.getStage(LIBRARY_NAME);
         Rule isNextRoomRule = new IsNextRoomRule(this.game, library.getName());
         Rule isSlept = new VerifiesStateRule(this.getItem(LIBRARIAN_NAME), SLEEP_STATUS, SLEEP_STATUS_SLEPT);
@@ -485,10 +484,6 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         game.registerKnownAction(ActionOld.SHOW, new DefaultActionHandler(this.game));
         game.registerKnownAction(ActionOld.USE, new DefaultActionHandler(this.game));
         game.registerKnownAction(ActionOld.DROP, new DefaultActionHandler(this.game));
-
-//        game.registerKnownAction(ActionOld.OPEN, (itemName, args) -> this.actionHandler(ActionOld.OPEN.getActionName(),itemName));
-//        game.registerKnownAction(ActionOld.MOVE, (itemName, args) -> this.actionHandler(ActionOld.MOVE.getActionName(),itemName));
-//        game.registerKnownAction(Act,ionOld.PUT, (itemName, arguments) -> this.actionHandler(ActionOld.PUT.getActionName(), itemName));
     }
 
     private String actionHandler(Command command) {

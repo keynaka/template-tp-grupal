@@ -117,6 +117,10 @@ public class EscapeProperties {
     public static final String USE_RAILING_RESULT_MSG = "You have entered to SotanoAbajo.";
     public static final String ERR_MSG = "You can't do that!";
 
+    public static final Long RANDOM_WALKER_PERIOD = 1000 * 60 * 4L;
+    public static final Long AWAKE_TIME = 1000 * 60 * 2L;
+
+
     @SuppressWarnings("CPD-END")
     public static final String PUT_RESULT_MSG = "You have put %s in %s";
 
