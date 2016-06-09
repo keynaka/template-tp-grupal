@@ -1,14 +1,12 @@
 package ar.fiuba.tdd.tp.red.server;
 
-import ar.fiuba.tdd.tp.games.CommandInterpreter;
-import ar.fiuba.tdd.tp.games.Game;
-import ar.fiuba.tdd.tp.games.GameBuilder;
-import ar.fiuba.tdd.tp.games.GameObserver;
+import ar.fiuba.tdd.tp.games.*;
+import ar.fiuba.tdd.tp.games.exceptions.AddingPlayerException;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServerPortListenerThread extends Thread implements GameObserver {
 
@@ -16,7 +14,8 @@ public class ServerPortListenerThread extends Thread implements GameObserver {
     private GameBuilder gameBuilder;
     private Game game;
     ServerSocket serverSocket;
-    private List<ServerClientThread> clientThreads = new ArrayList<>();
+   // private List<ServerClientThread> clientThreads = new ArrayList<>();
+    Map<Integer, ServerClientThread> clientThreads = new HashMap<>();
     private CommandInterpreter interpreter = new CommandInterpreter();
 
     public ServerPortListenerThread(int portNumber, GameBuilder gameBuilder) {
@@ -30,15 +29,19 @@ public class ServerPortListenerThread extends Thread implements GameObserver {
             game = gameBuilder.build();
             game.registerObserver(this);
             serverSocket = new ServerSocket(portNumber);
-
             while (!this.isInterrupted()) {
                 // Starts new client thread
                 int playerNumber = clientThreads.size() + 1;
                 ServerClientThread clientThread = new ServerClientThread(serverSocket.accept(), this, playerNumber);
                 clientThread.start();
-                clientThreads.add(clientThread);
+                System.out.println("New connection in port " + portNumber + "! Client amount: " + playerNumber);
 
-                System.out.println("New connection in port " + portNumber + "! Client amount: " + clientThreads.size());
+                if (this.game.getPlayerManager().isPossibleAddPlayer()) {
+                    clientThreads.put(playerNumber, clientThread);
+                } else {
+                    clientThread.sendMessage("More players are not allowed. Goodbye");
+                    clientThread.interrupt();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +49,7 @@ public class ServerPortListenerThread extends Thread implements GameObserver {
     }
 
     public void interrupt() {
-        for (Thread thread : clientThreads) {
+        for (Thread thread : clientThreads.values()) {
             thread.interrupt();
         }
         try {
@@ -59,27 +62,46 @@ public class ServerPortListenerThread extends Thread implements GameObserver {
     public void newClientEvent(ServerClientThread newClientThread) {
         // Welcomes the client
         String welcomeMessage = "Welcome to port " + portNumber + "! ";
-//        welcomeMessage += "\nYou are going to play " + game.getName();
         welcomeMessage += "\nAre you ready to play " + game.getName() + "?";
-//        welcomeMessage += "\nYou are the player number " + newClientThread.getPlayerNumber();
         welcomeMessage += "\nYou are player number " + newClientThread.getPlayerNumber();
-        newClientThread.sendMessage(welcomeMessage);
 
-        // Notifies remaining clients
-        notify(newClientThread, "Player number " + newClientThread.getPlayerNumber() + " has logged in.");
+        try {
+            // agrego player al juego
+            this.game.getPlayerManager().addNewPlayer(newClientThread.getPlayerNumber());
+
+            newClientThread.sendMessage(welcomeMessage);
+            // Notifies remaining clients
+            notify(newClientThread, "Player number " + newClientThread.getPlayerNumber() + " has logged in.");
+        } catch (AddingPlayerException e) {
+            newClientThread.sendMessage("More players are not allowed. Goodbye player " + newClientThread.getPlayerNumber());
+            //clientThreads.remove(newClientThread.getPlayerNumber());
+        }
     }
 
     public void processMessageByClientEvent(ServerClientThread clientThread, String command) {
+
+        if (game.isFinished()) {
+            String endGameMsg = "Game Over - Press Exit";
+            clientThread.sendMessage(endGameMsg);
+            return;
+        }
+
+        int playerNumber = clientThread.getPlayerNumber();
+
+        Player player = this.game.getPlayerManager().getPlayer(playerNumber);
+        this.game.setPlayer(player);
+
         // Notifies remaining clients
-        notify(clientThread, "Player " + clientThread.getPlayerNumber() + " executed: " + command);
+        notify(clientThread, "Player " + playerNumber + " executed: " + command);
 
         String response = game.play(interpreter.getCommandForDriver(command));
         clientThread.sendMessage(response);
+        verifyAndNotifyWinnig(clientThread);
     }
 
     public void notify(ServerClientThread notifier, String msg) {
-        for (ServerClientThread client : clientThreads) {
-            if (client != notifier) {
+        for (ServerClientThread client : clientThreads.values()) {
+            if (!client.isInterrupted() && client != notifier) {
                 client.sendMessage(msg);
             }
         }
@@ -92,8 +114,16 @@ public class ServerPortListenerThread extends Thread implements GameObserver {
     }
 
     private void notifyAllClients(String message) {
-        for (ServerClientThread client : clientThreads) {
+        for (ServerClientThread client : clientThreads.values()) {
             client.sendMessage(message);
         }
     }
+
+    private void verifyAndNotifyWinnig(ServerClientThread clientThread) {
+        if (game.isFinished()) {
+            String endGameMsg = "Game Over - The winner is Player " + clientThread.getPlayerNumber();
+            notify(clientThread, endGameMsg);
+        }
+    }
+
 }

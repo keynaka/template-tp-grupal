@@ -1,8 +1,6 @@
 package ar.fiuba.tdd.tp.games.fetchquest;
 
-import ar.fiuba.tdd.tp.games.AbstractGameBuilder;
-import ar.fiuba.tdd.tp.games.ActionOld;
-import ar.fiuba.tdd.tp.games.Stage;
+import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.actions.SwitchItemOwnerAction;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.items.Item;
@@ -28,6 +26,7 @@ public class FetchQuestBuilder extends AbstractGameBuilder {
         createStages();
         createItems();
         configurePlayer();
+        configurePlayerManager();
         createRules();
         createActions();
         bindRulesAndActions();
@@ -54,6 +53,13 @@ public class FetchQuestBuilder extends AbstractGameBuilder {
     @Override
     protected void configurePlayer() {
         player.setCurrentStage(mainStage.getName());
+    }
+
+    private void configurePlayerManager() {
+        PlayerCreator playerCreator = new PlayerCreator();
+        playerCreator.setInitialRoom("room");
+        this.playerManager = new PlayerManager(playerCreator, true, 2);
+        this.game.setPlayerManager(this.playerManager);
     }
 
     protected void createRules() {

@@ -37,6 +37,7 @@ public class Client {
             while (connected) {
                 String rawCommand = this.readRawCommand();
                 sendRawCommand(rawCommand);
+                connected = !"exit".equalsIgnoreCase(rawCommand);
             }
             serverSocket.close();
             serverListenerThread.interrupt();

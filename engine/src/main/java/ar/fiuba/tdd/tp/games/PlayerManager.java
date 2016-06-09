@@ -1,8 +1,10 @@
 package ar.fiuba.tdd.tp.games;
 
-import ar.fiuba.tdd.tp.games.exceptions.GameException;
+import ar.fiuba.tdd.tp.games.exceptions.AddingPlayerException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,20 +19,22 @@ public class PlayerManager {
     private Integer maxAmountOfPlayer;
     private Boolean allowMultiplayer;
 
-    public PlayerManager(PlayerCreator playerCreator, Integer maxAmountOfPlayer, Boolean allowMultiplayer) {
+    public PlayerManager(PlayerCreator playerCreator, Boolean allowMultiplayer, Integer maxAmountOfPlayer) {
         this.playerCreator = playerCreator;
-        this.maxAmountOfPlayer = maxAmountOfPlayer;
         this.allowMultiplayer = allowMultiplayer;
+        this.maxAmountOfPlayer = maxAmountOfPlayer;
     }
 
     public void addNewPlayer(Integer playerNumber) {
         if (this.isPossibleAddPlayer()) {
+            System.out.println("Adding new player");
             String playerName = PREFIX_PLAYER_NAME.concat(String.valueOf(playerNumber));
             this.playerCreator.setPlayerName(playerName);
             Player player = this.playerCreator.create();
             this.players.put(playerNumber, player);
+        } else {
+            throw new AddingPlayerException("It's not possible add new player.");
         }
-        throw new GameException("It's not possible add new player.");
     }
 
     public Player getPlayer(Integer playerNumber) {
@@ -38,8 +42,9 @@ public class PlayerManager {
     }
 
 
-    private boolean isPossibleAddPlayer() {
+    public boolean isPossibleAddPlayer() {
         boolean isFirstPlayer = this.players.isEmpty();
         return isFirstPlayer || (this.allowMultiplayer && this.players.size() < this.maxAmountOfPlayer);
     }
+
 }

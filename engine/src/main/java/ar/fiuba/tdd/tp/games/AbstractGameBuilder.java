@@ -2,8 +2,6 @@ package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.actions.Action;
 import ar.fiuba.tdd.tp.games.items.Item;
-import ar.fiuba.tdd.tp.games.items.containers.ItemContainer;
-import ar.fiuba.tdd.tp.games.objects.GameObject;
 import ar.fiuba.tdd.tp.games.rules.Rule;
 
 import java.util.ArrayList;
@@ -18,6 +16,7 @@ public abstract class AbstractGameBuilder implements GameBuilder {
     protected ConcreteGame game;
     protected List<Stage> stages = new ArrayList<>();
     protected Player player;
+    protected PlayerManager playerManager;
     protected Map<String, Item> items = new HashMap<>();
     protected Map<String, Rule> rules = new HashMap<>();
     private Map<String, Action> actions = new HashMap<>();

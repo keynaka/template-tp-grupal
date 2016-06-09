@@ -31,6 +31,7 @@ public class ConcreteGame extends AbstractGame {
     private Predicate<ConcreteGame> losingCondition = (game) -> false;
     private GameState gameState;
     private List<GameObserver> gameObservers = new ArrayList<>();
+    private PlayerManager playerManager;
     private String eventMessage = "soy un mensaje asíncrono.";
     private GameTimer timer;
 
@@ -168,6 +169,15 @@ public class ConcreteGame extends AbstractGame {
 
     public GameObjectRepository getGameObjectRepository() {
         return new GameObjectRepository(this);
+    }
+
+    @Override
+    public PlayerManager getPlayerManager() {
+        return playerManager;
+    }
+
+    public void setPlayerManager(PlayerManager playerManager) {
+        this.playerManager = playerManager;
     }
 
     @Override

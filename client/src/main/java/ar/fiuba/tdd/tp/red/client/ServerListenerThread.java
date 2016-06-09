@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.red.client;
 
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.net.SocketException;
 
 /**
@@ -21,10 +22,14 @@ public class ServerListenerThread extends Thread {
                 // Message from the server
                 String msg = in.readUTF();
                 System.out.println(msg);
-            } catch (SocketException  e) {
-                client.connected = false;
+            //} catch (EOFException e) {
+                //client.connected = false; // Socket closed by server
+            //} catch (SocketException  e) {
+                //client.connected = false;
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                client.connected = false;
+                this.interrupt();
             }
         }
     }

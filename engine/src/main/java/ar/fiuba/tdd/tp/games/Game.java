@@ -35,6 +35,7 @@ public interface Game {
 
     void setPlayer(Player player);
 
+    PlayerManager getPlayerManager();
     void registerObserver(GameObserver observer);
 
     String getEventMessage();

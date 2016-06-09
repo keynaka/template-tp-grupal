@@ -2,6 +2,7 @@ package ar.fiuba.tdd.tp.red.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
@@ -42,8 +43,10 @@ public class ServerClientThread extends Thread {
                 String msg = in.readUTF();
                 portThread.processMessageByClientEvent(this, msg);
             }
+        } catch (EOFException e) {
+            System.out.println("Player " + playerNumber + " has exit.");
         } catch (SocketException e) {
-            System.out.println("Client has gone away.");
+            System.out.println("Player " + playerNumber + " has gone away.");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,6 +57,8 @@ public class ServerClientThread extends Thread {
         try {
             out.writeUTF(msg);
             out.flush(); // Force send
+        } catch (SocketException e) {
+            System.out.print("");
         } catch (IOException e) {
             e.printStackTrace();
         }
