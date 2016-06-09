@@ -1,6 +1,5 @@
 package ar.fiuba.tdd.tp.red;
 
-import ar.fiuba.tdd.tp.games.creation.GamesList;
 import ar.fiuba.tdd.tp.red.server.Server;
 
 import java.io.IOException;

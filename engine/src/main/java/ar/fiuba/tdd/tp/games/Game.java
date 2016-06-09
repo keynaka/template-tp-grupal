@@ -34,4 +34,6 @@ public interface Game {
     GameState getGameState();
 
     void setPlayer(Player player);
+
+    PlayerManager getPlayerManager();
 }

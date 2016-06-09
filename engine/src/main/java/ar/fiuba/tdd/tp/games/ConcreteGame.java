@@ -26,6 +26,7 @@ public class ConcreteGame extends AbstractGame {
     private Rule losingConditionRule;
     private Predicate<ConcreteGame> losingCondition = (game) -> false;
     private GameState gameState;
+    private PlayerManager playerManager;
 
     public ConcreteGame() {
         super("", "");
@@ -133,6 +134,15 @@ public class ConcreteGame extends AbstractGame {
 
     public GameObjectRepository getGameObjectRepository() {
         return new GameObjectRepository(this);
+    }
+
+    @Override
+    public PlayerManager getPlayerManager() {
+        return playerManager;
+    }
+
+    public void setPlayerManager(PlayerManager playerManager) {
+        this.playerManager = playerManager;
     }
 
     @Override
