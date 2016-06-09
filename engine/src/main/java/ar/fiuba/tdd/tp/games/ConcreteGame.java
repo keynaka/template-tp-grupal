@@ -193,9 +193,11 @@ public class ConcreteGame extends AbstractGame {
         if (this.winningConditionRule.verify()) {
             this.gameState = GameState.Won;
             this.endGameMessage = DEFAULT_WON_GAME_MSG;
+
         } else if (this.losingConditionRule != null && this.losingConditionRule.verify()) {
             this.gameState = GameState.Lost;
             this.endGameMessage = DEFAULT_LOST_GAME_MSG;
+
         } else {
             this.gameState = GameState.InProgress;
         }
