@@ -9,18 +9,24 @@ import java.util.Collection;
 /**
  * Created by swandelow on 4/21/16.
  */
+@SuppressWarnings("CPD-START")
 public class Player extends GameObject implements ItemKeeper {
+
+    public static final String PLAYER_STATUS = "player-status";
+    public static final String PLAYING = "playing";
+    public static final String HAS_WON = "has won";
+    public static final String HAS_LOST = "has won";
+
 
     private Inventory inventory;
     private String currentStage;
     private CharacterState state;
-    private String state2;
 
     public Player() {
         this.name = "player";
         this.inventory = new Inventory();
         this.state = CharacterState.HEALTHY;
-        this.state2 = "healthy";
+        this.setPlaying();
     }
 
     public Player(String playerName) {
@@ -50,14 +56,6 @@ public class Player extends GameObject implements ItemKeeper {
 
     public CharacterState getState() {
         return state;
-    }
-
-    public String getState2() {
-        return state2;
-    }
-
-    public void modifyState2(String state) {
-        this.state2 = state;
     }
 
     public void modifyState(CharacterState state) {
@@ -99,7 +97,31 @@ public class Player extends GameObject implements ItemKeeper {
         return talking.talk(this, message);
     }
 
-    @SuppressWarnings("CPD-START")
+    public void setPlaying() {
+        this.addState(PLAYER_STATUS, PLAYING);
+    }
+
+    public boolean isPlaying() {
+        return this.getState(PLAYER_STATUS).equalsIgnoreCase(PLAYING);
+    }
+
+    public void setHasWon() {
+        this.addState(PLAYER_STATUS, HAS_WON);
+    }
+
+    public boolean hasWon() {
+        return this.getState(PLAYER_STATUS).equalsIgnoreCase(HAS_WON);
+    }
+
+    public void setHasLost() {
+        this.addState(PLAYER_STATUS, HAS_LOST);
+    }
+
+    public boolean hasLost() {
+        return this.getState(PLAYER_STATUS).equalsIgnoreCase(HAS_LOST);
+    }
+
+
     @Override
     public Collection<Item> getItems() {
         return this.inventory.getAllItems();

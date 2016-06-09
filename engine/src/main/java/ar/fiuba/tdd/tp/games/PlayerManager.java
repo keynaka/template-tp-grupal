@@ -2,9 +2,7 @@ package ar.fiuba.tdd.tp.games;
 
 import ar.fiuba.tdd.tp.games.exceptions.AddingPlayerException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +43,10 @@ public class PlayerManager {
     public boolean isPossibleAddPlayer() {
         boolean isFirstPlayer = this.players.isEmpty();
         return isFirstPlayer || (this.allowMultiplayer && this.players.size() < this.maxAmountOfPlayer);
+    }
+
+    public boolean hasLost(Integer playerNumber) {
+        return this.getPlayer(playerNumber).hasLost();
     }
 
 }
