@@ -79,7 +79,6 @@ public class ServerPortListenerThread extends Thread implements GameObserver {
     }
 
     public void processMessageByClientEvent(ServerClientThread clientThread, String command) {
-
         if (game.isFinished()) {
             String endGameMsg = "Game Over - Press Exit";
             clientThread.sendMessage(endGameMsg);
@@ -87,6 +86,11 @@ public class ServerPortListenerThread extends Thread implements GameObserver {
         }
 
         int playerNumber = clientThread.getPlayerNumber();
+        if(this.game.getPlayerManager().hasLost(playerNumber)) {
+            String hasLostMsg = "You has lost. Game Over - Press Exit.";
+            clientThread.sendMessage(hasLostMsg);
+            return;
+        }
 
         Player player = this.game.getPlayerManager().getPlayer(playerNumber);
         this.game.setPlayer(player);

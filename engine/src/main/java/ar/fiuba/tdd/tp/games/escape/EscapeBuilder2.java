@@ -145,7 +145,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Action randomChangeStageLibrarian = new RandomChangeStageAction(this.game, LIBRARIAN_NAME);
 
-        Action scheduledRandomWalkLibrarianAction = new PeriodicTimedAction(this.game, RANDOM_WALKER_PERIOD,//
+        Action scheduledRandomWalkLibrarianAction = new PeriodicTimedAction(this.game, 0L,//
                 RANDOM_WALKER_PERIOD, randomChangeStageLibrarian, "Librarian have moved.");
         this.addAction(RANDOM_WALK_LIBRARIAN_ACTION, scheduledRandomWalkLibrarianAction);
 
@@ -208,7 +208,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .executionRule(this.getRule(SHOW_LIQUOR_RULE))
                 .actions(this.getAction(SHOW_LIQUOR_ACTION), this.getAction(UNLOCK_LIBRARY_ACTION),//
                         this.getAction(SLEEP_LIBRARIAN_ACTION), this.getAction(AWAKE_LIBRARIAN_ACTION))
-                .resultMessage(SHOW_RESULT_MSG)
+                .resultMessage(SHOW_LIQUOR_MSG)
                 .build();
         this.getItem(LIQUOR_NAME).addBehavior(behavior);
 
@@ -277,8 +277,6 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private List<String> fillPickableAndDroppableItemsList() {
         List<String> itemNames = new ArrayList<>();
         itemNames.addAll(this.somePickableItems());
-//        itemNames.add(BOOK1_NAME);
-//        itemNames.add(BOOK2_NAME);
         itemNames.add(BOOK3_NAME);
         itemNames.add(BOOK4_NAME);
         itemNames.add(BOOK5_NAME);
@@ -539,7 +537,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         playerCreator.setStates(states);
 
-        this.playerManager = new PlayerManager(playerCreator, true, 2);
+        this.playerManager = new PlayerManager(playerCreator, true, 4);
         this.game.setPlayerManager(this.playerManager);
     }
 

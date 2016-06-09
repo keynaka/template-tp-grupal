@@ -8,16 +8,16 @@ import ar.fiuba.tdd.tp.games.Player;
  */
 public class PlayerIsInRoomRule extends Rule {
 
-    private Player player;
+    private ConcreteGame game;
     private String roomName;
 
     public PlayerIsInRoomRule(ConcreteGame game, String roomName) {
-        this.player = game.getPlayer();
         this.roomName = roomName;
+        this.game = game;
     }
 
     @Override
     public boolean doVerify() {
-        return player.getCurrentStage().equalsIgnoreCase(roomName);
+        return this.game.getPlayer().getCurrentStage().equalsIgnoreCase(roomName);
     }
 }

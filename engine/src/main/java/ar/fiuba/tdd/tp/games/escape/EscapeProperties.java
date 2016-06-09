@@ -111,14 +111,15 @@ public class EscapeProperties {
     public static final String SHOW = "show";
     public static final String BREAK_WINDOW_RESULT_MSG = "Window is broken!";
     public static final String SHOW_RESULT_MSG = "There you go!";
+    public static final String SHOW_LIQUOR_MSG = "Librarian fall sleep.";
     public static final String SHOW_ALT_RESULT_MSG = "You are banned from the library!";
     public static final String MOVE_OLD_BOOK_RESULT_MSG = "There you go!";
     public static final String USE_STAIRS_RESULT_MSG = "You are dead !! :(";
     public static final String USE_RAILING_RESULT_MSG = "You have entered to SotanoAbajo.";
     public static final String ERR_MSG = "You can't do that!";
 
-    public static final Long RANDOM_WALKER_PERIOD = 1000 * 60 * 4L;
-    public static final Long AWAKE_TIME = 1000 * 60 * 2L;
+    public static final Long RANDOM_WALKER_PERIOD = 1000 * 4L;
+    public static final Long AWAKE_TIME = 1000 * 2L;
 
 
     @SuppressWarnings("CPD-END")
