@@ -275,15 +275,10 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private List<String> fillPickableAndDroppableItemsList() {
-        List<String> itemNames = new ArrayList<String>();
-        itemNames.add(LIQUOR_NAME);
-        itemNames.add(GLASS1_NAME);
-        itemNames.add(GLASS2_NAME);
-        itemNames.add(ID_CARD_NAME);
-        itemNames.add(SCREWDRIVER1_NAME);
-        itemNames.add(SCREWDRIVER2_NAME);
-        itemNames.add(BOOK1_NAME);
-        itemNames.add(BOOK2_NAME);
+        List<String> itemNames = new ArrayList<>();
+        itemNames.addAll(this.somePickableItems());
+//        itemNames.add(BOOK1_NAME);
+//        itemNames.add(BOOK2_NAME);
         itemNames.add(BOOK3_NAME);
         itemNames.add(BOOK4_NAME);
         itemNames.add(BOOK5_NAME);
@@ -295,6 +290,19 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         itemNames.add(PLAYER_PICTURE_NAME);
         itemNames.add(PEN_NAME);
         itemNames.add(KEY_NAME);
+        return itemNames;
+    }
+
+    private List<String> somePickableItems() {
+        List<String> itemNames = new ArrayList<>();
+        itemNames.add(LIQUOR_NAME);
+        itemNames.add(GLASS1_NAME);
+        itemNames.add(GLASS2_NAME);
+        itemNames.add(ID_CARD_NAME);
+        itemNames.add(SCREWDRIVER1_NAME);
+        itemNames.add(SCREWDRIVER2_NAME);
+        itemNames.add(BOOK1_NAME);
+        itemNames.add(BOOK2_NAME);
         return itemNames;
     }
 

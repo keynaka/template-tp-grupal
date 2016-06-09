@@ -221,28 +221,13 @@ public class EscapeBuilder implements GameBuilder {
         Item idCard = new Item("Credencial", "it's an id card.");
         idCard.addState("picture", "stranger");
 
-        Behavior pickBehavior = new Behavior();
-        pickBehavior.setActionName("pick");
         BehaviorView idCardView = new BehaviorView();
         idCardView.setAction((game) -> "There you go!");
-        pickBehavior.setView(idCardView);
-        pickBehavior.setExecutionCondition((game) -> true);
-        pickBehavior.setBehaviorAction((game) -> {
-                Item pickedItem = game.getCurrentStage().pickItem(idCard.getName());
-                game.getPlayer().addToInventory(pickedItem);
-            });
+
+        Behavior pickBehavior = this.createPickIDCardBehavior(idCard);
         idCard.addBehavior(pickBehavior);
 
-        Behavior showBehavior = new Behavior();
-        showBehavior.setActionName("show");
-        showBehavior.setView(idCardView);
-        showBehavior.setExecutionCondition((game) -> true);
-        showBehavior.setBehaviorAction((game) -> {
-                Item credencial = game.getPlayer().getInventory().getItem("Credencial");
-                if (credencial.getState("picture").equalsIgnoreCase("player")) {
-                    escape.getStage("Biblioteca").addState(IsOpenRule.OPEN_STATUS_KEY, IsOpenRule.OPENED);
-                }
-            });
+        Behavior showBehavior = this.createShowIDCardBehavior(idCard, idCardView);
         idCard.addBehavior(showBehavior);
 
         Behavior putBehavior = new Behavior();
@@ -255,6 +240,34 @@ public class EscapeBuilder implements GameBuilder {
             });
         idCard.addBehavior(putBehavior);
         return idCard;
+    }
+
+    private Behavior createPickIDCardBehavior(Item idCard) {
+        Behavior pickBehavior = new Behavior();
+        pickBehavior.setActionName("pick");
+        BehaviorView idCardView = new BehaviorView();
+        idCardView.setAction((game) -> "There you go!");
+        pickBehavior.setView(idCardView);
+        pickBehavior.setExecutionCondition((game) -> true);
+        pickBehavior.setBehaviorAction((game) -> {
+                Item pickedItem = game.getCurrentStage().pickItem(idCard.getName());
+                game.getPlayer().addToInventory(pickedItem);
+            });
+        return pickBehavior;
+    }
+
+    private Behavior createShowIDCardBehavior(Item idCard, BehaviorView idCardView) {
+        Behavior showBehavior = new Behavior();
+        showBehavior.setActionName("show");
+        showBehavior.setView(idCardView);
+        showBehavior.setExecutionCondition((game) -> true);
+        showBehavior.setBehaviorAction((game) -> {
+                Item credencial = game.getPlayer().getInventory().getItem("Credencial");
+                if (credencial.getState("picture").equalsIgnoreCase("player")) {
+                    escape.getStage("Biblioteca").addState(IsOpenRule.OPEN_STATUS_KEY, IsOpenRule.OPENED);
+                }
+            });
+        return showBehavior;
     }
     //----------------------------FinRoom1----------------------------------//
 
