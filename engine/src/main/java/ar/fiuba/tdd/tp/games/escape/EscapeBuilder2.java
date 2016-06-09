@@ -73,7 +73,25 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void createRules() {
+        this.createRules1();
 
+        Rule idCardHasNotPlayersPicture = new VerifiesStateRule(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, STRANGER_PICTURE_NAME);
+        this.addRule(SHOW_WRONG_ID_CARD_RULE, idCardHasNotPlayersPicture);
+
+        Rule moveOldBookRule = new IsInCurrentRoomRule(this.game, OLD_BOOK_NAME);
+        this.addRule(MOVE_OLD_BOOK_RULE, moveOldBookRule);
+
+        Rule useStairsRule = new IsInCurrentRoomRule(this.game, STAIRS_NAME);
+        this.addRule(USE_STAIRS_RULE, useStairsRule);
+
+        Rule railingIsInCurrentRoomRule = new IsInCurrentRoomRule(this.game, RAILING_NAME);
+        Rule playerIsInBasement = new PlayerIsInRoomRule(game, BASEMENT_NAME);
+        this.addRule(USE_RAILING_RULE, railingIsInCurrentRoomRule.and(playerIsInBasement));
+
+        this.setRulesErrorMessage();
+    }
+
+    private void createRules1() {
         Rule hasKey = new PlayerHasItemRule(game, this.getItem(KEY_NAME));
         this.addRule(OPEN_SAFEBOX_RULE, hasKey);
 
@@ -98,24 +116,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Rule isAllowedInLibrary = new VerifyPlayerStateRule(game, ALLOWED_IN_LIBRARY_STATUS, ALLOWED);
         this.addRule(SHOW_ID_CARD_RULE, idCardHasPlayersPicture.and(isInLibraryRule).and(hasIdCardRule).and(isAllowedInLibrary));
 
-        Rule idCardHasNotPlayersPicture = new VerifiesStateRule(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, STRANGER_PICTURE_NAME);
-        this.addRule(SHOW_WRONG_ID_CARD_RULE, idCardHasNotPlayersPicture);
-
         Rule hasLiquorRule = new PlayerHasItemRule(game, this.getItem(LIQUOR_NAME));
         this.addRule(SHOW_LIQUOR_RULE, hasLiquorRule.and(isInLibraryRule));
-
-        Rule moveOldBookRule = new IsInCurrentRoomRule(this.game, OLD_BOOK_NAME);
-        this.addRule(MOVE_OLD_BOOK_RULE, moveOldBookRule);
-
-        Rule useStairsRule = new IsInCurrentRoomRule(this.game, STAIRS_NAME);
-        this.addRule(USE_STAIRS_RULE, useStairsRule);
-
-        Rule railingIsInCurrentRoomRule = new IsInCurrentRoomRule(this.game, RAILING_NAME);
-        Rule playerIsInBasement = new PlayerIsInRoomRule(game, BASEMENT_NAME);
-        this.addRule(USE_RAILING_RULE, railingIsInCurrentRoomRule.and(playerIsInBasement));
-
-        this.setRulesErrorMessage();
-
     }
 
     private void setRulesErrorMessage() {
@@ -126,7 +128,39 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void createActions() {
+        this.createActions1();
+        //Action showIdCardAction = new SwitchItemOwnerAction(game.getPlayer(), this.getItemKeeper(LIBRARIAN_NAME), ID_CARD_NAME);
+        //this.addAction(SHOW_ID_CARD_ACTION, showIdCardAction);
 
+        Action showLiquorAction = new SwitchItemFromPlayerAction(game, this.getItemKeeper(LIBRARIAN_NAME), LIQUOR_NAME);
+        this.addAction(SHOW_LIQUOR_ACTION, showLiquorAction);
+
+        Action unlockLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), LOCK_STATUS, UNLOCKED);
+        this.addAction(UNLOCK_LIBRARY_ACTION, unlockLibraryAction);
+
+        Action sleepLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), SLEEP_STATUS, SLEEP_STATUS_SLEPT);
+        this.addAction(SLEEP_LIBRARIAN_ACTION, sleepLibraryAction);
+
+        Action awakeLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), SLEEP_STATUS, SLEEP_STATUS_AWAKE);
+
+        Action randomChangeStageLibrarian = new RandomChangeStageAction(this.game, LIBRARIAN_NAME);
+
+        Action scheduledRandomWalkLibrarianAction = new PeriodicTimedAction(this.game, RANDOM_WALKER_PERIOD,//
+                RANDOM_WALKER_PERIOD, randomChangeStageLibrarian, "Librarian have moved.");
+        this.addAction(RANDOM_WALK_LIBRARIAN_ACTION, scheduledRandomWalkLibrarianAction);
+
+        Action combinedAction = new CombinedAction(Arrays.asList(awakeLibraryAction, scheduledRandomWalkLibrarianAction));
+        Action scheduledAwakeLibrarianAction = new TimedAction(this.game, AWAKE_TIME, combinedAction, "Librarian is awake.");
+        this.addAction(AWAKE_LIBRARIAN_ACTION, scheduledAwakeLibrarianAction);
+
+        Action useStairsAction = new SetPlayerStateValueAction(game, LIFE_STATUS, DEAD_PLAYER);
+        this.addAction(USE_STAIRS_ACTION, useStairsAction);
+
+        Action useRailingAction = new ChangePlayerStageAction(this.game, this.getStage(BASEMENT_DOWNSTAIRS_NAME));
+        this.addAction(USE_RAILING_ACTION, useRailingAction);
+    }
+
+    private void createActions1() {
         Action moveBoatPictureAction = new AddItemAction(this.getStage(ROOM1_NAME), this.getItem(SAFEBOX_NAME));
         this.addAction(MOVE_BOATPICTURE_ACTION, moveBoatPictureAction);
 
@@ -148,43 +182,65 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Action unlockOutsideAction = new SetStateValueAction(this.getStage(OUTSIDE_NAME), LOCK_STATUS, UNLOCKED);
         this.addAction(UNLOCK_OUTSIDE_ACTION, unlockOutsideAction);
 
-        Action showIdCardAction = new SwitchItemOwnerAction(game.getPlayer(), this.getItemKeeper(LIBRARIAN_NAME), ID_CARD_NAME);
+        Action showIdCardAction = new SwitchItemFromPlayerAction(this.game, this.getItemKeeper(LIBRARIAN_NAME), ID_CARD_NAME);
         this.addAction(SHOW_ID_CARD_ACTION, showIdCardAction);
 
         Action banPlayerFromLibrary = new SetPlayerStateValueAction(game, ALLOWED_IN_LIBRARY_STATUS, NOT_ALLOWED);
         this.addAction(BAN_PLAYER_FROM_LIBRARY_ACTION, banPlayerFromLibrary);
-
-        Action showLiquorAction = new SwitchItemFromPlayerAction(game, this.getItemKeeper(LIBRARIAN_NAME), LIQUOR_NAME);
-        this.addAction(SHOW_LIQUOR_ACTION, showLiquorAction);
-
-        Action unlockLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), LOCK_STATUS, UNLOCKED);
-        this.addAction(UNLOCK_LIBRARY_ACTION, unlockLibraryAction);
-
-        Action sleepLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), SLEEP_STATUS, SLEEP_STATUS_SLEPT);
-        this.addAction(SLEEP_LIBRARIAN_ACTION, sleepLibraryAction);
-
-        Action awakeLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), SLEEP_STATUS, SLEEP_STATUS_AWAKE);
-
-
-        Action randomChangeStageLibrarian = new RandomChangeStageAction(this.game, LIBRARIAN_NAME);
-
-        Action scheduledRandomWalkLibrarianAction = new PeriodicTimedAction(this.game, RANDOM_WALKER_PERIOD, RANDOM_WALKER_PERIOD, randomChangeStageLibrarian, "Librarian have moved.");
-        this.addAction(RANDOM_WALK_LIBRARIAN_ACTION, scheduledRandomWalkLibrarianAction);
-
-        Action combinedAction = new CombinedAction(Arrays.asList(awakeLibraryAction, scheduledRandomWalkLibrarianAction));
-        Action scheduledAwakeLibrarianAction = new TimedAction(this.game, AWAKE_TIME, combinedAction, "Librarian is awake.");
-        this.addAction(AWAKE_LIBRARIAN_ACTION, scheduledAwakeLibrarianAction);
-
-        Action useStairsAction = new SetPlayerStateValueAction(game, LIFE_STATUS, DEAD_PLAYER);
-        this.addAction(USE_STAIRS_ACTION, useStairsAction);
-
-        Action useRailingAction = new ChangePlayerStageAction(this.game, this.getStage(BASEMENT_DOWNSTAIRS_NAME));
-        this.addAction(USE_RAILING_ACTION, useRailingAction);
-
     }
 
     private void bindActionsAndItems() {
+        this.bindActionsAndItems1();
 
+        Behavior behavior = Behavior.builder()
+                .actionName(SHOW)
+                .executionRule(this.getRule(SHOW_ID_CARD_RULE))
+                .actions(this.getAction(SHOW_ID_CARD_ACTION), this.getAction(UNLOCK_LIBRARY_ACTION))
+                .alternativeExecutionRule(this.getRule(SHOW_WRONG_ID_CARD_RULE))
+                .alternativeActions(this.getAction(BAN_PLAYER_FROM_LIBRARY_ACTION))
+                .resultMessage(SHOW_RESULT_MSG)
+                .alternativeResultMessage(SHOW_ALT_RESULT_MSG)
+                .build();
+        this.getItem(ID_CARD_NAME).addBehavior(behavior);
+
+        behavior = Behavior.builder()
+                .actionName(SHOW)
+                .executionRule(this.getRule(SHOW_LIQUOR_RULE))
+                .actions(this.getAction(SHOW_LIQUOR_ACTION), this.getAction(UNLOCK_LIBRARY_ACTION),//
+                        this.getAction(SLEEP_LIBRARIAN_ACTION), this.getAction(AWAKE_LIBRARIAN_ACTION))
+                .resultMessage(SHOW_RESULT_MSG)
+                .build();
+        this.getItem(LIQUOR_NAME).addBehavior(behavior);
+
+        behavior = Behavior.builder()
+                .actionName(MOVE)
+                .executionRule(this.getRule(MOVE_OLD_BOOK_RULE))
+                .actions(this.getAction(MOVE_OLD_BOOK_ACTION), this.getAction(UNLOCK_BASEMENT_ACTION))
+                .resultMessage(MOVE_OLD_BOOK_RESULT_MSG)
+                .build();
+        this.getItem(OLD_BOOK_NAME).addBehavior(behavior);
+
+        behavior = Behavior.builder()
+                .actionName(USE)
+                .executionRule(this.getRule(USE_STAIRS_RULE))
+                .actions(this.getAction(USE_STAIRS_ACTION))
+                .resultMessage(USE_STAIRS_RESULT_MSG)
+                .build();
+        this.getItem(STAIRS_NAME).addBehavior(behavior);
+
+        behavior = Behavior.builder()
+                .actionName(USE)
+                .executionRule(this.getRule(USE_RAILING_RULE))
+                .actions(this.getAction(USE_RAILING_ACTION))
+                .resultMessage(USE_RAILING_RESULT_MSG)
+                .build();
+        this.getItem(RAILING_NAME).addBehavior(behavior);
+
+        this.addDropBehaviorToDroppableItems();
+        this.addPickBehaviorToPickableItems();
+    }
+
+    private void bindActionsAndItems1() {
         Behavior behavior = Behavior.builder()
                 .actionName(MOVE)
                 .executionRule(this.getRule(MOVE_BOATPICTURE_RULE))
@@ -216,52 +272,6 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
                 .resultMessage(BREAK_WINDOW_RESULT_MSG)
                 .build();
         this.getItem(WINDOW_NAME).addBehavior(behavior);
-
-        behavior = Behavior.builder()
-                .actionName(SHOW)
-                .executionRule(this.getRule(SHOW_ID_CARD_RULE))
-                .actions(this.getAction(SHOW_ID_CARD_ACTION), this.getAction(UNLOCK_LIBRARY_ACTION))
-                .alternativeExecutionRule(this.getRule(SHOW_WRONG_ID_CARD_RULE))
-                .alternativeActions(this.getAction(BAN_PLAYER_FROM_LIBRARY_ACTION))
-                .resultMessage(SHOW_RESULT_MSG)
-                .alternativeResultMessage(SHOW_ALT_RESULT_MSG)
-                .build();
-        this.getItem(ID_CARD_NAME).addBehavior(behavior);
-
-        behavior = Behavior.builder()
-                .actionName(SHOW)
-                .executionRule(this.getRule(SHOW_LIQUOR_RULE))
-                .actions(this.getAction(SHOW_LIQUOR_ACTION), this.getAction(UNLOCK_LIBRARY_ACTION), this.getAction(SLEEP_LIBRARIAN_ACTION), this.getAction(AWAKE_LIBRARIAN_ACTION))
-                .resultMessage(SHOW_RESULT_MSG)
-                .build();
-        this.getItem(LIQUOR_NAME).addBehavior(behavior);
-
-        behavior = Behavior.builder()
-                .actionName(MOVE)
-                .executionRule(this.getRule(MOVE_OLD_BOOK_RULE))
-                .actions(this.getAction(MOVE_OLD_BOOK_ACTION), this.getAction(UNLOCK_BASEMENT_ACTION))
-                .resultMessage(MOVE_OLD_BOOK_RESULT_MSG)
-                .build();
-        this.getItem(OLD_BOOK_NAME).addBehavior(behavior);
-
-        behavior = Behavior.builder()
-                .actionName(USE)
-                .executionRule(this.getRule(USE_STAIRS_RULE))
-                .actions(this.getAction(USE_STAIRS_ACTION))
-                .resultMessage(USE_STAIRS_RESULT_MSG)
-                .build();
-        this.getItem(STAIRS_NAME).addBehavior(behavior);
-
-        behavior = Behavior.builder()
-                .actionName(USE)
-                .executionRule(this.getRule(USE_RAILING_RULE))
-                .actions(this.getAction(USE_RAILING_ACTION))
-                .resultMessage(USE_RAILING_RESULT_MSG)
-                .build();
-        this.getItem(RAILING_NAME).addBehavior(behavior);
-
-        this.addDropBehaviorToDroppableItems();
-        this.addPickBehaviorToPickableItems();
     }
 
     private List<String> fillPickableAndDroppableItemsList() {

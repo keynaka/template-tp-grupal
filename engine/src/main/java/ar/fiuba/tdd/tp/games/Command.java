@@ -1,6 +1,5 @@
 package ar.fiuba.tdd.tp.games;
 
-import ar.fiuba.tdd.tp.games.ActionOld;
 import java.io.Serializable;
 
 /**

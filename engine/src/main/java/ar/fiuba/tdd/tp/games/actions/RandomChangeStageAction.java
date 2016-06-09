@@ -36,10 +36,10 @@ public class RandomChangeStageAction implements Action {
         Item item = currentStage.removeItem(itemName);
         nextStage.addItem(item);
 
-        boolean IsPlayerAndLibrarianInSameRoom = this.game.getPlayer().getCurrentStage().equalsIgnoreCase(nextStageName);
+        boolean isPlayerAndLibrarianInSameRoom = this.game.getPlayer().getCurrentStage().equalsIgnoreCase(nextStageName);
         boolean notAllowedInLibrary = this.game.getPlayer().getState(ALLOWED_IN_LIBRARY_STATUS).equalsIgnoreCase(NOT_ALLOWED);
 
-        if (IsPlayerAndLibrarianInSameRoom && notAllowedInLibrary) {
+        if (isPlayerAndLibrarianInSameRoom && notAllowedInLibrary) {
             this.game.getPlayer().setHasLost();
             System.out.println(String.format("%s has lost. Librarian has checked invalid id card.", this.game.getPlayer().getName()));
         }
