@@ -1,9 +1,6 @@
 package ar.fiuba.tdd.tp.games.escape;
 
-import ar.fiuba.tdd.tp.games.AbstractGameBuilder;
-import ar.fiuba.tdd.tp.games.ActionOld;
-import ar.fiuba.tdd.tp.games.Command;
-import ar.fiuba.tdd.tp.games.Stage;
+import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.actions.*;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.handlers.DefaultActionHandler;
@@ -12,9 +9,7 @@ import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.rules.*;
 import ar.fiuba.tdd.tp.games.timer.GameTimer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.*;
 
@@ -62,6 +57,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         this.createItems();
         this.configureStagesAndItems();
         this.configurePlayer();
+        this.configurePlayerManager();
         this.createRules();
         this.createActions();
         this.bindActionsAndItems();
@@ -78,34 +74,34 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
     private void createRules() {
 
-        Rule hasKey = new HasItemRule(this.player, this.getItem(KEY_NAME));
+        Rule hasKey = new PlayerHasItemRule(game, this.getItem(KEY_NAME));
         this.addRule(OPEN_SAFEBOX_RULE, hasKey);
 
         Rule moveBoatPictureRule = new IsInCurrentRoomRule(this.game, BOAT_PICTURE_NAME);
         this.addRule(MOVE_BOATPICTURE_RULE, moveBoatPictureRule);
 
-        Rule hasIdCardRule = new HasItemRule(this.player, this.getItem(ID_CARD_NAME));
+        Rule hasIdCardRule = new PlayerHasItemRule(game, this.getItem(ID_CARD_NAME));
         this.addRule(HAS_ID_CARD, hasIdCardRule);
 
-        Rule hasPlayerPictureRule = new HasItemRule(this.player, this.getItem(PLAYER_PICTURE_NAME));
+        Rule hasPlayerPictureRule = new PlayerHasItemRule(game, this.getItem(PLAYER_PICTURE_NAME));
         this.addRule(HAS_PLAYER_PICTURE, hasPlayerPictureRule);
 
         this.addRule(PUT_PICTURE_RULE, hasIdCardRule.and(hasPlayerPictureRule));
 
-        Rule hasHammerRule = new HasItemRule(this.player, this.getItem(HAMMER_NAME));
-        Rule isInBasementDownstairsRule = new PlayerIsInRoomRule(this.player, BASEMENT_DOWNSTAIRS_NAME);
+        Rule hasHammerRule = new PlayerHasItemRule(game, this.getItem(HAMMER_NAME));
+        Rule isInBasementDownstairsRule = new PlayerIsInRoomRule(game, BASEMENT_DOWNSTAIRS_NAME);
 
         this.addRule(BREAK_WINDOW_RULE, hasHammerRule.and(isInBasementDownstairsRule));
 
         Rule idCardHasPlayersPicture = new VerifiesStateRule(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, PLAYER_PICTURE_NAME);
-        Rule isInLibraryRule = new PlayerIsInRoomRule(this.player, LIBRARY_ACCESS_NAME);
-        Rule isAllowedInLibrary = new VerifiesStateRule(this.player, ALLOWED_IN_LIBRARY_STATUS, ALLOWED);
+        Rule isInLibraryRule = new PlayerIsInRoomRule(game, LIBRARY_ACCESS_NAME);
+        Rule isAllowedInLibrary = new VerifyPlayerStateRule(game, ALLOWED_IN_LIBRARY_STATUS, ALLOWED);
         this.addRule(SHOW_ID_CARD_RULE, idCardHasPlayersPicture.and(isInLibraryRule).and(hasIdCardRule).and(isAllowedInLibrary));
 
         Rule idCardHasNotPlayersPicture = new VerifiesStateRule(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, STRANGER_PICTURE_NAME);
         this.addRule(SHOW_WRONG_ID_CARD_RULE, idCardHasNotPlayersPicture);
 
-        Rule hasLiquorRule = new HasItemRule(this.player, this.getItem(LIQUOR_NAME));
+        Rule hasLiquorRule = new PlayerHasItemRule(game, this.getItem(LIQUOR_NAME));
         this.addRule(SHOW_LIQUOR_RULE, hasLiquorRule.and(isInLibraryRule));
 
         Rule moveOldBookRule = new IsInCurrentRoomRule(this.game, OLD_BOOK_NAME);
@@ -115,7 +111,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         this.addRule(USE_STAIRS_RULE, useStairsRule);
 
         Rule railingIsInCurrentRoomRule = new IsInCurrentRoomRule(this.game, RAILING_NAME);
-        Rule playerIsInBasement = new PlayerIsInRoomRule(this.player, BASEMENT_NAME);
+        Rule playerIsInBasement = new PlayerIsInRoomRule(game, BASEMENT_NAME);
         this.addRule(USE_RAILING_RULE, railingIsInCurrentRoomRule.and(playerIsInBasement));
 
         this.setRulesErrorMessage();
@@ -152,13 +148,13 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Action unlockOutsideAction = new SetStateValueAction(this.getStage(OUTSIDE_NAME), LOCK_STATUS, UNLOCKED);
         this.addAction(UNLOCK_OUTSIDE_ACTION, unlockOutsideAction);
 
-        Action showIdCardAction = new SwitchItemOwnerAction(this.player, this.getItemKeeper(LIBRARIAN_NAME), ID_CARD_NAME);
+        Action showIdCardAction = new SwitchItemOwnerAction(game.getPlayer(), this.getItemKeeper(LIBRARIAN_NAME), ID_CARD_NAME);
         this.addAction(SHOW_ID_CARD_ACTION, showIdCardAction);
 
-        Action banPlayerFromLibrary = new SetStateValueAction(this.player, ALLOWED_IN_LIBRARY_STATUS, NOT_ALLOWED);
+        Action banPlayerFromLibrary = new SetPlayerStateValueAction(game, ALLOWED_IN_LIBRARY_STATUS, NOT_ALLOWED);
         this.addAction(BAN_PLAYER_FROM_LIBRARY_ACTION, banPlayerFromLibrary);
 
-        Action showLiquorAction = new SwitchItemOwnerAction(this.player, this.getItemKeeper(LIBRARIAN_NAME), LIQUOR_NAME);
+        Action showLiquorAction = new SwitchItemFromPlayerAction(game, this.getItemKeeper(LIBRARIAN_NAME), LIQUOR_NAME);
         this.addAction(SHOW_LIQUOR_ACTION, showLiquorAction);
 
         Action unlockLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), LOCK_STATUS, UNLOCKED);
@@ -179,7 +175,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Action scheduledAwakeLibrarianAction = new TimedAction(this.game, AWAKE_TIME, combinedAction, "Librarian is awake.");
         this.addAction(AWAKE_LIBRARIAN_ACTION, scheduledAwakeLibrarianAction);
 
-        Action useStairsAction = new SetStateValueAction(this.player, LIFE_STATUS, DEAD_PLAYER);
+        Action useStairsAction = new SetPlayerStateValueAction(game, LIFE_STATUS, DEAD_PLAYER);
         this.addAction(USE_STAIRS_ACTION, useStairsAction);
 
         Action useRailingAction = new ChangePlayerStageAction(this.game, this.getStage(BASEMENT_DOWNSTAIRS_NAME));
@@ -299,7 +295,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
             Behavior behavior = Behavior.builder()
                     .actionName(PICK)
                     .executionRule(new IsInCurrentRoomRule(this.game, itemName))
-                    .actions(new PickFromCurrentStageAction(this.game, this.player.getName(), itemName))
+                    .actions(new PlayerPickFromCurrentStageAction(this.game, itemName))
                     .resultMessage(PICK_RESULT_MSG)
                     .build();
             this.getItem(itemName).addBehavior(behavior);
@@ -312,7 +308,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         for (String itemName : droppableItemsNames) {
             Behavior behavior = Behavior.builder()
                     .actionName(DROP)
-                    .executionRule(new HasItemRule(this.player, this.getItem(itemName)))
+                    .executionRule(new PlayerHasItemRule(game, this.getItem(itemName)))
                     .actions(new DropInCurrentStageAction(this.game, itemName))
                     .resultMessage(String.format(DROP_RESULT_MSG, itemName))
                     .build();
@@ -436,14 +432,14 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void setWinningCondition() {
-        game.setWinningCondition(new PlayerIsInRoomRule(this.player, OUTSIDE_NAME));
+        game.setWinningCondition(new PlayerIsInRoomRule(game, OUTSIDE_NAME));
     }
 
     private void setLosingCondition() {
-        Rule isDead = new VerifiesStateRule(this.player, LIFE_STATUS, DEAD_PLAYER);
+        Rule isDead = new VerifyPlayerStateRule(game, LIFE_STATUS, DEAD_PLAYER);
         Item hammer = this.getItem(HAMMER_NAME);
-        Rule hasntHammer = new HasItemRule(this.player, hammer).negate();
-        Rule isInDownBasement = new PlayerIsInRoomRule(this.player, BASEMENT_DOWNSTAIRS_NAME);
+        Rule hasntHammer = new PlayerHasItemRule(game, hammer).negate();
+        Rule isInDownBasement = new PlayerIsInRoomRule(game, BASEMENT_DOWNSTAIRS_NAME);
 
         game.setLoosingCondition(isDead.or(hasntHammer.and(isInDownBasement)));
     }
@@ -503,10 +499,30 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
     @Override
     protected void configurePlayer() {
+        // TODO: falta sacar, lo dejo para que pasen los test
         player.addState(LIFE_STATUS, ALIVE_PLAYER);
         player.addState(ALLOWED_IN_LIBRARY_STATUS, ALLOWED);
         player.setCurrentStage(HALL_NAME);
         player.addToInventory(this.getItem(PLAYER_PICTURE_NAME));
         player.addToInventory(this.getItem(PEN_NAME));
+        game.setPlayer(player);
     }
+
+    private void configurePlayerManager() {
+
+        PlayerCreator playerCreator = new PlayerCreator();
+
+        playerCreator.setInitialRoom(HALL_NAME);
+        playerCreator.setItems(Arrays.asList(this.getItem(PLAYER_PICTURE_NAME), this.getItem(PEN_NAME)));
+
+        Map<String, String> states = new HashMap<>();
+        states.put(LIFE_STATUS, ALIVE_PLAYER);
+        states.put(ALLOWED_IN_LIBRARY_STATUS, ALLOWED);
+
+        playerCreator.setStates(states);
+
+        this.playerManager = new PlayerManager(playerCreator, true, 2);
+        this.game.setPlayerManager(this.playerManager);
+    }
+
 }

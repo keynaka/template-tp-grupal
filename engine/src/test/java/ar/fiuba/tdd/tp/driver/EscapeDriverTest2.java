@@ -15,6 +15,7 @@ public class EscapeDriverTest2 {
     public void testGotoNextRoomCommand() {
         GameDriver driver = new ConcreteGameDriver();
         driver.initGame("escape2");
+
         assertEquals("You have entered to Salon3.", driver.sendCommand("goto Salon3"));
         assertEquals("You have entered to Pasillo.", driver.sendCommand("goto Pasillo"));
         assertEquals("You have entered to Salon1.", driver.sendCommand("goto Salon1"));

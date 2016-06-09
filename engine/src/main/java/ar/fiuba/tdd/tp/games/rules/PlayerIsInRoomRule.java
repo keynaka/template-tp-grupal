@@ -1,5 +1,6 @@
 package ar.fiuba.tdd.tp.games.rules;
 
+import ar.fiuba.tdd.tp.games.ConcreteGame;
 import ar.fiuba.tdd.tp.games.Player;
 
 /**
@@ -10,8 +11,8 @@ public class PlayerIsInRoomRule extends Rule {
     private Player player;
     private String roomName;
 
-    public PlayerIsInRoomRule(Player player, String roomName) {
-        this.player = player;
+    public PlayerIsInRoomRule(ConcreteGame game, String roomName) {
+        this.player = game.getPlayer();
         this.roomName = roomName;
     }
 

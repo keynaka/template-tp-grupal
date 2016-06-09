@@ -191,7 +191,7 @@ public class WolfSheepCabbageBuilder2 extends AbstractGameBuilder {
     }
 
     private void setWinningCondition() {
-        Rule playerIsInRoom = new PlayerIsInRoomRule(this.player, NORTH_SHORE);
+        Rule playerIsInRoom = new PlayerIsInRoomRule(game, NORTH_SHORE);
         Rule playerHasWolf = new IsInCurrentRoomRule(this.game, WOLF_NAME);
         Rule playerHasSheep = new IsInCurrentRoomRule(this.game, SHEEP_NAME);
         Rule playerHasCabbage = new IsInCurrentRoomRule(this.game, CABBAGE_NAME);
@@ -219,6 +219,7 @@ public class WolfSheepCabbageBuilder2 extends AbstractGameBuilder {
     protected void configurePlayer() {
         player.addState(LIFE_STATE, ALIVE_PLAYER);
         player.setCurrentStage(SOUTH_SHORE);
+        game.setPlayer(player);
     }
 
     private Item buildWolf() {

@@ -62,6 +62,7 @@ public class WolfSheepCabbageTest2 {
         GameDriver driver = new ConcreteGameDriver();
         driver.initGame("wolf2");
 
+
         String response = driver.sendCommand("take ");
         assertEquals("GameObject not found.", response);
         assertTrue(GameState.InProgress == driver.getCurrentState());
