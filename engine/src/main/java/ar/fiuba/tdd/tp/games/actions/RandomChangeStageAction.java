@@ -41,7 +41,7 @@ public class RandomChangeStageAction implements Action {
 
         if (IsPlayerAndLibrarianInSameRoom && notAllowedInLibrary) {
             this.game.getPlayer().setHasLost();
-            System.out.println(String.format("%s has lost. Librarian has checked invalid id card.", itemName, nextStageName));
+            System.out.println(String.format("%s has lost. Librarian has checked invalid id card.", this.game.getPlayer().getName()));
         }
 
     }
