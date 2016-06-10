@@ -1,9 +1,9 @@
 package ar.fiuba.tdd.tp.games.opendoor;
 
-import ar.fiuba.tdd.tp.games.Game;
-import ar.fiuba.tdd.tp.games.Command;
-import org.junit.Test;
 import ar.fiuba.tdd.tp.games.ActionOld;
+import ar.fiuba.tdd.tp.games.Command;
+import ar.fiuba.tdd.tp.games.Game;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

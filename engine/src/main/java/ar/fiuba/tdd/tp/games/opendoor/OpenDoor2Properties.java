@@ -23,8 +23,8 @@ public class OpenDoor2Properties {
     public static final String BOX_NAME = "box";
     public static final String BOX_DESC = "It's a Box";
     public static final int    BOX_SIZE = 1;
-    public static final String OPEN_BOX_MSG= "The box is opened!";
-    public static final String EXAMINE= "examine";
-    public static final String EXAMINE_MSG= "You can open/close the box.";
+    public static final String OPEN_BOX_MSG = "The box is opened!";
+    public static final String EXAMINE =  "examine";
+    public static final String EXAMINE_MSG = "You can open/close the box.";
 
 }

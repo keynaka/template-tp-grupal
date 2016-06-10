@@ -155,7 +155,7 @@ public class OpenDoor2Builder extends AbstractGameBuilder {
     }
 
     private void setWinningCondition() {
-        Rule playerIsInRoom = new PlayerIsInRoomRule(this.player, STAGE_NAME);
+        Rule playerIsInRoom = new PlayerIsInRoomRule(game, STAGE_NAME);
         Rule doorIsOpen = new IsOpenRule(this.getItem(DOOR_NAME));
         Rule rule = playerIsInRoom.and(doorIsOpen);
         game.setWinningCondition(rule);
