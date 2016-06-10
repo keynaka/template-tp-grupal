@@ -1,25 +1,28 @@
 package ar.fiuba.tdd.tp.games.opendoor;
 
+import ar.fiuba.tdd.tp.games.Command;
+import org.junit.Test;
+import ar.fiuba.tdd.tp.games.ActionOld;
+import ar.fiuba.tdd.tp.games.Game;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 
 /**
  * Created by swandelow on 4/22/16.
  */
 public class OpenDoorTest {
 
-    /*private OpenDoor target = new OpenDoor();
+    private Game target = new OpenDoorBuilder().build();
 
     @Test
     public void testHappyPath() {
 
-        String response = this.target.start();
-        assertEquals("Welcome to OpenDoor!", response);
-        assertFalse(this.target.isFinished());
 
-        response = this.target.play(new Command(ActionOld.LOOK_AROUND, ""));
-        assertEquals("Items in the room: door, key.", response);
+        String response = this.target.play(new Command(ActionOld.LOOK_AROUND));
+        assertEquals("Items in room: door, key.", response);
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(ActionOld.OPEN, "door"));
@@ -31,7 +34,7 @@ public class OpenDoorTest {
         assertFalse(this.target.isFinished());
 
         response = this.target.play(new Command(ActionOld.OPEN, "door"));
-        assertEquals("You enter room 2. You won the game!", response);
+        assertEquals("You won the game!", response);
         assertTrue(this.target.isFinished());
     }
 
@@ -40,9 +43,9 @@ public class OpenDoorTest {
 
         this.target.start();
 
-        String response = this.target.play(new Command(ActionOld.UNKNOWN_ACTION, ""));
+        String response = this.target.play(new Command(ActionOld.UNKNOWN_ACTION));
         assertEquals("Unknown command.", response);
         assertFalse(this.target.isFinished());
 
-    }*/
+    }
 }
