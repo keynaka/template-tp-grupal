@@ -9,12 +9,10 @@ import ar.fiuba.tdd.tp.games.Stage;
 public class PlayerPickFromCurrentStageAction implements Action {
 
     private ConcreteGame game;
-    private String newOwnerName;
     private String itemName;
 
     public PlayerPickFromCurrentStageAction(ConcreteGame game, String itemName) {
         this.game = game;
-        this.newOwnerName = game.getPlayer().getName();
         this.itemName = itemName;
     }
 

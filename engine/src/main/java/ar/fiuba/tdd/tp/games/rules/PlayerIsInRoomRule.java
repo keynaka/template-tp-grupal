@@ -6,6 +6,7 @@ import ar.fiuba.tdd.tp.games.Player;
 /**
  * Created by swandelow on 5/28/16.
  */
+@SuppressWarnings("CPD-START")
 public class PlayerIsInRoomRule extends Rule {
 
     private ConcreteGame game;
@@ -16,6 +17,7 @@ public class PlayerIsInRoomRule extends Rule {
         this.game = game;
     }
 
+    @SuppressWarnings("CPD-END")
     @Override
     public boolean doVerify() {
         return this.game.getPlayer().getCurrentStage().equalsIgnoreCase(roomName);

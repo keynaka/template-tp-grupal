@@ -14,7 +14,7 @@ public class ServerPortListenerThread extends Thread implements GameObserver {
     private GameBuilder gameBuilder;
     private Game game;
     ServerSocket serverSocket;
-   // private List<ServerClientThread> clientThreads = new ArrayList<>();
+    // private List<ServerClientThread> clientThreads = new ArrayList<>();
     Map<Integer, ServerClientThread> clientThreads = new HashMap<>();
     private CommandInterpreter interpreter = new CommandInterpreter();
 
@@ -86,7 +86,7 @@ public class ServerPortListenerThread extends Thread implements GameObserver {
         }
 
         int playerNumber = clientThread.getPlayerNumber();
-        if(this.game.getPlayerManager().hasLost(playerNumber)) {
+        if (this.game.getPlayerManager().hasLost(playerNumber)) {
             String hasLostMsg = "You has lost. Game Over - Press Exit.";
             clientThread.sendMessage(hasLostMsg);
             return;
