@@ -2,10 +2,14 @@ package ar.fiuba.tdd.tp.driver;
 
 import ar.fiuba.tdd.tp.games.CommandInterpreter;
 import ar.fiuba.tdd.tp.games.Game;
+import ar.fiuba.tdd.tp.games.GameBuilder;
 import ar.fiuba.tdd.tp.games.escape.EscapeBuilder;
 import ar.fiuba.tdd.tp.games.escape.EscapeBuilder2;
 import ar.fiuba.tdd.tp.games.fetchquest.FetchQuestBuilder;
 import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbageBuilder2;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Fede on 19/05/2016.
@@ -13,23 +17,23 @@ import ar.fiuba.tdd.tp.games.woolfsheepcabbage.WolfSheepCabbageBuilder2;
 public class ConcreteGameDriver implements GameDriver {
     private Game target;
     private CommandInterpreter interpreter = new CommandInterpreter();
+    private Map<String, GameBuilder> builders = new HashMap<>();
+
+    {
+        builders.put("FetchQuest", new FetchQuestBuilder());
+        builders.put("escape", new EscapeBuilder());
+        builders.put("escape2", new EscapeBuilder2());
+        builders.put("wolf2", new WolfSheepCabbageBuilder2());
+    }
 
     @Override
     public void initGame(String gameName) {
         //TODO cambiar cuando tengamos la separacion en jars
-        if (gameName.equals("FetchQuest")) {
-            target = new FetchQuestBuilder().build();
-        }
-        if (gameName.equalsIgnoreCase("escape")) {
-            target = new EscapeBuilder().build();
-        }
+        this.target = this.getBuilder(gameName).build();
+    }
 
-        if (gameName.equalsIgnoreCase("escape2")) {
-            target = new EscapeBuilder2().build();
-        }
-        if (gameName.equalsIgnoreCase("wolf2")) {
-            target = new WolfSheepCabbageBuilder2().build();
-        }
+    private GameBuilder getBuilder(String gameName) {
+        return this.builders.get(gameName);
     }
 
     @Override
