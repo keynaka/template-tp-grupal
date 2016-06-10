@@ -15,7 +15,7 @@ public class GameTimerTask extends AbstractGameTimerTask {
 
     @Override
     protected String doRun() {
-        return "sarapatin tin tin tin tin.";
+        return "Un mensaje de prueba.";
     }
 
 }

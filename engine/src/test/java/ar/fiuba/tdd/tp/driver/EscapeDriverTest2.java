@@ -113,7 +113,7 @@ public class EscapeDriverTest2 {
         assertEquals("There you go!", driver.sendCommand("pick BotellaLicor"));
         assertEquals("You have entered to Pasillo.", driver.sendCommand("goto Pasillo"));
         assertEquals("You have entered to BibliotecaAcceso.", driver.sendCommand("goto BibliotecaAcceso"));
-        assertEquals("There you go!", driver.sendCommand("show BotellaLicor"));
+        assertEquals("Librarian fall sleep.", driver.sendCommand("show BotellaLicor"));
         assertEquals("You have entered to Biblioteca.", driver.sendCommand("goto Biblioteca"));
     }
 

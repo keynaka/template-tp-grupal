@@ -2,12 +2,8 @@ package ar.fiuba.tdd.tp.games.timer;
 
 import java.util.Timer;
 
-public class GameTimer {
+public class GameTimer implements GameTimerInterface {
     private Timer timer;
-
-    public GameTimer() {
-
-    }
 
     public void startTimer() {
         timer = new Timer();

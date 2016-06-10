@@ -68,8 +68,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     }
 
     private void createTimer() {
-        this.game.setTimer(new GameTimer());
-        this.game.getTimer().startTimer();
+        this.gameTimer = new GameTimer();
     }
 
     private void createRules() {

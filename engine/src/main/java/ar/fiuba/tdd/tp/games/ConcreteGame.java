@@ -4,6 +4,7 @@ import ar.fiuba.tdd.tp.driver.GameState;
 import ar.fiuba.tdd.tp.games.handlers.ActionHandler;
 import ar.fiuba.tdd.tp.games.rules.Rule;
 import ar.fiuba.tdd.tp.games.timer.GameTimer;
+import ar.fiuba.tdd.tp.games.timer.GameTimerInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +34,8 @@ public class ConcreteGame extends AbstractGame {
     private List<GameObserver> gameObservers = new ArrayList<>();
     private PlayerManager playerManager;
     private String eventMessage = "soy un mensaje asíncrono.";
-    private GameTimer timer;
+    private GameTimerInterface timer;
+    private Boolean testeableMode = false;
 
     public ConcreteGame() {
         super("", "");
@@ -46,6 +48,14 @@ public class ConcreteGame extends AbstractGame {
         super(name, endGameMessage);
         this.knownActions = new HashMap<>();
         this.stages = new HashMap<>();
+    }
+
+    public Boolean getTesteableMode() {
+        return testeableMode;
+    }
+
+    public void setTesteableMode() {
+        testeableMode = true;
     }
 
     @Override
@@ -104,11 +114,11 @@ public class ConcreteGame extends AbstractGame {
         }
     }
 
-    public GameTimer getTimer() {
+    public GameTimerInterface getTimer() {
         return timer;
     }
 
-    public void setTimer(GameTimer timer) {
+    public void setTimer(GameTimerInterface timer) {
         this.timer = timer;
     }
 

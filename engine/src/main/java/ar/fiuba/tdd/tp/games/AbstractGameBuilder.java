@@ -3,6 +3,8 @@ package ar.fiuba.tdd.tp.games;
 import ar.fiuba.tdd.tp.games.actions.Action;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.rules.Rule;
+import ar.fiuba.tdd.tp.games.timer.GameTimer;
+import ar.fiuba.tdd.tp.games.timer.GameTimerInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +22,7 @@ public abstract class AbstractGameBuilder implements GameBuilder {
     protected Map<String, Item> items = new HashMap<>();
     protected Map<String, Rule> rules = new HashMap<>();
     private Map<String, Action> actions = new HashMap<>();
+    protected GameTimerInterface gameTimer = null;
 
     public Game build() {
         // Starts a new game
@@ -40,7 +43,16 @@ public abstract class AbstractGameBuilder implements GameBuilder {
         // Set the commands supported by the game
         setKnownActions();
 
+        if (this.gameTimer != null) {
+            game.setTimer(gameTimer);
+            game.getTimer().startTimer();
+        }
+
         return game;
+    }
+
+    public void setTimer(GameTimerInterface gameTimer) {
+        this.gameTimer = gameTimer;
     }
 
     // Every concrete game builder should build its own environment
