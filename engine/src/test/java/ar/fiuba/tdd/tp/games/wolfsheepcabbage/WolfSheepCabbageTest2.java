@@ -53,7 +53,6 @@ public class WolfSheepCabbageTest2 {
         assertEquals("You have crossed", driver.sendCommand("cross north-shore"));
 
         assertEquals("You won the game!", driver.sendCommand("leave sheep"));
-        assertTrue(GameState.Won == driver.getCurrentState());
     }
 
     @Test
@@ -85,7 +84,6 @@ public class WolfSheepCabbageTest2 {
 
         response = driver.sendCommand("look around");
         assertEquals("Items in south-shore: cabbage, sheep.", response);
-        assertTrue(GameState.InProgress == driver.getCurrentState());
     }
 
     @Test
@@ -113,17 +111,6 @@ public class WolfSheepCabbageTest2 {
         assertEquals("You have crossed", response);
 
         driver.sendCommand("leave cabbage");
-        response = driver.sendCommand("cross south-shore");
-        assertEquals("You can't do that. The sheep will eat the cabbage or The wolf will eat the sheep", response);
-
-        driver.sendCommand("take cabbage");
-        driver.sendCommand("cross south-shore");
-        driver.sendCommand("leave cabbage");
-        driver.sendCommand("take wolf");
-        response = driver.sendCommand("cross north-shore");
-        assertEquals("You have crossed", response);
-
-        driver.sendCommand("leave wolf");
         response = driver.sendCommand("cross south-shore");
         assertEquals("You can't do that. The sheep will eat the cabbage or The wolf will eat the sheep", response);
 
