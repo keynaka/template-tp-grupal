@@ -35,6 +35,11 @@ public class GameTimerMock implements GameTimerInterface {
         this.checkExecuteTask();
     }
 
+    public void forceTimeInMinutes(Long timeMinutes) {
+        this.timeCount = this.timeCount + (timeMinutes*1000*60);
+        this.checkExecuteTask();
+    }
+
     public void checkExecuteTask() {
         this.checkPeriodicTasks();
 
