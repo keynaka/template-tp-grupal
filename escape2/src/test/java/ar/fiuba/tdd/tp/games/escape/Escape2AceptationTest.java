@@ -3,9 +3,6 @@ package ar.fiuba.tdd.tp.games.escape;
 import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.timer.GameTimerMock;
 import org.junit.Test;
-import org.omg.CORBA.BooleanHolder;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by sebass on 14/06/16.
