@@ -9,6 +9,7 @@ import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.rules.*;
 import ar.fiuba.tdd.tp.games.timer.GameTimer;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.ALIVE_PLAYER;
@@ -121,6 +122,8 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private static final String SLEEP_LIBRARIAN_ACTION = "sleepLibrarian";
     private static final String AWAKE_LIBRARIAN_ACTION = "awakeLibrarian";
     private static final String RANDOM_WALK_LIBRARIAN_ACTION = "randomWalkLibrarianAction";
+    private static final String ENTERED_TO_BANNED_ROOM_ACTION = "enteredToBannedRoomAction";
+    private static final String ENTERED_TO_BANNED_ROOM_RULE = "enteredToBannedRoomRule";
     private static final String MOVE_BOATPICTURE_RULE = "moveBoatPictureRule";
     private static final String SHOW_ID_CARD_RULE = "showIdCardRule";
     private static final String SHOW_WRONG_ID_CARD_RULE = "showWrongIdCardRule";
@@ -157,6 +160,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
     private void createRules() {
         this.createRules1();
+        this.createRules2();
 
         Rule idCardHasNotPlayersPicture = new VerifiesStateRule(this.getItem(ID_CARD_NAME), ID_CARD_PICTURE_STATE, STRANGER_PICTURE_NAME);
         this.addRule(SHOW_WRONG_ID_CARD_RULE, idCardHasNotPlayersPicture);
@@ -203,6 +207,17 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         this.addRule(SHOW_LIQUOR_RULE, hasLiquorRule.and(isInLibraryRule));
     }
 
+    private void createRules2() {
+
+        Rule isSlept = new VerifiesStateRule(this.getItem(LIBRARIAN_NAME), SLEEP_STATUS, SLEEP_STATUS_SLEPT);
+        Rule isNotInLibraryAccess = new IsInCurrentRoomRule(this.game, LIBRARIAN_NAME).negate();
+        Rule isAllowed = new VerifyPlayerStateRule(this.game, ALLOWED_IN_LIBRARY_STATUS, ALLOWED);
+        Rule enterToBannedRoomRule = isSlept.and(isNotInLibraryAccess).and(isAllowed);
+
+        this.addRule(ENTERED_TO_BANNED_ROOM_RULE,enterToBannedRoomRule);
+
+    }
+
     private void setRulesErrorMessage() {
         for (String ruleName : this.rules.keySet()) {
             Rule rule = this.getRule(ruleName);
@@ -212,6 +227,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
     private void createActions() {
         this.createActions1();
+        this.createActions2();
         //Action showIdCardAction = new SwitchItemOwnerAction(game.getPlayer(), this.getItemKeeper(LIBRARIAN_NAME), ID_CARD_NAME);
         //this.addAction(SHOW_ID_CARD_ACTION, showIdCardAction);
 
@@ -270,6 +286,11 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Action banPlayerFromLibrary = new SetPlayerStateValueAction(game, ALLOWED_IN_LIBRARY_STATUS, NOT_ALLOWED);
         this.addAction(BAN_PLAYER_FROM_LIBRARY_ACTION, banPlayerFromLibrary);
+    }
+
+    private void createActions2() {
+        Action enterToBannedAction = new EnterToBannedRoomAction(this.getRule(ENTERED_TO_BANNED_ROOM_RULE),game);
+        this.addAction(ENTERED_TO_BANNED_ROOM_ACTION,enterToBannedAction);
     }
 
     private void bindActionsAndItems() {
@@ -442,7 +463,10 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Behavior libraryBehavior = library.getBehavior(GOTO);
         libraryBehavior.setExecutionRule(libraryAccessRule);
-
+        List<Action> actions = new ArrayList<>();
+        actions.add(new ChangePlayerStageAction(this.game, library));
+        actions.add(this.getAction(ENTERED_TO_BANNED_ROOM_ACTION));
+        libraryBehavior.setActions(actions);
     }
 
     private void configureStagesAndItems() {
