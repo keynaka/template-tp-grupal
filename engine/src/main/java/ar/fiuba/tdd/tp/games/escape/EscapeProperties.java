@@ -75,7 +75,7 @@ public class EscapeProperties {
     public static final String LIFE_STATUS = "player-lifestatus";
     public static final String DEAD_PLAYER = "Muerto";
     public static final String ALIVE_PLAYER = "Vivo";
-    public static final String ALLOWED_IN_LIBRARY_STATUS = "allowed-in-library-status";
+    public static final String ALLOWED_IN_LIBRARY_STATUS = "allowed-in-status";
     public static final String ALLOWED = "Puede ingresar";
     public static final String NOT_ALLOWED = "No puede ingresar";
     public static final String LOCK_STATUS = "lock-status";

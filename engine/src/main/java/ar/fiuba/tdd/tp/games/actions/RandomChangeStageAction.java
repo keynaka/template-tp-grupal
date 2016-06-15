@@ -25,23 +25,22 @@ public class RandomChangeStageAction implements Action {
 
     @Override
     public void doAction() {
-        //Random random = new Random();
+
         Stage currentStage = this.game.getGameObjectRepository().getCurrentStageFor(this.itemName);
+        checkPlayerHasLost(currentStage);
 
-        //int randomInt = random.nextInt(currentStage.getConsecutiveStages().size());
-        //String nextStageName = currentStage.getConsecutiveStages().get(randomInt);
-        //Stage nextStage = this.game.getStage(nextStageName);
-
-        //GameRandom<Stage> gameRandom = new GameRandomImpl<>();
         String nextStageName = this.gameRandom.getRandomFrom(currentStage.getConsecutiveStages());
         Stage nextStage = this.game.getStage(nextStageName);
-
 
         System.out.println(String.format("%s is now in %s", itemName, nextStage.getName()));
 
         Item item = currentStage.removeItem(itemName);
         nextStage.addItem(item);
 
+        checkPlayerHasLost(nextStage);
+    }
+
+    private void checkPlayerHasLost(Stage nextStage) {
         boolean isPlayerAndLibrarianInSameRoom = this.game.getPlayer().getCurrentStage().equalsIgnoreCase(nextStage.getName());
         boolean notAllowedInLibrary = this.game.getPlayer().getState(ALLOWED_IN_LIBRARY_STATUS).equalsIgnoreCase(NOT_ALLOWED);
 

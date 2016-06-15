@@ -20,10 +20,12 @@ public class GameTimerMock implements GameTimerInterface {
 
     public void schedulePeriodicGameTask(AbstractGameTimerTask task) {
         this.peridiocTasks.add(task);
+        //this.checkExecuteTask();
     }
 
     public void scheduleGameTask(AbstractGameTimerTask task) {
         this.tasks.add(task);
+        //this.checkExecuteTask();
     }
 
     public void stopTimer() {
@@ -40,7 +42,7 @@ public class GameTimerMock implements GameTimerInterface {
     }
 
     public void checkExecuteTask() {
-        this.checkPeriodicTasks();
+        this.checkTasks();
 
         for (AbstractGameTimerTask task : this.peridiocTasks) {
             if (task.getDelay() <= this.timeCount) {
@@ -49,7 +51,7 @@ public class GameTimerMock implements GameTimerInterface {
         }
     }
 
-    private void checkPeriodicTasks() {
+    private void checkTasks() {
         Iterator<AbstractGameTimerTask> iterator = this.tasks.iterator();
         while (iterator.hasNext()) {
             AbstractGameTimerTask task = iterator.next();

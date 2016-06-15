@@ -1,6 +1,7 @@
 package ar.fiuba.tdd.tp.games.escape;
 
 import ar.fiuba.tdd.tp.games.*;
+import ar.fiuba.tdd.tp.games.random.GameRandomMock;
 import ar.fiuba.tdd.tp.games.timer.GameTimerMock;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
@@ -18,6 +19,7 @@ public class Escape2AceptationTest {
         AbstractGameBuilder gameBuilder = new EscapeBuilder2();
         timer = new GameTimerMock();
         gameBuilder.setTimer(timer);
+        gameBuilder.setGameRandom(new GameRandomMock<>("Biblioteca"));
         target = gameBuilder.build();
     }
 
@@ -39,12 +41,16 @@ public class Escape2AceptationTest {
 
         this.initializeGame();
         playerOne = this.addPlayerToGame(1);
+        this.target.setPlayer(playerOne);
 
         this.gotoBibliotecaAccesoWithLiquor();
         this.target.play(new Command(ActionOld.SHOW, "botellaLicor"));
-        timer.forceTimeInMinutes(2L);
+
         this.target.play(new Command(ActionOld.GOTO, "biblioteca"));
         this.target.play(new Command(ActionOld.GOTO, "bibliotecaAcceso"));
+
+        timer.forceTimeInMinutes(2L);
+        timer.forceTimeInMinutes(4L);
 
         assertTrue(playerOne.hasLost());
     }
@@ -69,9 +75,12 @@ public class Escape2AceptationTest {
         this.target.play(new Command(ActionOld.GOTO, "bibliotecaAcceso"));
         this.target.play(new Command(ActionOld.GOTO, "pasillo"));
 
+        this.target.setPlayer(playerOne);
         timer.forceTimeInMinutes(2L);
-        System.out.println(playerTwo.getState("allowed-in-status"));
-        //assertTrue((playerOne.hasLost() && !playerTwo.hasLost()) || (!playerOne.hasLost() && playerTwo.hasLost()));
-        assertTrue(playerOne.hasLost() || playerTwo.hasLost());
+        timer.forceTimeInMinutes(4L);
+        Boolean player1Lost = playerOne.hasLost();
+        Boolean player2Lost = playerTwo.hasLost();
+
+        assertTrue(player1Lost && !player2Lost);
     }
 }
