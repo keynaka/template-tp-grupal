@@ -3,7 +3,6 @@ package ar.fiuba.tdd.tp.games.timer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Timer;
 
 /**
  * Created by swandelow on 6/9/16.
@@ -36,7 +35,7 @@ public class GameTimerMock implements GameTimerInterface {
     }
 
     public void forceTimeInMinutes(Long timeMinutes) {
-        this.timeCount = this.timeCount + (timeMinutes*1000*60);
+        this.timeCount = this.timeCount + (timeMinutes * 1000 * 60);
         this.checkExecuteTask();
     }
 
