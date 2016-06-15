@@ -141,14 +141,17 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private GameRandom<String> getGameRandom() {
+        GameRandom<String> gameRandom = this.gameRandom != null ? (GameRandom<String>) this.gameRandom : new GameRandomImpl<>();
+        return gameRandom;
+    }
+
     private void createActions() {
         this.createActions1();
         this.createActions2();
         //Action showIdCardAction = new SwitchItemOwnerAction(game.getPlayer(), this.getItemKeeper(LIBRARIAN_NAME), ID_CARD_NAME);
         //this.addAction(SHOW_ID_CARD_ACTION, showIdCardAction);
-
-        Action showLiquorAction = new SwitchItemFromPlayerAction(game, this.getItemKeeper(LIBRARIAN_NAME), LIQUOR_NAME);
-        this.addAction(SHOW_LIQUOR_ACTION, showLiquorAction);
 
         Action unlockLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), LOCK_STATUS, UNLOCKED);
         this.addAction(UNLOCK_LIBRARY_ACTION, unlockLibraryAction);
@@ -159,7 +162,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Action awakeLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), SLEEP_STATUS, SLEEP_STATUS_AWAKE);
 
         // Si no le configuraron un GameRandom al GameBuilder, creo uno para pasarle a este Action.
-        GameRandom<String> gameRandom = this.gameRandom != null ? this.gameRandom : new GameRandomImpl<>();
+        GameRandom<String> gameRandom = this.getGameRandom();
         Action randomChangeStageLibrarian = new RandomChangeStageAction(this.game, LIBRARIAN_NAME, gameRandom);
 
         Action scheduledRandomWalkLibrarianAction = new PeriodicTimedAction(this.game, 0L,//
@@ -209,6 +212,9 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
     private void createActions2() {
         Action enterToBannedAction = new EnterToBannedRoomAction(this.getRule(ENTERED_TO_BANNED_ROOM_RULE),game);
         this.addAction(ENTERED_TO_BANNED_ROOM_ACTION,enterToBannedAction);
+
+        Action showLiquorAction = new SwitchItemFromPlayerAction(game, this.getItemKeeper(LIBRARIAN_NAME), LIQUOR_NAME);
+        this.addAction(SHOW_LIQUOR_ACTION, showLiquorAction);
     }
 
     private void bindActionsAndItems() {

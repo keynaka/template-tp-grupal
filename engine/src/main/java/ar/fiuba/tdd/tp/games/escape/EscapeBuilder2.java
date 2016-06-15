@@ -128,6 +128,12 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private GameRandom<String> getGameRandom() {
+        GameRandom<String> gameRandom = this.gameRandom != null ? (GameRandom<String>) this.gameRandom : new GameRandomImpl<>();
+        return gameRandom;
+    }
+
     private void createActions() {
         this.createActions1();
         //Action showIdCardAction = new SwitchItemOwnerAction(game.getPlayer(), this.getItemKeeper(LIBRARIAN_NAME), ID_CARD_NAME);
@@ -145,7 +151,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         Action awakeLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), SLEEP_STATUS, SLEEP_STATUS_AWAKE);
 
         // Si no le configuraron un GameRandom al GameBuilder, creo uno para pasarle a este Action.
-        GameRandom<String> gameRandom = this.gameRandom != null ? this.gameRandom : new GameRandomImpl<>();
+        GameRandom<String> gameRandom = this.getGameRandom();
         Action randomChangeStageLibrarian = new RandomChangeStageAction(this.game, LIBRARIAN_NAME, gameRandom);
 
         Action scheduledRandomWalkLibrarianAction = new PeriodicTimedAction(this.game, 0L,//

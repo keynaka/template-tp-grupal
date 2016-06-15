@@ -4,7 +4,9 @@ import ar.fiuba.tdd.tp.games.*;
 import ar.fiuba.tdd.tp.games.random.GameRandomMock;
 import ar.fiuba.tdd.tp.games.timer.GameTimerMock;
 import org.junit.Test;
+
 import static org.junit.Assert.assertTrue;
+
 /**
  * Created by sebass on 14/06/16.
  */

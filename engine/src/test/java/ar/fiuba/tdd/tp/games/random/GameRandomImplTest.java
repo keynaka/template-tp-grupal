@@ -15,7 +15,7 @@ public class GameRandomImplTest {
 
     @Test
     public void getRandomFrom() {
-        GameRandom<Stage> random = new GameRandomImpl();
+        GameRandom<Stage> random = new GameRandomImpl<>();
 
         Stage stage1 = new Stage("room1");
         Stage stage2 = new Stage("room2");
