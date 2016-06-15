@@ -128,8 +128,7 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Rule isSlept = new VerifiesStateRule(this.getItem(LIBRARIAN_NAME), SLEEP_STATUS, SLEEP_STATUS_SLEPT);
         Rule isNotInLibraryAccess = new IsInCurrentRoomRule(this.game, LIBRARIAN_NAME).negate();
-        Rule isAllowed = new VerifyPlayerStateRule(this.game, ALLOWED_IN_LIBRARY_STATUS, ALLOWED);
-        Rule enterToBannedRoomRule = isSlept.and(isNotInLibraryAccess).and(isAllowed);
+        Rule enterToBannedRoomRule = isSlept.or(isNotInLibraryAccess);
 
         this.addRule(ENTERED_TO_BANNED_ROOM_RULE,enterToBannedRoomRule);
 
