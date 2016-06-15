@@ -4,7 +4,6 @@ import ar.fiuba.tdd.tp.games.ConcreteGame;
 import ar.fiuba.tdd.tp.games.Stage;
 import ar.fiuba.tdd.tp.games.items.Item;
 import ar.fiuba.tdd.tp.games.random.GameRandom;
-import ar.fiuba.tdd.tp.games.random.GameRandomImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +18,12 @@ public class RandomChangeStageAction implements Action {
 
     private ConcreteGame game;
     private String itemName;
+    private GameRandom<Stage> gameRandom;
 
-    public RandomChangeStageAction(ConcreteGame game, String itemName) {
+    public RandomChangeStageAction(ConcreteGame game, String itemName, GameRandom<Stage> gameRandom) {
         this.game = game;
         this.itemName = itemName;
+        this.gameRandom = gameRandom;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class RandomChangeStageAction implements Action {
         //String nextStageName = currentStage.getConsecutiveStages().get(randomInt);
         //Stage nextStage = this.game.getStage(nextStageName);
 
-        GameRandom<Stage> gameRandom = new GameRandomImpl<>();
+        //GameRandom<Stage> gameRandom = new GameRandomImpl<>();
         Stage nextStage = gameRandom.getRandomFrom(this.getConsecutiveStages());
 
         System.out.println(String.format("%s is now in %s", itemName, nextStage.getName()));

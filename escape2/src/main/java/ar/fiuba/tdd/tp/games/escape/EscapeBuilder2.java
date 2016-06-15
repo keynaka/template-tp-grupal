@@ -6,97 +6,14 @@ import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.handlers.DefaultActionHandler;
 import ar.fiuba.tdd.tp.games.handlers.LookAroundActionHandler;
 import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.random.GameRandom;
+import ar.fiuba.tdd.tp.games.random.GameRandomImpl;
 import ar.fiuba.tdd.tp.games.rules.*;
 import ar.fiuba.tdd.tp.games.timer.GameTimer;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.ALIVE_PLAYER;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.ALLOWED;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.ALLOWED_IN_LIBRARY_STATUS;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.AWAKE_TIME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BASEMENT_DOWNSTAIRS_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BASEMENT_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BOAT_PICTURE_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BOOK1_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BOOK2_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BOOK3_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BOOK4_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BOOK5_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BOOK6_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BOOK7_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BOOK8_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BOOK9_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BREAK;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BREAK_WINDOW_RESULT_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.BROKEN_WINDOW;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.CHAIR1_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.CHAIR2_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.DEAD_PLAYER;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.DROP;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.DROP_RESULT_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.ERR_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.GAME_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.GLASS1_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.GLASS2_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.GOTO;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.GOTO_NOT_NEXT_ROOM_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.GOTO_RESULT_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.HALL_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.HAMMER_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.ID_CARD_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.ID_CARD_PICTURE_STATE;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.KEY_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.LIBRARIAN_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.LIBRARY_ACCESS_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.LIBRARY_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.LIFE_STATUS;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.LIQUOR_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.LOCKED;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.LOCK_STATUS;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.MOVE;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.MOVED_BOOK;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.MOVE_OLD_BOOK_RESULT_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.MOVE_RESULT_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.NOT_ALLOWED;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.NOT_IN_INVENTORY_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.OLD_BOOK_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.OLD_BOOK_STATE;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.OPEN;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.OPEN_RESULT_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.OUTSIDE_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.PEN_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.PICK;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.PICK_RESULT_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.PLAYER_PICTURE_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.PUT;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.PUT_RESULT_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.RAILING_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.RANDOM_WALKER_PERIOD;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.ROOM1_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.ROOM2_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.ROOM3_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.SAFEBOX_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.SCREWDRIVER1_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.SCREWDRIVER2_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.SHOW;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.SHOW_ALT_RESULT_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.SHOW_LIQUOR_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.SHOW_RESULT_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.SLEEP_STATUS;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.SLEEP_STATUS_AWAKE;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.SLEEP_STATUS_SLEPT;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.STAIRS_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.STRANGER_PICTURE_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.TABLE_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.TRAIN_PICTURE_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.UNLOCKED;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.USE;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.USE_RAILING_RESULT_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.USE_STAIRS_RESULT_MSG;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.WINDOW_NAME;
-import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.WINDOW_STATE;
+import static ar.fiuba.tdd.tp.games.escape.EscapeProperties.*;
 
 /**
  * Created by swandelow on 5/19/16.
@@ -242,7 +159,9 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Action awakeLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), SLEEP_STATUS, SLEEP_STATUS_AWAKE);
 
-        Action randomChangeStageLibrarian = new RandomChangeStageAction(this.game, LIBRARIAN_NAME);
+        // Si no le configuraron un GameRandom al GameBuilder, creo uno para pasarle a este Action.
+        GameRandom<Stage> gameRandom = this.gameRandom != null ? this.gameRandom : new GameRandomImpl<>();
+        Action randomChangeStageLibrarian = new RandomChangeStageAction(this.game, LIBRARIAN_NAME, gameRandom);
 
         Action scheduledRandomWalkLibrarianAction = new PeriodicTimedAction(this.game, 0L,//
                 RANDOM_WALKER_PERIOD, randomChangeStageLibrarian, "Librarian have moved.");

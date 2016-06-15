@@ -6,6 +6,8 @@ import ar.fiuba.tdd.tp.games.behavior.Behavior;
 import ar.fiuba.tdd.tp.games.handlers.DefaultActionHandler;
 import ar.fiuba.tdd.tp.games.handlers.LookAroundActionHandler;
 import ar.fiuba.tdd.tp.games.items.Item;
+import ar.fiuba.tdd.tp.games.random.GameRandom;
+import ar.fiuba.tdd.tp.games.random.GameRandomImpl;
 import ar.fiuba.tdd.tp.games.rules.*;
 import ar.fiuba.tdd.tp.games.timer.GameTimer;
 
@@ -142,7 +144,9 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
 
         Action awakeLibraryAction = new SetStateValueAction(this.getStage(LIBRARY_NAME), SLEEP_STATUS, SLEEP_STATUS_AWAKE);
 
-        Action randomChangeStageLibrarian = new RandomChangeStageAction(this.game, LIBRARIAN_NAME);
+        // Si no le configuraron un GameRandom al GameBuilder, creo uno para pasarle a este Action.
+        GameRandom<Stage> gameRandom = this.gameRandom != null ? this.gameRandom : new GameRandomImpl<>();
+        Action randomChangeStageLibrarian = new RandomChangeStageAction(this.game, LIBRARIAN_NAME, gameRandom);
 
         Action scheduledRandomWalkLibrarianAction = new PeriodicTimedAction(this.game, 0L,//
                 RANDOM_WALKER_PERIOD, randomChangeStageLibrarian, "Librarian have moved.");
