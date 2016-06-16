@@ -419,7 +419,6 @@ public class EscapeBuilder2 extends AbstractGameBuilder {
         room1.addItem(this.getItem(GLASS2_NAME));
         room1.addItem(this.getItem(CHAIR1_NAME));
         room1.addItem(this.getItem(CHAIR2_NAME));
-        room1.addItem(this.getItem(SAFEBOX_NAME));
         room1.addItem(this.getItem(LIQUOR_NAME));
         room1.addState(LOCK_STATUS, UNLOCKED);
     }
