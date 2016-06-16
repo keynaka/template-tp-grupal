@@ -46,6 +46,9 @@ public abstract class AbstractGameBuilder implements GameBuilder {
 
         if (this.gameTimer != null) {
             game.setTimer(gameTimer);
+        }
+
+        if (game.getTimer() != null) {
             game.getTimer().startTimer();
         }
 
