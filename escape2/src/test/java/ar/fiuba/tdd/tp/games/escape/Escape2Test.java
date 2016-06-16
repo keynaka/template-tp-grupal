@@ -23,14 +23,11 @@ public class Escape2Test {
     @Test
     public void moveBoatPictureAppearsSafeBox() {
         assertEquals("You have entered to Salon1.", target.play(new Command(ActionOld.GOTO, "Salon1")));
-        assertEquals("Items in Salon1: BotellaLicor, CuadroBarco, CuadroTren, Mesa, Silla1, Silla2, Vaso1, Vaso2.", target.play(new Command(ActionOld.LOOK_AROUND)));
+        assertEquals("Items in Salon1: BotellaLicor, CuadroBarco, CuadroTren, Mesa, Silla1, Silla2, Vaso1, Vaso2.",//
+                 target.play(new Command(ActionOld.LOOK_AROUND)));
         assertEquals("There you go!", target.play(new Command(ActionOld.MOVE, "CuadroBarco")));
-        assertEquals("Items in Salon1: BotellaLicor, CajaFuerte, CuadroBarco, CuadroTren, Mesa, Silla1, Silla2, Vaso1, Vaso2.", target.play(new Command(ActionOld.LOOK_AROUND)));
-    }
-
-    @Test
-    public void notExaminableObject() {
-        assertEquals("Salon1 does not support this command.", target.play(new Command(ActionOld.EXAMINE, "Salon1")));
+        assertEquals("Items in Salon1: BotellaLicor, CajaFuerte, CuadroBarco, CuadroTren, Mesa, Silla1, Silla2, Vaso1, Vaso2.",//
+                target.play(new Command(ActionOld.LOOK_AROUND)));
     }
 
 }
