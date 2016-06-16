@@ -28,5 +28,9 @@ public class Escape2Test {
         assertEquals("Items in Salon1: BotellaLicor, CajaFuerte, CuadroBarco, CuadroTren, Mesa, Silla1, Silla2, Vaso1, Vaso2.", target.play(new Command(ActionOld.LOOK_AROUND)));
     }
 
+    @Test
+    public void notExaminableObject() {
+        assertEquals("Salon1 does not support this command.", target.play(new Command(ActionOld.EXAMINE, "Salon1")));
+    }
 
 }
