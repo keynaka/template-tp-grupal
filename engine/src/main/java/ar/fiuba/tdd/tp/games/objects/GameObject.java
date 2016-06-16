@@ -3,9 +3,11 @@ package ar.fiuba.tdd.tp.games.objects;
 import ar.fiuba.tdd.tp.games.ActionOld;
 import ar.fiuba.tdd.tp.games.ConcreteGame;
 import ar.fiuba.tdd.tp.games.behavior.Behavior;
+import ar.fiuba.tdd.tp.games.exceptions.GameException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by Gonzalo on 16/05/2016.
@@ -46,13 +48,19 @@ public abstract class GameObject {
     }
 
     public String executeAction(String actionName) {
-        Behavior behavior = this.behaviorMap.get(actionName);
-        return behavior.execute();
+        Optional<Behavior> behavior = Optional.ofNullable(this.behaviorMap.get(actionName));
+        if (behavior.isPresent()) {
+            return behavior.get().execute();
+        }
+        throw new GameException(String.format("%s does not support this command.", getName()));
     }
 
     public String executeActionWith(String actionName, String parameter) {
-        Behavior behavior = this.behaviorMap.get(actionName);
-        return behavior.executeWith(parameter);
+        Optional<Behavior> behavior = Optional.ofNullable(this.behaviorMap.get(actionName));
+        if (behavior.isPresent()) {
+            return behavior.get().executeWith(parameter);
+        }
+        throw new GameException(String.format("%s does not support this command.", getName()));
     }
 
 }
